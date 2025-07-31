@@ -1,8 +1,10 @@
+import Intro from "./section/intro";
+
 export default function Home() {
   return (
-    <section>
-      <h2>홈</h2>
-      <p>여기는 블로그의 메인 페이지입니다.</p>
-    </section>
+    <>
+      <Intro />
+      {/* 나중에 다른 섹션도 여기에 추가하면 됨 */}
+    </>
   );
 }

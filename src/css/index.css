@@ -12,28 +12,6 @@ main {
     height: 800px;
 }
 
-
-
-/* ========== section_ .intro ========== */
-/* ========== .main-cover ========== */
-.main-cover {
-    background-color: purple;
-    height: 200px;
-}
-
-/* ========== .profile ========== */
-.profile {
-    position: absolute;
-    top: 200px;
-    left: 20%;
-}
-
-.profile img {
-    width: 150px;
-    height: 150px;
-    border-radius: 3px;
-}
-
 /* ========== section_ .contents ========== */
 .contents {
     width: 1160px;
