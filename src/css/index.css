@@ -24,6 +24,12 @@ main {
 .IT {
     border: 3px solid aqua;
 }
+.japan {
+    border: 3px solid blue;
+}
+.culture {
+    border: 3px solid blueviolet;
+}
 
 footer {
     border: 3px solid dodgerblue;
