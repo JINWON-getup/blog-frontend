@@ -1,0 +1,53 @@
+/* ########## major premise ########## */
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* ########## major premise ########## */
+
+/* ========== << main >> ========== */
+main {
+    border: 3px solid crimson;
+    height: 800px;
+}
+
+
+
+/* ========== section_ .intro ========== */
+/* ========== .main-cover ========== */
+.main-cover {
+    background-color: purple;
+    height: 200px;
+}
+
+/* ========== .profile ========== */
+.profile {
+    position: absolute;
+    top: 200px;
+    left: 20%;
+}
+
+.profile img {
+    width: 150px;
+    height: 150px;
+    border-radius: 3px;
+}
+
+/* ========== section_ .contents ========== */
+.contents {
+    width: 1160px;
+    height: 800px;
+    border: 3px solid saddlebrown;
+    margin: auto;
+}
+
+/* ========== article_ .IT ========== */
+.IT {
+    border: 3px solid aqua;
+}
+
+footer {
+    border: 3px solid dodgerblue;
+    height: 100px;
+}
