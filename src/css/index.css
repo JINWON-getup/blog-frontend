@@ -1,23 +1,56 @@
 /* ########## major premise ########## */
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 /* ########## major premise ########## */
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #fff;
+    color: #333;
+    line-height: 1.6;
+}
 
-/* ========== << main >> ========== */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#root {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
 main {
-    border: 3px solid crimson;
-    height: 2000px;
+    flex: 1;
+}
+
+/* 고정 폭 컨테이너 클래스 (필요시 사용) */
+.container {
+    width: 1160px;
+    margin: 0 auto;
 }
 
 /* ========== section_ .contents ========== */
 .contents {
     width: 1160px;
-    height: 800px;
+    margin: 0 auto;
+    padding: 40px 0;
     border: 3px solid saddlebrown;
-    margin: auto;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.contents article {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f9f9f9;
 }
 
 /* ========== article_ .IT ========== */
@@ -34,4 +67,12 @@ main {
 footer {
     border: 3px solid dodgerblue;
     height: 100px;
+}
+
+footer {
+    height: 100px; /* 원하는 높이 */
+    display: flex;
+    justify-content: center; /* 가로 가운데 */
+    align-items: center; /* 세로 가운데 */
+    background-color: #f2f2f2; /* 배경색 (선택) */
 }

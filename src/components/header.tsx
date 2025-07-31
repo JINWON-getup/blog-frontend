@@ -6,5 +6,5 @@ export default function Header() {
                 <h1>JINmono</h1>
             </a>
         </header>
-    )
+    );
 }

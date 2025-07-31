@@ -3,5 +3,5 @@ export default function Footer() {
         <footer>
             <p>made by Kim Jin Won</p>
         </footer>
-    )
+    );
 }

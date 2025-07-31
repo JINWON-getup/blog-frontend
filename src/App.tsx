@@ -4,16 +4,16 @@ import AppRoutes from "./routes/routes";
 import NavBar from "./components/nav-bar";
 
 function App() {
-  return (
-    <>
-      <Header />
-      <NavBar/>
-      <main>
-        <AppRoutes />
-      </main>
-      <Footer />
-    </>
-  );
+    return (
+        <>
+            <Header />
+            <NavBar />
+            <main>
+                <AppRoutes />
+            </main>
+            <Footer />
+        </>
+    );
 }
 
 export default App;

@@ -1,14 +1,14 @@
 export default function Contents() {
-    return(
+    return (
         <section className="contents">
             <article className="IT">
-                <p>아아아메리카노</p>
+                <p>IT</p>
             </article>
             <article className="japan">
-                <p>아아아메리카노</p>
+                <p>japan</p>
             </article>
             <article className="culture">
-                <p>아아아메리카노</p>
+                <p>culture</p>
             </article>
         </section>
     );
