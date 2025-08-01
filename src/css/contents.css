@@ -1,0 +1,42 @@
+.contents {
+    width: 1160px;
+    margin: 0 auto;
+    padding: 40px 0;
+    border: 3px solid saddlebrown;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.card {
+    flex: 1;
+    border: 1px solid #ddd;
+    padding: 20px;
+    background-color: #f9f9f9;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img {
+    width: 100%;
+    height: 180px;
+    object-fit: contain; /* ✅ 이미지 전체를 보이게 */
+    background-color: #f0f0f0; /* 남는 공간 색상 */
+    margin-bottom: 12px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card:hover img {
+    transform: scale(1.05);
+}
+
+.card p {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
