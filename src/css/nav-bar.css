@@ -1,7 +1,7 @@
-/* 라이트 모드 */
+/* ======================================== 라이트 모드 ======================================== */
 .nav-bar {
     display: flex;
-    justify-content: space-between; 
+    justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #ddd;
     padding: 10px 20px;
@@ -38,7 +38,7 @@
     align-items: center;
 }
 
-/* 다크 모드 */
+/* ======================================== 다크 모드 ======================================== */
 .dark .nav-link {
     color: #eee;
 }
@@ -71,4 +71,3 @@
     background-color: #333;
     color: #fff;
 }
-
