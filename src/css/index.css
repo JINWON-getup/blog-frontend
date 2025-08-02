@@ -9,23 +9,20 @@
 }
 /* ########## major premise ########## */
 
-/* 라이트 모드 (기본) */
+/* 라이트 모드 */
+main {
+    flex: 1;
+}
+
 html:not(.dark) body {
     background-color: #f5f5f5;
     color: #333333;
-}
-
-/* 다크 모드 */
-html.dark body {
-    background-color: #111111; /* 또는 #111111 */
-    color: #f0f0f0;
-}
-
-html,
-body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: "Segoe UI", sans-serif;
+    line-height: 1.6;
+    transition: 0.5s;
 }
 
 #root {
@@ -34,11 +31,14 @@ body {
     flex-direction: column;
 }
 
-main {
-    flex: 1;
-}
-
-body {
+/* 다크 모드 */
+html.dark body {
+    background-color: #1a202c;
+    color: #f0f0f0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
     font-family: "Segoe UI", sans-serif;
     line-height: 1.6;
+    transition: 0.5s;
 }

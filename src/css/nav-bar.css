@@ -1,4 +1,8 @@
+/* 라이트 모드 */
 .nav-bar {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
     border-bottom: 1px solid #ddd;
     padding: 10px 20px;
     padding-top: 0;
@@ -28,3 +32,43 @@
     background-color: #f0f0f0;
     color: #000;
 }
+
+.nav-toggle {
+    display: flex;
+    align-items: center;
+}
+
+/* 다크 모드 */
+.dark .nav-link {
+    color: #eee;
+}
+
+.dark .nav-link:hover {
+    background-color: #333;
+    color: #fff;
+}
+
+.darkmode-toggle {
+    background-color: transparent;
+    color: #333;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.darkmode-toggle:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.dark .darkmode-toggle {
+    color: #eee;
+}
+
+.dark .darkmode-toggle:hover {
+    background-color: #333;
+    color: #fff;
+}
+

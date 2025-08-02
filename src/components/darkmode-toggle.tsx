@@ -31,8 +31,8 @@ const ThemeToggle = () => {
     };
 
     return (
-        <button onClick={toggleTheme}>
-            {isDark ? "☀️ 출근하기" : "🌙 퇴근하기"}
+        <button onClick={toggleTheme} className="darkmode-toggle">
+            {isDark ? "☀️ 출근하기" : "🌙 야근하기"}
         </button>
     );
 };
