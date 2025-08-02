@@ -1,9 +1,10 @@
+/* 라이트 모드 */
 header {
     display: flex;
-    justify-content: center; /* 수평 중앙 정렬 */
-    align-items: center; /* 수직 중앙 정렬 */
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    height: 70px; /* 원하는 높이 지정 */
+    height: 70px;
 }
 
 .header-link {
@@ -33,6 +34,7 @@ header {
     cursor: pointer;
 }
 
+/* 다크 모드 */
 .dark .header-link:hover {
     background-color: #333;
     color: #fff;

@@ -15,7 +15,7 @@ export default function Contents() {
             <article className="article-card">
                 <Link to="/japan">
                     <img src={japanImg} alt="Japan" />
-                    <p>Japan</p>
+                    <p>Japanese</p>
                 </Link>
             </article>
             <article className="article-card">
