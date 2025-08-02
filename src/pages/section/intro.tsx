@@ -1,8 +1,8 @@
-import profile from "../../assets/images/profile.png";
+import profile from "../../assets/images/profile-morning.png";
 
 export default function Intro() {
     return (
-        <section className="w-[1160px] mx-auto pt-[80px] pb-[40px]">
+        <section className="w-[1160px] mx-auto pt-[80px] pb-[40px] mt-3">
             <div className="flex flex-col items-center">
                 <img
                     src={profile}

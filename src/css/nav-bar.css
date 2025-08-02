@@ -1,9 +1,7 @@
 .nav-bar {
-    background-color: #ffffff;
     border-bottom: 1px solid #ddd;
     padding: 10px 20px;
     padding-top: 0;
-    margin-bottom: 20px;
 }
 
 .nav-list {
