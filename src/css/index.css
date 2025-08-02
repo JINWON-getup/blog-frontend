@@ -11,7 +11,7 @@
 
 /* 라이트 모드 (기본) */
 html:not(.dark) body {
-    background-color: #f5f5f5; /* 살짝 크림색 느낌 */
+    background-color: #f5f5f5;
     color: #333333;
 }
 
