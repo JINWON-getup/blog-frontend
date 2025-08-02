@@ -1,0 +1,158 @@
+/* ======================================== 라이트 모드 ======================================== */
+.it-board-container {
+    display: flex;
+    gap: 20px;
+    padding: 40px;
+
+    max-width: 1240px; /* 예: category 200px + 카드 1000px + 여백 */
+    margin: 0 auto; /* 가운데 정렬 */
+    transition: 0.5s;
+}
+
+.category-sidebar {
+    width: 200px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.category-sidebar h3 {
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ccc;
+}
+
+.category-sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.category-sidebar li {
+    cursor: pointer;
+    padding: 8px;
+    margin-bottom: 6px;
+    border-radius: 4px;
+}
+
+.category-sidebar li.active {
+    background-color: #ffd966;
+    font-weight: bold;
+}
+
+.it-board-content {
+    width: 1000px;
+    padding: 0;
+}
+
+.board-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 8px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ccc;
+}
+
+.post-count {
+    font-weight: 600;
+    font-size: 18px;
+    color: #333;
+}
+
+.post-count .count {
+    background-color: #ffd54f;
+    padding: 3px 10px;
+    border-radius: 12px;
+    margin-left: 8px;
+    font-weight: 700;
+    color: #222;
+    min-width: 28px;
+    text-align: center;
+}
+
+.tag-search-input {
+    width: 180px; /* 기존보다 작게 */
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    transition: border-color 0.3s ease;
+}
+
+.tag-search-input:focus {
+    border-color: #3182ce;
+}
+
+.card-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 고정 4개 컬럼 */
+    gap: 16px;
+}
+
+.it-card {
+    background: #fffde7;
+    border: 1px solid #ccc;
+    padding: 16px;
+    border-radius: 8px;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.it-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.it-card .tag-list {
+    margin-top: 8px;
+}
+
+.it-card .tag {
+    margin-right: 8px;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* ======================================== 다크 모드 ======================================== */
+html.dark .it-board-container {
+    background-color: #1a202c;
+    color: #e2e8f0;
+}
+
+html.dark .category-sidebar {
+    background: #2d3748;
+    color: #e2e8f0;
+}
+
+html.dark .category-sidebar h3 {
+    border-bottom: 2px solid #fff;
+}
+
+html.dark .category-sidebar li.active {
+    background-color: #ecc94b;
+    color: #1a202c;
+}
+
+html.dark .board-header .post-count {
+    color: #e2e8f0;
+}
+
+html.dark .tag-search-input {
+    background-color: #2d3748;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+html.dark .it-card {
+    background: #2d3748;
+    color: #e2e8f0;
+    border: 1px solid #4a5568;
+}
+
+html.dark .it-card:hover {
+    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+}
+
+html.dark .it-card .tag {
+    color: #63b3ed;
+}

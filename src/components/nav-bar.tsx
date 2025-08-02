@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import DarkModeToggle from "./darkmode-toggle"; // 토글 컴포넌트 import
+import DarkModeToggle from "./darkmode-toggle";
 import "../css/nav-bar.css";
 
 export default function NavBar() {
@@ -22,6 +22,12 @@ export default function NavBar() {
                     <Link to="/blog" className="nav-link">
                         <i className="bi bi-journal-text"></i>
                         <span>Blog</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="/it" className="nav-link">
+                        <i className="bi bi-cpu"></i>
+                        <span>IT</span>
                     </Link>
                 </li>
             </ul>

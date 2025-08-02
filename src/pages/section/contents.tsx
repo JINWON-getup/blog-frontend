@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import itImg from "../../assets/images/section_article_card-IT.jfif";
 import japanImg from "../../assets/images/section_article_card-japan.jfif";
 import cultureImg from "../../assets/images/section_article_card-culture.jfif";
+import "../section/contents.css";
 
 export default function Contents() {
     return (
