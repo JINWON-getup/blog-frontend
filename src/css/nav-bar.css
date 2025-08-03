@@ -39,15 +39,6 @@
 }
 
 /* ======================================== 다크 모드 ======================================== */
-.dark .nav-link {
-    color: #eee;
-}
-
-.dark .nav-link:hover {
-    background-color: #333;
-    color: #fff;
-}
-
 .darkmode-toggle {
     background-color: transparent;
     color: #333;
@@ -55,12 +46,20 @@
     border-radius: 6px;
     font-size: 14px;
     cursor: pointer;
-    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .darkmode-toggle:hover {
     background-color: #f0f0f0;
     color: #000;
+}
+
+.dark .nav-link {
+    color: #eee;
+}
+
+.dark .nav-link:hover {
+    background-color: #333;
+    color: #fff;
 }
 
 .dark .darkmode-toggle {

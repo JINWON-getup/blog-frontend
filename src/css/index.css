@@ -7,9 +7,23 @@
     padding: 0;
     box-sizing: border-box;
 }
+
+html,
+body {
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+button,
+input,
+a {
+    transition: color 0.5s ease, border-color 0.5s.0 ease,
+        background-color 0.5s ease;
+}
 /* ########## major premise ########## */
 
 /* ======================================== 라이트 모드 ======================================== */
+
+
 main {
     flex: 1;
 }
@@ -22,7 +36,6 @@ html:not(.dark) body {
     padding: 0;
     font-family: "Segoe UI", sans-serif;
     line-height: 1.6;
-    transition: 0.5s;
 }
 
 #root {
@@ -40,5 +53,4 @@ html.dark body {
     padding: 0;
     font-family: "Segoe UI", sans-serif;
     line-height: 1.6;
-    transition: 0.5s;
 }
