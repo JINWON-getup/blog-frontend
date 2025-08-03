@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom";
+import "../css/footer.css";
 
 export default function Footer() {
     return (
-        <footer className="h-[100px] flex justify-center items-center border-t border-[#ddd]">
+        <footer className="footer-container">
             <p>
                 made by{" "}
-                <Link
-                    to="/adminLogin"
-                    style={{ textDecoration: "none", color: "#333333" }}
-                >
+                <Link to="/adminLogin" className="footer-link">
                     Kim Jin Won
                 </Link>
             </p>

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import "./adminLogin.css";
+import "../../css/adminLogin.css";
 
 interface LoginResponse {
     token: string;

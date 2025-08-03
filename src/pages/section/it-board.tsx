@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./it-board.css";
+import "../../css/it-board.css";
 
 const dummyData = [
     {

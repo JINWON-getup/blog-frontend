@@ -1,0 +1,28 @@
+/* ======================================== 라이트 모드 ======================================== */
+.footer-container {
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    transition: border-color 0.5s ease;
+}
+
+.footer-container p {
+    color: #333;
+    transition: color 0.5s ease;
+}
+
+.footer-link {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ======================================== 다크 모드 ======================================== */
+.dark .footer-container {
+    border-top-color: #ddd;
+}
+
+.dark .footer-container p {
+    color: #ddd;
+}

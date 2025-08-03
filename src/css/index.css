@@ -1,14 +1,16 @@
 @import "tailwindcss";
-@tailwind utilities;
 
 /* ########## major premise ########## */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    transition-property: color, background-color, border-color;
-    transition-timing-function: ease;
-    transition-duration: 0.5s;
+}
+
+html,
+body {
+    /* 👇 페이지 전체의 색상 전환을 위해 이 줄을 추가합니다. */
+    transition: color 0.5s ease, background-color 0.5s ease;
 }
 
 /* ########## major premise ########## */
