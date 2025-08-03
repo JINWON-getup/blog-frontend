@@ -1,35 +1,17 @@
-import { useEffect, useState } from "react";
+// 1. useState와 useEffect를 지우고, useTheme 훅을 가져옵니다.
+import { useTheme } from "../components/theme-context";
 
 const ProfileImage = () => {
-    const [isDark, setIsDark] = useState(false);
-
-    useEffect(() => {
-        const savedTheme = localStorage.getItem("theme");
-        setIsDark(
-            savedTheme === "dark" ||
-                (!savedTheme &&
-                    window.matchMedia("(prefers-color-scheme: dark)").matches),
-        );
-
-        // 테마 변경 시 이벤트 감지
-        const observer = new MutationObserver(() => {
-            setIsDark(document.documentElement.classList.contains("dark"));
-        });
-
-        observer.observe(document.documentElement, {
-            attributes: true,
-            attributeFilter: ["class"],
-        });
-
-        return () => observer.disconnect();
-    }, []);
+    // 2. Context에서 isDark 상태만 가져옵니다.
+    const { isDark } = useTheme();
 
     return (
         <img
             src={
+                // 3. Context에서 가져온 isDark 값으로 이미지를 결정합니다.
                 isDark
-                    ? "/images/profile-morning.png"
-                    : "/images/profile-evening.png"
+                    ? "/images/profile-evening.png" // 🌙 밤 이미지
+                    : "/images/profile-morning.png" // ☀️ 낮 이미지
             }
             alt="profile"
             className="profile-img"

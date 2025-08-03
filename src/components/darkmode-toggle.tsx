@@ -1,40 +1,15 @@
-import { useEffect, useState } from "react";
+import { useTheme } from "../components/theme-context"; // 1. useEffect, useState 대신 useTheme을 import 합니다.
 
 const ThemeToggle = () => {
-    const [isDark, setIsDark] = useState(false);
-
-    useEffect(() => {
-        const savedTheme = localStorage.getItem("theme");
-        if (
-            savedTheme === "dark" ||
-            (!savedTheme &&
-                window.matchMedia("(prefers-color-scheme: dark)").matches)
-        ) {
-            document.documentElement.classList.add("dark");
-            setIsDark(true);
-        } else {
-            document.documentElement.classList.remove("dark");
-            setIsDark(false);
-        }
-    }, []);
-
-    const toggleTheme = () => {
-        if (document.documentElement.classList.contains("dark")) {
-            document.documentElement.classList.remove("dark");
-            localStorage.setItem("theme", "light");
-            setIsDark(false);
-        } else {
-            document.documentElement.classList.add("dark");
-            localStorage.setItem("theme", "dark");
-            setIsDark(true);
-        }
-    };
+    // 2. 복잡한 로직은 다 지우고, Context에서 필요한 것만 가져옵니다.
+    const { isDark, toggleTheme } = useTheme();
 
     return (
+        // 3. onClick에서는 toggleTheme 함수를 실행합니다.
         <button onClick={toggleTheme} className="darkmode-toggle">
-            {isDark ? "☀️ 출근하기" : "🌙 퇴근하기"}
+            {isDark ? "☀️ 출근하기" : "🌙 야근하기"}
         </button>
     );
-};
+};  
 
 export default ThemeToggle;
