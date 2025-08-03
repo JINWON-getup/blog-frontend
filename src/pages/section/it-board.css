@@ -3,10 +3,9 @@
     display: flex;
     gap: 20px;
     padding: 40px;
-
     max-width: 1240px; /* 예: category 200px + 카드 1000px + 여백 */
     margin: 0 auto; /* 가운데 정렬 */
-    transition: 0.5s;
+    background-color: #f5f5f5;
 }
 
 .category-sidebar {

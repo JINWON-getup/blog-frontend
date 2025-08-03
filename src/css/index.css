@@ -6,11 +6,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-
-html,
-body {
-    transition: background-color 0.5s ease, color 0.5s ease;
+    transition-property: color, background-color, border-color;
+    transition-timing-function: ease;
+    transition-duration: 0.5s;
 }
 
 button,
@@ -22,8 +20,6 @@ a {
 /* ########## major premise ########## */
 
 /* ======================================== 라이트 모드 ======================================== */
-
-
 main {
     flex: 1;
 }
