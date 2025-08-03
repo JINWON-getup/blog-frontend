@@ -25,19 +25,19 @@ export default function NavBar() {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/it-board-page" className="nav-link">
+                    <Link to="/it" className="nav-link">
                         <i className="bi bi-cpu"></i>
                         <span>IT</span>
                     </Link>
                 </li>
                 <li>
-                    <Link to="/japanese-board-page" className="nav-link">
+                    <Link to="/japanese" className="nav-link">
                         <i className="bi bi-translate"></i>
                         <span>Japanese</span>
                     </Link>
                 </li>
                 <li>
-                    <Link to="/culture-board-page" className="nav-link">
+                    <Link to="/culture" className="nav-link">
                         <i className="bi bi-globe"></i>
                         <span>Culture</span>
                     </Link>
