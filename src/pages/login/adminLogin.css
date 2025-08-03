@@ -5,7 +5,6 @@
     justify-content: center;
     align-items: center;
     margin-top: 240px;
-    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .login-form {
@@ -15,7 +14,6 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 380px;
     box-sizing: border-box;
-    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .login-title {
@@ -37,7 +35,6 @@
     box-sizing: border-box;
     background-color: white;
     color: #111;
-    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .login-input:focus {

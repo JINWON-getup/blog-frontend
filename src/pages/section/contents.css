@@ -18,8 +18,7 @@
     box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     transform: rotate(-1.5deg);
-    transition: background-color 0.5s ease, color 0.5s ease,
-        box-shadow 0.5s ease, transform 0.5s ease;
+    transition: transform 0.5s, box-shadow 0.5s, background-color 0.5s ease;
 }
 .article-card:hover {
     transform: translateY(-6px) scale(1.03);

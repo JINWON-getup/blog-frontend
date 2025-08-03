@@ -71,12 +71,11 @@
 }
 
 .tag-search-input {
-    width: 180px; /* 기존보다 작게 */
+    width: 180px;
     padding: 8px 12px;
     font-size: 14px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    transition: border-color 0.3s ease;
 }
 
 .tag-search-input:focus {
@@ -94,7 +93,7 @@
     border: 1px solid #ccc;
     padding: 16px;
     border-radius: 8px;
-    transition: transform 0.3s, box-shadow 0.3s;
+    transition: transform 0.5s, box-shadow 0.5s, background-color 0.5s ease;
 }
 
 .it-card:hover {
