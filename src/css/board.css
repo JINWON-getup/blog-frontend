@@ -3,10 +3,8 @@
     display: flex;
     gap: 20px;
     padding: 40px;
-    max-width: 1240px; /* 예: category 200px + 카드 1000px + 여백 */
-    margin: 0 auto; /* 가운데 정렬 */
-    background-color: #f5f5f5;
-    transition: color 0.5s ease, background-color 0.5s ease;
+    max-width: 1240px;
+    margin: 0 auto;
 }
 
 .category-sidebar {
@@ -14,7 +12,7 @@
     background: #f9f9f9;
     border-radius: 8px;
     padding: 20px;
-    transition: color 0.5s ease, background-color 0.5s ease;
+    transition: background-color 0.5s ease, color 0.5s ease;
 }
 
 .category-sidebar h3 {
@@ -43,7 +41,8 @@
 }
 
 .board-content {
-    width: 1000px;
+    flex-grow: 1; /* 남는 공간을 모두 차지하도록 수정 */
+    width: 0; /* flex-grow와 함께 사용 */
     padding: 0;
 }
 
@@ -53,14 +52,19 @@
     align-items: center;
     margin-bottom: 20px;
     padding-bottom: 8px;
-    margin-bottom: 16px;
     border-bottom: 2px solid #ccc;
+    transition: border-color 0.5s ease;
+}
+
+.post-count-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
 .post-count {
     font-weight: 600;
     font-size: 18px;
-    color: #333;
 }
 
 .post-count .count {
@@ -72,6 +76,22 @@
     color: #222;
     min-width: 28px;
     text-align: center;
+    transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.create-post-button {
+    background-color: #3b82f6;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.create-post-button:hover {
+    background-color: #2563eb;
 }
 
 .tag-search-input {
@@ -79,17 +99,20 @@
     padding: 8px 12px;
     font-size: 14px;
     border-radius: 6px;
-    border: 1px solid #718096;
-    color: #718096;
-    transition: color 0.3s ease, background-color 0.3s ease,
-        border-color 0.3s ease;
+    border: 1px solid #ccc;
+    transition: background-color 0.5s ease, color 0.5s ease,
+        border-color 0.5s ease;
+}
+
+.tag-search-input:focus {
+    border-color: #3182ce;
+    outline: none;
 }
 
 .card-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 고정 4개 컬럼 */
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 16px;
-    transition: color 0.5s ease, background-color 0.5s ease;
 }
 
 .card {
@@ -114,48 +137,66 @@
     margin-right: 8px;
     color: #555;
     font-size: 0.9rem;
+    transition: color 0.5s ease;
+}
+
+/* --- 플레이스홀더 --- */
+.tag-search-input::placeholder {
+    color: #a0aec0;
+    transition: color 0.3s ease;
 }
 
 /* ======================================== 다크 모드 ======================================== */
-html.dark .board-container {
-    background-color: #1a202c;
-    color: #e2e8f0;
-}
-
-html.dark .category-sidebar {
+.dark .category-sidebar {
     background: #2d3748;
     color: #e2e8f0;
 }
 
-html.dark .category-sidebar h3 {
-    border-bottom: 2px solid #fff;
+.dark .category-sidebar h3 {
+    border-bottom-color: #4a5568;
 }
 
-html.dark .category-sidebar li.active {
+.dark .category-sidebar li.active {
     background-color: #ecc94b;
     color: #1a202c;
 }
 
-html.dark .board-header .post-count {
+.dark .board-header {
+    border-bottom-color: #4a5568;
+}
+
+.dark .post-count {
     color: #e2e8f0;
 }
 
-html.dark .tag-search-input {
+.dark .create-post-button {
+    background-color: #60a5fa;
+}
+
+.dark .create-post-button:hover {
+    background-color: #3b82f6;
+}
+
+.dark .tag-search-input {
     background-color: #2d3748;
     border-color: #4a5568;
     color: #e2e8f0;
 }
 
-html.dark .card {
+.dark .card {
     background: #2d3748;
     color: #e2e8f0;
     border: 1px solid #4a5568;
 }
 
-html.dark .card:hover {
+.dark .card:hover {
     box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
 }
 
-html.dark .card .tag {
+.dark .card .tag {
     color: #63b3ed;
+}
+
+.dark .tag-search-input::placeholder {
+    color: #718096;
 }
