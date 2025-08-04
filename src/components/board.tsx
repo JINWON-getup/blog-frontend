@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { useAuth } from "../components/AuthContext";
 import "../css/board.css";
 
-// 게시글(Post) 데이터의 타입을 미리 정의해두면 편리합니다.
+// 게시글(Post) 데이터의 타입을 정의합니다.
 interface Post {
     id: number;
     title: string;
@@ -17,15 +19,15 @@ interface BoardProps {
 
 // props로 boardData와 categories를 받습니다.
 export default function Board({ boardData, categories }: BoardProps) {
+    const { isLoggedIn } = useAuth(); // 로그인 상태를 가져옵니다.
     const [selectedCategory, setSelectedCategory] = useState("전체");
     const [searchTag, setSearchTag] = useState("");
 
-    // 👇 이 useEffect 블록을 추가합니다.
     useEffect(() => {
         // boardData나 categories가 바뀔 때마다 필터를 초기화합니다.
         setSelectedCategory("전체");
         setSearchTag("");
-    }, [boardData, categories]); // boardData나 categories가 변경될 때만 실행됩니다.
+    }, [boardData, categories]);
 
     // boardData가 아직 없으면 빈 배열([])을 사용하도록 안전장치를 추가합니다.
     const filteredData = (boardData || []).filter((post) => {
@@ -44,7 +46,6 @@ export default function Board({ boardData, categories }: BoardProps) {
             <aside className="category-sidebar">
                 <h3>카테고리</h3>
                 <ul>
-                    {/* categories도 props로 받은 것을 사용합니다. */}
                     {categories.map((cat) => (
                         <li
                             key={cat}
@@ -59,9 +60,19 @@ export default function Board({ boardData, categories }: BoardProps) {
 
             <main className="board-content">
                 <div className="board-header">
-                    <div className="post-count">
-                        전체 게시글{" "}
-                        <span className="count">{filteredData.length}</span>
+                    <div className="post-count-wrapper">
+                        <div className="post-count">
+                            전체 게시글{" "}
+                            <span className="count">{filteredData.length}</span>
+                        </div>
+                        {isLoggedIn && (
+                            <Link
+                                to="/create-post"
+                                className="create-post-button"
+                            >
+                                작성하기
+                            </Link>
+                        )}
                     </div>
                     <input
                         className="tag-search-input"

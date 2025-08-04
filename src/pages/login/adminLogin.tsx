@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom"; // 더 이상 필요 없음
+import { useAuth } from "../../components/AuthContext"; // 👈 useAuth 훅을 import
 import "../../css/adminLogin.css";
 
 interface LoginResponse {
@@ -10,20 +11,17 @@ interface LoginResponse {
 export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate();
+    const { login } = useAuth(); // 👈 Context에서 login 함수를 가져옴
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-
         try {
             const response = await axios.post<LoginResponse>("/api/login", {
                 username,
                 password,
             });
-
             const token = response.data.token;
-            localStorage.setItem("token", token);
-            navigate("/admin");
+            login(token); // 👈 Context의 login 함수를 호출 (자동으로 페이지 이동)
         } catch (err) {
             console.error("로그인 실패", err);
             alert("로그인 실패: 아이디 또는 비밀번호를 확인하세요.");
