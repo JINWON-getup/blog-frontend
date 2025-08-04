@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import DarkModeToggle from "./darkmode-toggle";
+import DarkModeToggle from "./Darkmode-toggle";
 import "../css/nav-bar.css";
 
 export default function NavBar() {

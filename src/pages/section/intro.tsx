@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "../../components/theme-context"; // 1. useTheme 훅 가져오기
+import { useTheme } from "../../components/ThemeContext"; // 1. useTheme 훅 가져오기
 import profileMorning from "../../assets/images/profile-morning.png";
 import profileNight from "../../assets/images/profile-evening.png";
 

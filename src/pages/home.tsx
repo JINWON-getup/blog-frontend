@@ -1,5 +1,5 @@
-import Contents from "./section/contents";
-import Intro from "./section/intro";
+import Contents from "./section/Contents";
+import Intro from "./section/Intro";
 
 export default function Home() {
     return (

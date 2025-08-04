@@ -1,9 +1,9 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/home";
-import ItBoardPage from "../pages/section/it-board-page";
-import JapaneseBoardPage from "../pages/section/japanese-board-page";
-import CultureBoardPage from "../pages/section/culture-board-page";
-import AdminLogin from "../pages/login/adminLogin";
+import ItBoardPage from "../pages/section/ItBoardPage";
+import JapaneseBoardPage from "../pages/section/JapaneseBoardPage";
+import CultureBoardPage from "../pages/section/CultureBoardPage";
+import AdminLogin from "../pages/login/AdminLogin";
 
 export default function AppRoutes() {
     return (
