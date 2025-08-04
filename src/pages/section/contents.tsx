@@ -8,19 +8,19 @@ export default function Contents() {
     return (
         <section className="contents">
             <article className="article-card">
-                <Link to="/it-board-page">
+                <Link to="/it">
                     <img src={itImg} alt="IT" />
                     <p>IT</p>
                 </Link>
             </article>
             <article className="article-card">
-                <Link to="/japanese-board-page">
+                <Link to="/japanese">
                     <img src={japanImg} alt="Japanese" />
                     <p>Japanese</p>
                 </Link>
             </article>
             <article className="article-card">
-                <Link to="/culture-board-page">
+                <Link to="/culture">
                     <img src={cultureImg} alt="Culture" />
                     <p>Culture</p>
                 </Link>

@@ -58,13 +58,13 @@ export const cultureBoardData: Post[] = [
         id: 2,
         title: "여름에 듣기 좋은 플레이리스트",
         category: "음악",
-        tags: ["J-Pop", "인디"],
+        tags: ["J-Pop"],
     },
     {
         id: 3,
-        title: "가볼 만한 전시회 추천",
-        category: "전시",
-        tags: ["사진전", "현대미술"],
+        title: "일본의 식문화",
+        category: "문화",
+        tags: ["문화", "튀김"],
     },
 ];
-export const cultureCategories = ["전체", "영화", "음악", "전시"];
+export const cultureCategories = ["전체", "영화", "음악", "문화"];
