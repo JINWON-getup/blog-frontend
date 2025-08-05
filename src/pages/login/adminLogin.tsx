@@ -1,7 +1,7 @@
 import { useState } from "react";
-import axios from "axios";
-// import { useNavigate } from "react-router-dom"; // 더 이상 필요 없음
-import { useAuth } from "../../components/AuthContext"; // 👈 useAuth 훅을 import
+// 👇 기존 axios 대신 새로 만든 설정 파일을 import 합니다.
+import axios from "../../api/axiosConfig";
+import { useAuth } from "../../components/AuthContext";
 import "../../css/adminLogin.css";
 
 interface LoginResponse {

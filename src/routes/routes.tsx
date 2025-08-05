@@ -4,21 +4,22 @@ import ItBoardPage from "../pages/section/ItBoardPage";
 import JapaneseBoardPage from "../pages/section/JapaneseBoardPage";
 import CultureBoardPage from "../pages/section/CultureBoardPage";
 import AdminLogin from "../pages/login/AdminLogin";
-import CreatePostPage from "../pages/section/CreatePostPage";
-import PrivateRoute from "../components/Private"; // 👈 1. PrivateRoute를 import
+import CreatePostPage from "../pages/section/CreatePostPage"; // 👈 이 import가 있는지 확인
+import PrivateRoute from "../components/Private"; // 👈 이 import가 있는지 확인
 
 export default function AppRoutes() {
     return (
         <Routes>
+            {/* 기본 페이지 라우트 */}
             <Route path="/" element={<Home />} />
             <Route path="/it" element={<ItBoardPage />} />
             <Route path="/japanese" element={<JapaneseBoardPage />} />
             <Route path="/culture" element={<CultureBoardPage />} />
             <Route path="/adminLogin" element={<AdminLogin />} />
 
-            {/* 👇 2. CreatePostPage를 PrivateRoute로 감싸줍니다. */}
+            {/* 👇 '작성하기' 페이지를 위한 보호된 라우트 */}
             <Route
-                path="/create-post"
+                path="/create-post/:boardType"
                 element={
                     <PrivateRoute>
                         <CreatePostPage />

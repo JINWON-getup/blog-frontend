@@ -2,12 +2,25 @@ import { type ReactNode } from "react";
 import { Navigate } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 
-// PrivateRoute 컴포넌트는 자식 컴포넌트(children)를 받습니다.
-export default function Private({ children }: { children: ReactNode }) {
-    // AuthContext를 사용해 현재 로그인 상태를 가져옵니다.
-    const { isLoggedIn } = useAuth();
+const PrivateRoute = ({ children }: { children: ReactNode }) => {
+    const { isLoggedIn, isLoading } = useAuth();
 
-    // 만약 로그인 상태라면 자식 컴포넌트를 그대로 보여주고,
-    // 아니라면 로그인 페이지로 보내버립니다.
-    return isLoggedIn ? children : <Navigate to="/adminLogin" replace />;
-}
+    console.log(
+        `PrivateRoute check: isLoading=${isLoading}, isLoggedIn=${isLoggedIn}`,
+    );
+
+    if (isLoading) {
+        console.log("PrivateRoute: Auth state is loading, waiting...");
+        return <p>인증 상태를 확인 중입니다...</p>; // 로딩 중임을 명확히 표시
+    }
+
+    if (!isLoggedIn) {
+        console.log("PrivateRoute: Not logged in, redirecting to /adminLogin");
+        return <Navigate to="/adminLogin" replace />;
+    }
+
+    console.log("PrivateRoute: Logged in, showing protected content.");
+    return children;
+};
+
+export default PrivateRoute;

@@ -1,35 +1,31 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAuth } from "../components/AuthContext";
+import { useAuth } from "./AuthContext";
 import "../css/board.css";
-
-// 게시글(Post) 데이터의 타입을 정의합니다.
-interface Post {
-    id: number;
-    title: string;
-    category: string;
-    tags: string[];
-}
+import type { Post } from "../data/_data";
 
 // Board 컴포넌트가 받을 props의 타입을 정의합니다.
 interface BoardProps {
     boardData: Post[];
     categories: string[];
+    boardType: string; // 👈 [추가] 게시판 타입을 prop으로 받습니다.
 }
 
-// props로 boardData와 categories를 받습니다.
-export default function Board({ boardData, categories }: BoardProps) {
-    const { isLoggedIn } = useAuth(); // 로그인 상태를 가져옵니다.
+// props로 boardData, categories, boardType을 받습니다.
+export default function Board({
+    boardData,
+    categories,
+    boardType,
+}: BoardProps) {
+    const { isLoggedIn } = useAuth();
     const [selectedCategory, setSelectedCategory] = useState("전체");
     const [searchTag, setSearchTag] = useState("");
 
     useEffect(() => {
-        // boardData나 categories가 바뀔 때마다 필터를 초기화합니다.
         setSelectedCategory("전체");
         setSearchTag("");
     }, [boardData, categories]);
 
-    // boardData가 아직 없으면 빈 배열([])을 사용하도록 안전장치를 추가합니다.
     const filteredData = (boardData || []).filter((post) => {
         const categoryMatch =
             selectedCategory === "전체" || post.category === selectedCategory;
@@ -65,9 +61,10 @@ export default function Board({ boardData, categories }: BoardProps) {
                             전체 게시글{" "}
                             <span className="count">{filteredData.length}</span>
                         </div>
+                        {/* 👇 [수정] boardType을 이용해 동적인 링크를 생성합니다. */}
                         {isLoggedIn && (
                             <Link
-                                to="/create-post"
+                                to={`/create-post/${boardType}`}
                                 className="create-post-button"
                             >
                                 작성하기
