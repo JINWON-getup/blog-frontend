@@ -6,11 +6,12 @@ import {
     type ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "../api/axiosConfig";
 
 interface AuthContextType {
     isLoggedIn: boolean;
     isLoading: boolean;
-    login: (token: string) => void;
+    login: (username: string, password: string) => Promise<void>;
     logout: () => void;
 }
 
@@ -21,31 +22,40 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
+    // 앱이 처음 시작될 때, 백엔드에 로그인 상태를 물어봅니다.
     useEffect(() => {
-        console.log("AuthContext: Checking for token...");
-        const token = localStorage.getItem("token");
-        if (token) {
-            console.log(
-                "AuthContext: Token found, setting isLoggedIn to true.",
-            );
-            setIsLoggedIn(true);
-        } else {
-            console.log("AuthContext: No token found.");
-        }
-        setIsLoading(false);
+        const checkAuthStatus = async () => {
+            try {
+                await axios.get("/api/auth/status");
+                setIsLoggedIn(true); // 200 OK 응답을 받으면 로그인 상태로 설정
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            } catch (error) {
+                setIsLoggedIn(false); // 401 등 에러 응답을 받으면 로그아웃 상태로 설정
+            } finally {
+                setIsLoading(false); // 상태 확인이 끝났으므로 로딩 종료
+            }
+        };
+        checkAuthStatus();
     }, []);
 
-    const login = (token: string) => {
-        console.log("AuthContext: login function called.");
-        localStorage.setItem("token", token);
-        setIsLoggedIn(true);
-        navigate("/it");
+    const login = async (username: string, password: string) => {
+        try {
+            await axios.post("/api/login", { username, password });
+            setIsLoggedIn(true);
+            navigate("/it");
+        } catch (error) {
+            console.error("Login failed:", error);
+            throw error;
+        }
     };
 
-    const logout = () => {
-        localStorage.removeItem("token");
-        setIsLoggedIn(false);
-        navigate("/");
+    const logout = async () => {
+        try {
+            await axios.post("/api/logout");
+        } finally {
+            setIsLoggedIn(false);
+            navigate("/");
+        }
     };
 
     return (

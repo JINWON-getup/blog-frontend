@@ -82,17 +82,23 @@ export default function Board({
 
                 <div className="card-list">
                     {filteredData.map((post) => (
-                        <div className="card" key={post.id}>
-                            <h4>{post.title}</h4>
-                            <p className="category">[{post.category}]</p>
-                            <div className="tag-list">
-                                {post.tags.map((tag) => (
-                                    <span key={tag} className="tag">
-                                        #{tag}
-                                    </span>
-                                ))}
+                        <Link
+                            to={`/post/${post.id}`}
+                            key={post.id}
+                            className="card-link"
+                        >
+                            <div className="card" key={post.id}>
+                                <h4>{post.title}</h4>
+                                <p className="category">[{post.category}]</p>
+                                <div className="tag-list">
+                                    {post.tags.map((tag) => (
+                                        <span key={tag} className="tag">
+                                            #{tag}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             </main>

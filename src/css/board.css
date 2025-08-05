@@ -115,6 +115,11 @@
     gap: 16px;
 }
 
+.card-link {
+    text-decoration: none;
+    color: inherit; /* 부모 요소의 글자색을 상속받음 */
+}
+
 .card {
     background: #fffde7;
     border: 1px solid #ccc;
