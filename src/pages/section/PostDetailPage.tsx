@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import axios from "../../api/axiosConfig"; // axios 인스턴스를 가져옵니다.
+import { useParams, Link, useNavigate } from "react-router-dom";
+import axios from "../../api/axiosConfig";
 import type { Post } from "../../data/_data";
-import "../../css/post-detail-page.css"; // 스타일을 위한 CSS 파일을 가져옵니다.
+import { useAuth } from "../../components/AuthContext";
+import "../../css/post-detail-page.css";
 
 // API 응답을 위한 타입
 interface PostFromApi {
@@ -15,7 +16,9 @@ interface PostFromApi {
 }
 
 export default function PostDetailPage() {
-    const { id } = useParams<{ id: string }>(); // URL에서 게시글 ID를 가져옵니다.
+    const { id } = useParams<{ id: string }>();
+    const navigate = useNavigate();
+    const { isLoggedIn } = useAuth();
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -48,6 +51,24 @@ export default function PostDetailPage() {
             fetchPost();
         }
     }, [id]);
+
+    // 삭제 버튼 클릭 시 실행될 함수
+    const handleDelete = async () => {
+        if (window.confirm("정말 이 게시글을 삭제하시겠습니까?")) {
+            try {
+                await axios.delete(`/api/posts/${id}`);
+                alert("게시글이 삭제되었습니다.");
+                if (post) {
+                    navigate(`/${post.boardType}`); // 해당 게시판 목록으로 이동
+                } else {
+                    navigate("/"); // 만약을 대비한 기본 경로
+                }
+            } catch (error) {
+                console.error("삭제에 실패했습니다.", error);
+                alert("게시글 삭제에 실패했습니다.");
+            }
+        }
+    };
 
     if (loading) {
         return (
@@ -95,9 +116,26 @@ export default function PostDetailPage() {
                 }}
             />
             <footer className="post-footer">
-                <Link to={`/${post.boardType}`} className="back-to-list-button">
-                    목록으로 돌아가기
+                <Link to={`/${post.boardType}`} className="list-button">
+                    목록
                 </Link>
+                {/* 로그인 상태일 때만 수정/삭제 버튼을 보여줍니다. */}
+                {isLoggedIn && (
+                    <div className="admin-actions">
+                        <Link
+                            to={`/edit-post/${post.id}`}
+                            className="edit-button"
+                        >
+                            수정
+                        </Link>
+                        <button
+                            onClick={handleDelete}
+                            className="delete-button"
+                        >
+                            삭제
+                        </button>
+                    </div>
+                )}
             </footer>
         </div>
     );
