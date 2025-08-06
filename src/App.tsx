@@ -1,10 +1,10 @@
-import Header from "./components/header";
-import Footer from "./components/footer";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 import AppRoutes from "./routes/routes";
-import NavBar from "./components/nav-bar";
-import { ThemeProvider } from "./components/theme-context"; // 1. ThemeProvider를 import 합니다.
+import NavBar from "./components/NavBar";
+import { ThemeProvider } from "./components/ThemeContext";
 
-function App() {
+export default function App() {
     return (
         // 2. ThemeProvider로 전체를 감싸줍니다.
         <ThemeProvider>
@@ -17,5 +17,3 @@ function App() {
         </ThemeProvider>
     );
 }
-
-export default App;

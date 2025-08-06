@@ -9,7 +9,6 @@ export default function AppRoutes() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
-            {/* 👇 path 경로를 짧게 수정 */}
             <Route path="/it" element={<ItBoardPage />} />
             <Route path="/japanese" element={<JapaneseBoardPage />} />
             <Route path="/culture" element={<CultureBoardPage />} />
