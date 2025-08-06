@@ -1,0 +1,157 @@
+/* 스크롤 애니메이션 */
+.scroll-animation {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s ease-out;
+}
+
+.scroll-animation.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* 스크롤 애니메이션 타입별 */
+.scroll-animation.fade-left {
+    transform: translateX(-50px);
+}
+
+.scroll-animation.fade-left.visible {
+    transform: translateX(0);
+}
+
+.scroll-animation.fade-right {
+    transform: translateX(50px);
+}
+
+.scroll-animation.fade-right.visible {
+    transform: translateX(0);
+}
+
+.scroll-animation.scale {
+    transform: scale(0.8);
+}
+
+.scroll-animation.scale.visible {
+    transform: scale(1);
+}
+
+/* 호버 효과 개선 */
+.article-card {
+    transition: all 0.3s ease;
+    transform: translateY(0);
+}
+
+.article-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* 다크모드에서의 호버 효과 */
+.dark .article-card:hover {
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.1);
+}
+
+/* 네비게이션 호버 효과 */
+.nav-link {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+/* 다크모드에서의 네비게이션 호버 */
+.dark .nav-link::after {
+    background: linear-gradient(90deg, #ff6b6b, #feca57);
+}
+
+/* 버튼 호버 효과 개선 */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.btn:hover::before {
+    left: 100%;
+}
+
+/* 로딩 애니메이션 */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loading-spinner.spinner-small {
+    width: 20px;
+    height: 20px;
+    border-width: 2px;
+}
+
+.loading-spinner.spinner-large {
+    width: 60px;
+    height: 60px;
+    border-width: 6px;
+}
+
+.loading-spinner.spinner-secondary {
+    border-top-color: #764ba2;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* 다크모드에서의 로딩 스피너 */
+.dark .loading-spinner {
+    border: 4px solid #2d3748;
+    border-top: 4px solid #ff6b6b;
+}
+
+/* 반응형 애니메이션 */
+@media (max-width: 768px) {
+    .scroll-animation {
+        transform: translateY(30px);
+    }
+
+    .article-card:hover {
+        transform: translateY(-5px);
+    }
+}

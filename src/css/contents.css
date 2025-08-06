@@ -5,7 +5,8 @@
     padding: 40px 0;
     display: flex;
     gap: 20px;
-    justify-content: space-between;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .article-card {

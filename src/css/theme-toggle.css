@@ -1,0 +1,107 @@
+/* 테마 토글 버튼 스타일 */
+.theme-toggle-button {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.theme-toggle-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.theme-toggle-button:active {
+    transform: translateY(0);
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.toggle-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.toggle-icon svg {
+    width: 18px;
+    height: 18px;
+    transition: all 0.3s ease;
+}
+
+.sun-icon {
+    animation: rotate-in 0.5s ease;
+}
+
+.moon-icon {
+    animation: fade-in 0.5s ease;
+}
+
+.toggle-text {
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+/* 애니메이션 */
+@keyframes rotate-in {
+    from {
+        transform: rotate(-180deg) scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: rotate(0deg) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* 다크모드에서의 스타일 (출근하기 버튼 - 노을 빛) */
+.dark .theme-toggle-button {
+    background: linear-gradient(135deg, #ff6b6b 0%, #feca57 50%, #ff9ff3 100%);
+    box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+}
+
+.dark .theme-toggle-button:hover {
+    box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .toggle-text {
+        display: none;
+    }
+
+    .theme-toggle-button {
+        padding: 8px;
+        border-radius: 50%;
+    }
+
+    .toggle-container {
+        gap: 0;
+    }
+}
