@@ -1,156 +1,240 @@
-/* CreatePost 컴포넌트 전용 스타일 */
-
+/* ======================================== 기본 스타일 ======================================== */
 .create-post-container {
-    max-width: 42rem;
+    max-width: 800px;
+    margin: 3rem auto;
     padding: 2rem;
-    margin: 2.5rem auto 0;
-    border-radius: 1rem;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    /* 라이트모드 기본값 */
-    background-color: #ffffff;
-    color: #374151;
+}
+
+.create-post-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
 }
 
 .create-post-container label {
     display: block;
-    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
     font-weight: 600;
-    color: #374151;
-    transition: color 0.3s ease;
+    color: #333;
+    font-size: 0.9rem;
 }
 
 .create-post-container input,
 .create-post-container textarea,
 .create-post-container select {
     width: 100%;
-    padding: 0.75rem 1rem;
-    border: 1px solid #d1d5db;
-    border-radius: 0.5rem;
-    background-color: #ffffff;
-    color: #111827;
-    transition: all 0.3s ease;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.create-post-container input::placeholder,
-.create-post-container textarea::placeholder {
-    color: #9ca3af;
-    font-weight: normal;
+.create-post-container select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: none;
 }
 
 .create-post-container input:focus,
 .create-post-container textarea:focus,
 .create-post-container select:focus {
     outline: none;
-    border-color: transparent;
-    box-shadow: 0 0 0 2px #3b82f6;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-.create-post-container select {
-    appearance: none;
-    padding-right: 2.5rem;
+.create-post-container textarea {
+    resize: vertical;
+    min-height: 200px;
 }
 
-.create-post-container .select-wrapper {
+.required {
+    color: #ef4444;
+    margin-left: 0.25rem;
+}
+
+/* ======================================== 셀렉트 박스 ======================================== */
+.select-wrapper {
     position: relative;
 }
 
-.create-post-container .select-arrow {
+.select-arrow {
     position: absolute;
     right: 0.75rem;
     top: 50%;
     transform: translateY(-50%);
-    color: #9ca3af;
     pointer-events: none;
-    transition: color 0.3s ease;
+    color: #6b7280;
 }
 
-.create-post-container button {
+/* ======================================== 폼 행 ======================================== */
+.form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.author-input {
+    flex: 1;
+}
+
+.submit-button {
     padding: 0.75rem 2rem;
-    font-weight: 600;
-    color: #ffffff;
-    background-color: #2563eb;
+    background: #3b82f6;
+    color: white;
     border: none;
-    border-radius: 0.75rem;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
-.create-post-container button:hover {
-    background-color: #1d4ed8;
+.submit-button:hover {
+    background: #2563eb;
 }
 
-.create-post-container .form-row {
+/* ======================================== 태그 입력 ======================================== */
+.tag-input-container {
     display: flex;
     flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tag-input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tag-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2rem;
+}
+
+.tag {
+    display: inline-flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding-top: 0.5rem;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    background: #e5e7eb;
+    color: #374151;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-.create-post-container .author-input {
-    width: 100%;
+.tag:hover {
+    background: #d1d5db;
 }
 
-.create-post-container .submit-button {
-    width: 100%;
+.tag-remove {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0;
+    margin-left: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
 }
 
-/* 클래스 기반 다크모드 (Tailwind dark: 클래스와 호환) */
+.tag-remove:hover {
+    background: #9ca3af;
+    color: white;
+}
+
+/* ======================================== 다크 모드 ======================================== */
 .dark .create-post-container {
-    background-color: #1f2937;
-    color: #d1d5db;
+    background: #1f2937;
+    color: #f9fafb;
 }
 
 .dark .create-post-container label {
-    color: #d1d5db;
+    color: #f9fafb;
 }
 
 .dark .create-post-container input,
 .dark .create-post-container textarea,
 .dark .create-post-container select {
-    background-color: #374151;
-    color: #ffffff;
+    background: #374151;
     border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .create-post-container input:focus,
+.dark .create-post-container textarea:focus,
+.dark .create-post-container select:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
 }
 
 .dark .create-post-container input::placeholder,
 .dark .create-post-container textarea::placeholder {
-    color: #6b7280;
+    color: #9ca3af;
 }
 
-.dark .create-post-container .select-arrow {
-    color: #6b7280;
+.dark .select-arrow {
+    color: #9ca3af;
 }
 
-/* 반응형 디자인 */
-@media (min-width: 640px) {
-    .create-post-container .form-row {
-        flex-direction: row;
-    }
-
-    .create-post-container .author-input {
-        width: auto;
-    }
-
-    .create-post-container .submit-button {
-        width: auto;
-    }
+.dark .submit-button {
+    background: #60a5fa;
 }
 
-/* 포커스 스타일 개선 */
-.create-post-container input:focus,
-.create-post-container textarea:focus,
-.create-post-container select:focus {
-    outline: none;
-    border-color: transparent;
-    box-shadow: 0 0 0 2px #3b82f6;
+.dark .submit-button:hover {
+    background: #3b82f6;
 }
 
-/* 필수 표시 스타일 */
-.required {
-    color: #ef4444;
-    margin-left: 0.25rem;
+.dark .tag {
+    background: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .tag:hover {
+    background: #6b7280;
+}
+
+.dark .tag-remove {
+    color: #9ca3af;
+}
+
+.dark .tag-remove:hover {
+    background: #6b7280;
+    color: white;
+}
+
+.dark .tag-input {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .tag-input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
 }

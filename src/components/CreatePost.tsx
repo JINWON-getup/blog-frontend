@@ -7,15 +7,41 @@ const CreatePost: React.FC = () => {
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
     const [category, setCategory] = useState("");
+    const [tags, setTags] = useState<string[]>([]);
+    const [tagInput, setTagInput] = useState("");
+
+    const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" && tagInput.trim()) {
+            e.preventDefault();
+            const newTag = tagInput.trim();
+            if (!tags.includes(newTag)) {
+                setTags([...tags, newTag]);
+                setTagInput("");
+            }
+        }
+    };
+
+    const handleRemoveTag = (tagToRemove: string) => {
+        setTags(tags.filter((tag) => tag !== tagToRemove));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        await createPost({ title, content, author, category });
+        const tagsString = tags.join(", ");
+        await createPost({
+            title,
+            content,
+            author,
+            category,
+            tags: tagsString,
+        });
         alert("게시글이 등록되었습니다!");
         setTitle("");
         setContent("");
         setAuthor("");
         setCategory("");
+        setTags([]);
+        setTagInput("");
     };
 
     return (
@@ -68,6 +94,34 @@ const CreatePost: React.FC = () => {
                         placeholder="제목을 입력하세요"
                         required
                     />
+                </div>
+                {/* 태그 */}
+                <div>
+                    <label>태그</label>
+                    <div className="tag-input-container">
+                        <input
+                            type="text"
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.target.value)}
+                            onKeyPress={handleAddTag}
+                            placeholder="태그를 입력하고 Enter를 누르세요"
+                            className="tag-input"
+                        />
+                        <div className="tag-list">
+                            {tags.map((tag, index) => (
+                                <span key={index} className="tag">
+                                    {tag}
+                                    <button
+                                        type="button"
+                                        onClick={() => handleRemoveTag(tag)}
+                                        className="tag-remove"
+                                    >
+                                        ×
+                                    </button>
+                                </span>
+                            ))}
+                        </div>
+                    </div>
                 </div>
                 {/* 내용 */}
                 <div>
