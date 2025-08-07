@@ -1,0 +1,156 @@
+/* CreatePost 컴포넌트 전용 스타일 */
+
+.create-post-container {
+    max-width: 42rem;
+    padding: 2rem;
+    margin: 2.5rem auto 0;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    /* 라이트모드 기본값 */
+    background-color: #ffffff;
+    color: #374151;
+}
+
+.create-post-container label {
+    display: block;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #374151;
+    transition: color 0.3s ease;
+}
+
+.create-post-container input,
+.create-post-container textarea,
+.create-post-container select {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    color: #111827;
+    transition: all 0.3s ease;
+}
+
+.create-post-container input::placeholder,
+.create-post-container textarea::placeholder {
+    color: #9ca3af;
+    font-weight: normal;
+}
+
+.create-post-container input:focus,
+.create-post-container textarea:focus,
+.create-post-container select:focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 0 0 2px #3b82f6;
+}
+
+.create-post-container select {
+    appearance: none;
+    padding-right: 2.5rem;
+}
+
+.create-post-container .select-wrapper {
+    position: relative;
+}
+
+.create-post-container .select-arrow {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    pointer-events: none;
+    transition: color 0.3s ease;
+}
+
+.create-post-container button {
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #2563eb;
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.create-post-container button:hover {
+    background-color: #1d4ed8;
+}
+
+.create-post-container .form-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+
+.create-post-container .author-input {
+    width: 100%;
+}
+
+.create-post-container .submit-button {
+    width: 100%;
+}
+
+/* 클래스 기반 다크모드 (Tailwind dark: 클래스와 호환) */
+.dark .create-post-container {
+    background-color: #1f2937;
+    color: #d1d5db;
+}
+
+.dark .create-post-container label {
+    color: #d1d5db;
+}
+
+.dark .create-post-container input,
+.dark .create-post-container textarea,
+.dark .create-post-container select {
+    background-color: #374151;
+    color: #ffffff;
+    border-color: #4b5563;
+}
+
+.dark .create-post-container input::placeholder,
+.dark .create-post-container textarea::placeholder {
+    color: #6b7280;
+}
+
+.dark .create-post-container .select-arrow {
+    color: #6b7280;
+}
+
+/* 반응형 디자인 */
+@media (min-width: 640px) {
+    .create-post-container .form-row {
+        flex-direction: row;
+    }
+
+    .create-post-container .author-input {
+        width: auto;
+    }
+
+    .create-post-container .submit-button {
+        width: auto;
+    }
+}
+
+/* 포커스 스타일 개선 */
+.create-post-container input:focus,
+.create-post-container textarea:focus,
+.create-post-container select:focus {
+    outline: none;
+    border-color: transparent;
+    box-shadow: 0 0 0 2px #3b82f6;
+}
+
+/* 필수 표시 스타일 */
+.required {
+    color: #ef4444;
+    margin-left: 0.25rem;
+}

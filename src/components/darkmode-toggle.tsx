@@ -1,6 +1,6 @@
 import { useTheme } from "./ThemeContext";
 
-const ThemeToggle = () => {
+export default function ThemeToggle() {
     const { isDark, toggleTheme } = useTheme();
 
     return (
@@ -31,6 +31,4 @@ const ThemeToggle = () => {
             </div>
         </button>
     );
-};
-
-export default ThemeToggle;
+}

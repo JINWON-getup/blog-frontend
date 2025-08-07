@@ -1,7 +1,7 @@
 // 1. useState와 useEffect를 지우고, useTheme 훅을 가져옵니다.
 import { useTheme } from "./ThemeContext";
 
-const ProfileImage = () => {
+export default function ProfileImage() {
     // 2. Context에서 isDark 상태만 가져옵니다.
     const { isDark } = useTheme();
 
@@ -17,6 +17,4 @@ const ProfileImage = () => {
             className="profile-img"
         />
     );
-};
-
-export default ProfileImage;
+}
