@@ -4,7 +4,7 @@ import ItBoardPage from "../pages/section/ItBoardPage";
 import JapaneseBoardPage from "../pages/section/JapaneseBoardPage";
 import CultureBoardPage from "../pages/section/CultureBoardPage";
 import AdminLogin from "../pages/login/AdminLogin";
-import WritePost from "../pages/WritePost";
+import CreatePost from "../components/CreatePost";
 
 export default function AppRoutes() {
     return (
@@ -14,7 +14,7 @@ export default function AppRoutes() {
             <Route path="/japanese" element={<JapaneseBoardPage />} />
             <Route path="/culture" element={<CultureBoardPage />} />
             <Route path="/adminLogin" element={<AdminLogin />} />
-            <Route path="/write" element={<WritePost />} />
+            <Route path="/write" element={<CreatePost />} />
         </Routes>
     );
 }
