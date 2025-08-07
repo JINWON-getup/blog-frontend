@@ -3,6 +3,8 @@ import Footer from "./components/Footer";
 import AppRoutes from "./routes/routes";
 import NavBar from "./components/NavBar";
 import { ThemeProvider } from "./components/ThemeContext";
+import CreatePost from "./components/CreatePost";
+import PostList from "./components/PostList";
 
 export default function App() {
     return (
@@ -11,6 +13,8 @@ export default function App() {
             <Header />
             <NavBar />
             <main>
+                <CreatePost />
+                <PostList />
                 <AppRoutes />
             </main>
             <Footer />
