@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "../css/board.css";
 
-// 게시글(Post) 데이터의 타입을 미리 정의해두면 편리합니다.
+// 게시글(Post) 데이터의 타입을 미리 정의
 interface Post {
     id: number;
     title: string;
@@ -9,7 +9,7 @@ interface Post {
     tags: string[];
 }
 
-// Board 컴포넌트가 받을 props의 타입을 정의합니다.
+// Board 컴포넌트가 받을 props의 타입을 정의
 interface BoardProps {
     boardData: Post[];
     categories: string[];
