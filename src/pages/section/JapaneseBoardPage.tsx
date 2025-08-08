@@ -1,8 +1,5 @@
 import Board from "../../components/Board";
-import { japaneseBoardData, japaneseCategories } from "../../data/_data";
 
 export default function JapaneseBoardPage() {
-    return (
-        <Board boardData={japaneseBoardData} categories={japaneseCategories} />
-    );
+    return <Board categories={["전체", "JLPT", "문법", "회화", "기타"]} boardType="JAPANESE" />;
 }

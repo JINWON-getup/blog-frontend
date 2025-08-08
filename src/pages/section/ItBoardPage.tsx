@@ -1,6 +1,10 @@
 import Board from "../../components/Board";
-import { itBoardData, itCategories } from "../../data/_data";
 
 export default function ItBoardPage() {
-    return <Board boardData={itBoardData} categories={itCategories} />;
+    return (
+        <Board
+            categories={["전체", "Frontend", "Backend", "Database", "기타"]}
+            boardType="IT"
+        />
+    );
 }

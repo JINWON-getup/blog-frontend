@@ -42,6 +42,12 @@ export default function NavBar() {
                         <span>Culture</span>
                     </Link>
                 </li>
+                <li>
+                    <Link to="/daily" className="nav-link">
+                        <i className="bi bi-calendar-heart"></i>
+                        <span>일상</span>
+                    </Link>
+                </li>
             </ul>
             <div className="nav-toggle">
                 <DarkModeToggle />
