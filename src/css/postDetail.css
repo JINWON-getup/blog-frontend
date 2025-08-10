@@ -1,0 +1,560 @@
+/* 게시글 상세보기 페이지 스타일 */
+.post-detail-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* CreatePost와 동일한 스타일 적용 */
+.create-post-container {
+    max-width: 800px;
+    margin: 3rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.create-post-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.create-post-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.create-post-container input,
+.create-post-container textarea,
+.create-post-container select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.create-post-container select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: none;
+}
+
+.create-post-container input:focus,
+.create-post-container textarea:focus,
+.create-post-container select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.create-post-container textarea {
+    resize: vertical;
+    min-height: 200px;
+}
+
+.required {
+    color: #ef4444;
+    margin-left: 0.25rem;
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-arrow {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #6b7280;
+}
+
+.form-row {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.author-input {
+    flex: 1;
+}
+
+.submit-button {
+    padding: 0.75rem 2rem;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+    background: #2563eb;
+}
+
+.tag-input-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tag-input {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tag-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.tag-input:disabled {
+    background-color: #f3f4f6;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.tag-limit {
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+.tag-limit-message {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background-color: #fef3c7;
+    color: #92400e;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    min-height: 2rem;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.75rem;
+    background: #e5e7eb;
+    color: #374151;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.tag:hover {
+    background: #d1d5db;
+}
+
+.tag-remove {
+    background: none;
+    border: none;
+    color: #6b7280;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 0;
+    margin-left: 0.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.tag-remove:hover {
+    background: #9ca3af;
+    color: white;
+}
+
+.post-header {
+    margin-bottom: 30px;
+}
+
+.back-button {
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px 0;
+    margin-bottom: 20px;
+    transition: color 0.3s ease;
+}
+
+.back-button:hover {
+    color: #333;
+}
+
+.post-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.3;
+}
+
+.post-meta {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.post-category {
+    background-color: #ffd966;
+    color: #333;
+    padding: 4px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.post-author {
+    color: #555;
+}
+
+.post-date {
+    color: #888;
+}
+
+.post-content {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333;
+}
+
+.content-text {
+    white-space: pre-wrap;
+    word-break: break-word;
+}
+
+.no-content {
+    color: #999;
+    font-style: italic;
+    text-align: center;
+    padding: 40px;
+}
+
+.post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 30px;
+}
+
+.post-tags .tag {
+    background-color: #f0f0f0;
+    color: #555;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.post-tags .tag:hover {
+    background-color: #e0e0e0;
+}
+
+.post-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.edit-button,
+.delete-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.edit-button:hover {
+    background-color: #2563eb;
+}
+
+.delete-button {
+    background-color: #ef4444;
+    color: white;
+}
+
+.delete-button:hover {
+    background-color: #dc2626;
+}
+
+.loading,
+.error {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 18px;
+    color: #666;
+}
+
+.error {
+    color: #ef4444;
+}
+
+/* 수정 폼 스타일 */
+.edit-form {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+    font-size: 14px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+}
+
+.form-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 30px;
+}
+
+.save-button,
+.cancel-button {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-button {
+    background-color: #10b981;
+    color: white;
+}
+
+.save-button:hover {
+    background-color: #059669;
+}
+
+.cancel-button {
+    background-color: #6b7280;
+    color: white;
+}
+
+.cancel-button:hover {
+    background-color: #4b5563;
+}
+
+/* 다크 모드 지원 */
+.dark .post-title {
+    color: #e2e8f0;
+}
+
+.dark .post-content {
+    background: #2d3748;
+    color: #e2e8f0;
+    border-color: #4a5568;
+}
+
+.dark .post-category {
+    background-color: #ecc94b;
+    color: #1a202c;
+}
+
+.dark .post-author {
+    color: #a0aec0;
+}
+
+.dark .post-date {
+    color: #718096;
+}
+
+.dark .post-tags .tag {
+    background-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.dark .post-tags .tag:hover {
+    background-color: #2d3748;
+}
+
+.dark .back-button {
+    color: #a0aec0;
+}
+
+.dark .back-button:hover {
+    color: #e2e8f0;
+}
+
+/* CreatePost와 동일한 다크 모드 스타일 */
+.dark .create-post-container {
+    background: #1f2937;
+    color: #f9fafb;
+}
+
+.dark .create-post-container label {
+    color: #f9fafb;
+}
+
+.dark .create-post-container input,
+.dark .create-post-container textarea,
+.dark .create-post-container select {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .create-post-container input:focus,
+.dark .create-post-container textarea:focus,
+.dark .create-post-container select:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+.dark .create-post-container input::placeholder,
+.dark .create-post-container textarea::placeholder {
+    color: #9ca3af;
+}
+
+.dark .select-arrow {
+    color: #9ca3af;
+}
+
+.dark .submit-button {
+    background: #60a5fa;
+}
+
+.dark .submit-button:hover {
+    background: #3b82f6;
+}
+
+.dark .tag {
+    background: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .tag:hover {
+    background: #6b7280;
+}
+
+.dark .tag-remove {
+    color: #9ca3af;
+}
+
+.dark .tag-remove:hover {
+    background: #6b7280;
+    color: white;
+}
+
+.dark .tag-input:disabled {
+    background-color: #374151;
+    color: #6b7280;
+}
+
+.dark .tag-limit {
+    color: #9ca3af;
+}
+
+.dark .tag-limit-message {
+    background-color: #451a03;
+    color: #fbbf24;
+}
+
+/* 다크 모드 수정 폼 */
+.dark .edit-form {
+    background: #2d3748;
+    border-color: #4a5568;
+}
+
+.dark .form-group label {
+    color: #e2e8f0;
+}
+
+.dark .form-input,
+.dark .form-select,
+.dark .form-textarea {
+    background: #1a202c;
+    border-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.dark .form-input:focus,
+.dark .form-select:focus,
+.dark .form-textarea:focus {
+    border-color: #63b3ed;
+    box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.1);
+}

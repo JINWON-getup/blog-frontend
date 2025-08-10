@@ -21,10 +21,30 @@ export const getPosts = async (): Promise<Post[]> => {
 export const createPost = async (
     post: Omit<Post, "id" | "createdAt" | "updatedAt">,
 ): Promise<Post> => {
-    const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(post),
-    });
-    return res.json();
+    console.log("API 요청 데이터:", post);
+
+    try {
+        const res = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(post),
+        });
+
+        console.log("API 응답 상태:", res.status, res.statusText);
+
+        if (!res.ok) {
+            const errorText = await res.text();
+            console.error("API 에러 응답:", errorText);
+            throw new Error(
+                `HTTP ${res.status}: ${res.statusText} - ${errorText}`,
+            );
+        }
+
+        const result = await res.json();
+        console.log("API 응답 데이터:", result);
+        return result;
+    } catch (error) {
+        console.error("API 요청 실패:", error);
+        throw error;
+    }
 };

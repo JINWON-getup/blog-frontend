@@ -45,7 +45,7 @@ export default function NavBar() {
                 <li>
                     <Link to="/daily" className="nav-link">
                         <i className="bi bi-calendar-heart"></i>
-                        <span>일상</span>
+                        <span>Daily</span>
                     </Link>
                 </li>
             </ul>

@@ -1,20 +1,78 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { createPost } from "../services/api";
 import "../css/createPost.css";
 
 const CreatePost: React.FC = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
+    const [boardType, setBoardType] = useState("");
     const [category, setCategory] = useState("");
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState("");
+
+    // URL state에서 boardType을 받아와서 초기값 설정
+    useEffect(() => {
+        if (location.state?.boardType) {
+            const boardTypeFromState = location.state.boardType.toLowerCase();
+            setBoardType(boardTypeFromState);
+            // 고정된 게시판이 있는 경우 카테고리 초기화
+            setCategory("");
+        }
+    }, [location.state]);
+
+    // 게시판별 카테고리 매핑
+    const boardCategories = {
+        it: ["Frontend", "Backend", "Database", "기타"],
+        japanese: ["JLPT", "문법", "회화", "기타"],
+        culture: ["문화", "기타"],
+        daily: ["일상", "게임", "영화", "드라마", "애니메이션", "음악", "기타"],
+    };
+
+    // 게시판별 라우트 매핑
+    const boardRoutes = {
+        it: "/it",
+        japanese: "/japanese",
+        culture: "/culture",
+        daily: "/daily",
+    };
+
+    const handleBoardChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        // 고정된 게시판인 경우 변경 불가
+        if (location.state?.boardType) {
+            return;
+        }
+        const selectedBoard = e.target.value;
+        setBoardType(selectedBoard);
+        setCategory(""); // 게시판 변경 시 카테고리 초기화
+    };
 
     const handleAddTag = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter" && tagInput.trim()) {
             e.preventDefault();
             const newTag = tagInput.trim();
             if (!tags.includes(newTag)) {
+                if (tags.length >= 5) {
+                    alert("태그는 최대 5개까지 추가할 수 있습니다.");
+                    return;
+                }
+                if (newTag.length > 10) {
+                    alert("태그는 최대 10글자까지 입력할 수 있습니다.");
+                    return;
+                }
+
+                // 태그 추가 후 총 길이 검증
+                const newTagsString = [...tags, newTag].join(", ");
+                if (newTagsString.length > 80) {
+                    alert(
+                        "태그의 총 길이가 80자를 초과합니다. 태그를 추가할 수 없습니다.",
+                    );
+                    return;
+                }
+
                 setTags([...tags, newTag]);
                 setTagInput("");
             }
@@ -27,26 +85,128 @@ const CreatePost: React.FC = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        // 고정된 게시판이 있는 경우 해당 게시판으로 설정
+        const finalBoardType = location.state?.boardType
+            ? location.state.boardType.toLowerCase()
+            : boardType;
+
         const tagsString = tags.join(", ");
-        await createPost({
+
+        // 태그 총 길이 검증 (데이터베이스 컬럼 길이 제한)
+        if (tagsString.length > 80) {
+            // 안전한 길이로 제한
+            alert(
+                "태그의 총 길이가 너무 깁니다. 태그 개수를 줄이거나 길이를 줄여주세요.",
+            );
+            return;
+        }
+
+        // 디버깅을 위한 로그 추가
+        console.log("게시글 생성 시도:", {
             title,
             content,
             author,
+            boardType: finalBoardType,
             category,
             tags: tagsString,
+            tagsLength: tagsString.length,
         });
-        alert("게시글이 등록되었습니다!");
-        setTitle("");
-        setContent("");
-        setAuthor("");
-        setCategory("");
-        setTags([]);
-        setTagInput("");
+
+        try {
+            const result = await createPost({
+                title,
+                content,
+                author,
+                boardType: finalBoardType,
+                category,
+                tags: tagsString,
+            });
+
+            console.log("게시글 생성 성공:", result);
+            alert("게시글이 등록되었습니다!");
+
+            // 폼 초기화
+            setTitle("");
+            setContent("");
+            setAuthor("");
+            setBoardType("");
+            setCategory("");
+            setTags([]);
+            setTagInput("");
+
+            // 해당 보드로 이동
+            if (
+                finalBoardType &&
+                boardRoutes[finalBoardType as keyof typeof boardRoutes]
+            ) {
+                navigate(
+                    boardRoutes[finalBoardType as keyof typeof boardRoutes],
+                );
+            }
+        } catch (error) {
+            console.error("게시글 생성 실패:", error);
+            alert(
+                `게시글 등록에 실패했습니다: ${
+                    error instanceof Error ? error.message : "알 수 없는 오류"
+                }`,
+            );
+        }
     };
 
     return (
         <div className="create-post-container">
+            {/* 뒤로가기 버튼 */}
+            <div className="back-button-container">
+                <button
+                    type="button"
+                    onClick={() => navigate(-1)}
+                    className="back-button"
+                >
+                    ← 뒤로가기
+                </button>
+            </div>
+
             <form onSubmit={handleSubmit}>
+                {/* 게시판 선택 */}
+                <div>
+                    <label>
+                        게시판 <span className="required">*</span>
+                        {location.state?.boardType && (
+                            <span className="fixed-indicator">(고정됨)</span>
+                        )}
+                    </label>
+                    <div className="select-wrapper">
+                        <select
+                            value={boardType}
+                            onChange={handleBoardChange}
+                            required
+                            disabled={!!location.state?.boardType}
+                        >
+                            <option value="">게시판을 선택하세요</option>
+                            <option value="it">IT</option>
+                            <option value="japanese">일본어</option>
+                            <option value="culture">문화</option>
+                            <option value="daily">일상</option>
+                        </select>
+                        <span className="select-arrow">
+                            <svg
+                                width="20"
+                                height="20"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M19 9l-7 7-7-7"
+                                />
+                            </svg>
+                        </span>
+                    </div>
+                </div>
                 {/* 카테고리 */}
                 <div>
                     <label>
@@ -57,13 +217,21 @@ const CreatePost: React.FC = () => {
                             value={category}
                             onChange={(e) => setCategory(e.target.value)}
                             required
+                            disabled={!boardType}
                         >
-                            <option value="">카테고리를 선택하세요</option>
-                            <option value="IT">IT</option>
-                            <option value="일본어">일본어</option>
-                            <option value="문화">문화</option>
-                            <option value="일상">일상</option>
-                            <option value="기타">기타</option>
+                            <option value="">
+                                {boardType
+                                    ? "카테고리를 선택하세요"
+                                    : "게시판을 먼저 선택하세요"}
+                            </option>
+                            {boardType &&
+                                boardCategories[
+                                    boardType as keyof typeof boardCategories
+                                ]?.map((cat) => (
+                                    <option key={cat} value={cat}>
+                                        {cat}
+                                    </option>
+                                ))}
                         </select>
                         <span className="select-arrow">
                             <svg
@@ -93,11 +261,18 @@ const CreatePost: React.FC = () => {
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder="제목을 입력하세요"
                         required
+                        maxLength={50}
                     />
+                    <div className="char-counter">{title.length}/50</div>
                 </div>
                 {/* 태그 */}
                 <div>
-                    <label>태그</label>
+                    <label>
+                        태그{" "}
+                        <span className="tag-limit">
+                            (최대 5개, 각 태그 10글자, 총 길이 80글자)
+                        </span>
+                    </label>
                     <div className="tag-input-container">
                         <input
                             type="text"
@@ -106,7 +281,10 @@ const CreatePost: React.FC = () => {
                             onKeyPress={handleAddTag}
                             placeholder="태그를 입력하고 Enter를 누르세요"
                             className="tag-input"
+                            disabled={tags.length >= 5}
+                            maxLength={10}
                         />
+                        <div className="char-counter">{tagInput.length}/10</div>
                         <div className="tag-list">
                             {tags.map((tag, index) => (
                                 <span key={index} className="tag">
@@ -121,6 +299,15 @@ const CreatePost: React.FC = () => {
                                 </span>
                             ))}
                         </div>
+                        {tags.length >= 5 && (
+                            <div className="tag-limit-message">
+                                태그 최대 개수에 도달했습니다
+                            </div>
+                        )}
+                        {/* 태그 총 길이 표시 */}
+                        <div className="tag-total-length">
+                            태그 총 길이: {tags.join(", ").length}/80
+                        </div>
                     </div>
                 </div>
                 {/* 내용 */}
@@ -134,7 +321,9 @@ const CreatePost: React.FC = () => {
                         placeholder="내용을 입력하세요"
                         required
                         rows={10}
+                        maxLength={2000}
                     />
+                    <div className="char-counter">{content.length}/2000</div>
                 </div>
                 {/* 작성자 + 버튼 */}
                 <div className="form-row">

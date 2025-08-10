@@ -111,33 +111,98 @@
 
 .card-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
 }
 
 .card {
     background: #fffde7;
     border: 1px solid #ccc;
-    padding: 16px;
-    border-radius: 8px;
-    transition: transform 0.5s, box-shadow 0.5s, background-color 0.5s ease,
-        color 0.5s ease;
+    padding: 20px;
+    border-radius: 12px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease,
+        background-color 0.5s ease, color 0.5s ease;
+    cursor: pointer;
 }
 
 .card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+}
+
+.card-title {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.card-category {
+    background-color: #ffd966;
+    color: #333;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+
+.card-content {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 12px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.card-author {
+    font-weight: 500;
+}
+
+.card-date {
+    color: #999;
 }
 
 .card .tag-list {
-    margin-top: 8px;
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
 .card .tag {
-    margin-right: 8px;
+    background-color: #f0f0f0;
     color: #555;
-    font-size: 0.9rem;
-    transition: color 0.5s ease;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.card .tag:hover {
+    background-color: #e0e0e0;
 }
 
 /* --- 플레이스홀더 --- */
@@ -190,11 +255,37 @@
 }
 
 .dark .card:hover {
-    box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.1);
+}
+
+.dark .card-title {
+    color: #e2e8f0;
+}
+
+.dark .card-category {
+    background-color: #ecc94b;
+    color: #1a202c;
+}
+
+.dark .card-content {
+    color: #a0aec0;
+}
+
+.dark .card-meta {
+    color: #718096;
+}
+
+.dark .card-date {
+    color: #a0aec0;
 }
 
 .dark .card .tag {
-    color: #63b3ed;
+    background-color: #4a5568;
+    color: #e2e8f0;
+}
+
+.dark .card .tag:hover {
+    background-color: #2d3748;
 }
 
 .dark .tag-search-input::placeholder {
