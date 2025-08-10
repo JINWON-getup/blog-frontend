@@ -28,6 +28,10 @@ export default function Board({ boardType }: BoardProps) {
     const [searchTag, setSearchTag] = useState("");
     const [loading, setLoading] = useState(true);
 
+    // 페이지네이션 상태 추가
+    const [currentPage, setCurrentPage] = useState(1);
+    const [postsPerPage] = useState(9); // 페이지당 게시글 수 (3x3 그리드)
+
     // 게시판별 카테고리 매핑 (CreatePost.tsx와 동일)
     const boardCategories = {
         IT: ["전체", "Frontend", "Backend", "Database", "기타"],
@@ -170,6 +174,33 @@ export default function Board({ boardType }: BoardProps) {
         return categoryMatch && tagMatch;
     });
 
+    // 페이지네이션 로직 추가
+    const indexOfLastPost = currentPage * postsPerPage;
+    const indexOfFirstPost = indexOfLastPost - postsPerPage;
+    const currentPosts = filteredData.slice(indexOfFirstPost, indexOfLastPost);
+    const totalPages = Math.ceil(filteredData.length / postsPerPage);
+
+    // 디버깅용 로그
+    console.log("페이지네이션 정보:", {
+        totalPosts: filteredData.length,
+        postsPerPage,
+        totalPages,
+        currentPage,
+        currentPostsLength: currentPosts.length,
+    });
+
+    // 페이지 변경 함수
+    const handlePageChange = (pageNumber: number) => {
+        setCurrentPage(pageNumber);
+        // 페이지 변경 시 스크롤을 맨 위로 이동
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
+    // 카테고리나 검색어 변경 시 첫 페이지로 이동
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [selectedCategory, searchTag]);
+
     console.log("필터링된 데이터:", filteredData); // 디버깅용
     console.log("선택된 카테고리:", selectedCategory);
     console.log("카테고리 배열:", boardCategories);
@@ -233,7 +264,7 @@ export default function Board({ boardType }: BoardProps) {
                 </div>
 
                 <div className="card-list">
-                    {filteredData.length === 0 ? (
+                    {currentPosts.length === 0 ? (
                         <div
                             style={{
                                 textAlign: "center",
@@ -251,12 +282,12 @@ export default function Board({ boardType }: BoardProps) {
                                 게시글이 없습니다
                             </div>
                             <div style={{ fontSize: "0.9rem" }}>
-                                총 {displayData.length}개의 데이터 중 검색
+                                총 {filteredData.length}개의 데이터 중 검색
                                 결과가 없습니다
                             </div>
                         </div>
                     ) : (
-                        filteredData.map((post) => (
+                        currentPosts.map((post) => (
                             <div
                                 className="card"
                                 key={post.id}
@@ -304,6 +335,40 @@ export default function Board({ boardType }: BoardProps) {
                             </div>
                         ))
                     )}
+                </div>
+
+                {/* 페이지네이션 - 항상 표시 (테스트용) */}
+                <div className="pagination-container">
+                    <div
+                        style={{
+                            marginBottom: "1rem",
+                            textAlign: "center",
+                            color: "#666",
+                        }}
+                    >
+                        페이지 {currentPage} / {totalPages}
+                    </div>
+                    <button
+                        onClick={() => handlePageChange(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        이전
+                    </button>
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <button
+                            key={i + 1}
+                            onClick={() => handlePageChange(i + 1)}
+                            className={currentPage === i + 1 ? "active" : ""}
+                        >
+                            {i + 1}
+                        </button>
+                    ))}
+                    <button
+                        onClick={() => handlePageChange(currentPage + 1)}
+                        disabled={currentPage === totalPages}
+                    >
+                        다음
+                    </button>
                 </div>
             </main>
         </div>

@@ -265,6 +265,21 @@ const CreatePost: React.FC = () => {
                     />
                     <div className="char-counter">{title.length}/50</div>
                 </div>
+                {/* 내용 */}
+                <div>
+                    <label>
+                        내용 <span className="required">*</span>
+                    </label>
+                    <textarea
+                        value={content}
+                        onChange={(e) => setContent(e.target.value)}
+                        placeholder="내용을 입력하세요"
+                        required
+                        rows={10}
+                        maxLength={2000}
+                    />
+                    <div className="char-counter">{content.length}/2000</div>
+                </div>
                 {/* 태그 */}
                 <div>
                     <label>
@@ -309,21 +324,6 @@ const CreatePost: React.FC = () => {
                             태그 총 길이: {tags.join(", ").length}/80
                         </div>
                     </div>
-                </div>
-                {/* 내용 */}
-                <div>
-                    <label>
-                        내용 <span className="required">*</span>
-                    </label>
-                    <textarea
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                        placeholder="내용을 입력하세요"
-                        required
-                        rows={10}
-                        maxLength={2000}
-                    />
-                    <div className="char-counter">{content.length}/2000</div>
                 </div>
                 {/* 작성자 + 버튼 */}
                 <div className="form-row">
