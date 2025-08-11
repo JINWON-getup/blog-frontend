@@ -46,3 +46,31 @@ html.dark body {
     font-family: "Segoe UI", sans-serif;
     line-height: 1.6;
 }
+
+/* ======================================== 페이지 일관된 높이 설정 ======================================== */
+/* 모든 페이지 컨테이너에 최소 높이 적용 */
+.page-container,
+.home-container,
+.board-container,
+.create-post-container,
+.post-detail-container,
+.admin-login-container {
+    min-height: calc(100vh - 200px); /* 헤더, 푸터 높이를 고려한 최소 높이 */
+}
+
+/* 특정 페이지별 추가 높이 조정 */
+.home-container {
+    min-height: calc(100vh - 150px);
+}
+
+.board-container {
+    min-height: calc(100vh - 180px);
+}
+
+/* 로그인 페이지는 중앙 정렬을 위해 높이 조정 */
+.admin-login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

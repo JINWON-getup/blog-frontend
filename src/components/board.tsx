@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../css/board.css";
@@ -63,9 +63,24 @@ export default function Board({ boardType }: BoardProps) {
     };
 
     // 게시글 상세보기로 이동하는 함수
-    const handlePostClick = (postId: number) => {
-        navigate(`/post/${postId}`);
-    };
+    const handlePostClick = useCallback(
+        (postId: number) => {
+            navigate(`/post/${postId}`);
+        },
+        [navigate],
+    );
+
+    // 카테고리 클릭 함수
+    const handleCategoryClick = useCallback((category: string) => {
+        setSelectedCategory(category);
+    }, []);
+
+    // 글쓰기 버튼 클릭 함수
+    const handleWriteClick = useCallback(() => {
+        navigate("/write", {
+            state: { boardType: boardType },
+        });
+    }, [navigate, boardType]);
 
     // API에서 게시글 데이터를 가져오는 함수
     const fetchPosts = async () => {
@@ -142,13 +157,13 @@ export default function Board({ boardType }: BoardProps) {
     }
 
     // tags를 배열로 변환하는 헬퍼 함수
-    const getTagsArray = (tags: string[] | string): string[] => {
+    const getTagsArray = useCallback((tags: string[] | string): string[] => {
         if (Array.isArray(tags)) {
             return tags;
         }
         // string인 경우 쉼표로 분리
         return tags ? tags.split(",").map((tag) => tag.trim()) : [];
-    };
+    }, []);
 
     // 날짜 포맷팅 함수
     const formatDate = (dateString?: string) => {
@@ -190,11 +205,11 @@ export default function Board({ boardType }: BoardProps) {
     });
 
     // 페이지 변경 함수
-    const handlePageChange = (pageNumber: number) => {
+    const handlePageChange = useCallback((pageNumber: number) => {
         setCurrentPage(pageNumber);
         // 페이지 변경 시 스크롤을 맨 위로 이동
         window.scrollTo({ top: 0, behavior: "smooth" });
-    };
+    }, []);
 
     // 카테고리나 검색어 변경 시 첫 페이지로 이동
     useEffect(() => {
@@ -228,7 +243,7 @@ export default function Board({ boardType }: BoardProps) {
                         <li
                             key={cat}
                             className={cat === selectedCategory ? "active" : ""}
-                            onClick={() => setSelectedCategory(cat)}
+                            onClick={() => handleCategoryClick(cat)}
                         >
                             {cat}
                         </li>
@@ -245,11 +260,7 @@ export default function Board({ boardType }: BoardProps) {
                         </div>
                         <button
                             className="create-post-button"
-                            onClick={() =>
-                                navigate("/write", {
-                                    state: { boardType: boardType },
-                                })
-                            }
+                            onClick={handleWriteClick}
                         >
                             글쓰기
                         </button>
