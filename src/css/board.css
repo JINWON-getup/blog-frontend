@@ -1,3 +1,40 @@
+/* ======================================== 로딩 및 빈 데이터 상태 ======================================== */
+.loading-container {
+    text-align: center;
+    padding: 2rem;
+}
+
+.loading-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.loading-subtitle {
+    color: #666;
+}
+
+.empty-data-container {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+    grid-column: 1 / -1;
+}
+
+.empty-data-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-data-subtitle {
+    font-size: 0.9rem;
+}
+
+.pagination-info {
+    margin-bottom: 1rem;
+    text-align: center;
+    color: #666;
+}
+
 /* ======================================== 라이트 모드 ======================================== */
 .board-container {
     display: flex;

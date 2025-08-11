@@ -9,7 +9,6 @@ interface Post {
     title: string;
     category: string;
     tags: string[] | string; // 백엔드에서 string으로 오거나 프론트엔드에서 string[]로 처리
-    board_type?: string; // boardType에서 board_type으로 변경
     content?: string; // 게시글 내용 추가
     createdAt?: string; // 생성일 추가
     author?: string; // 작성자 추가
@@ -23,6 +22,11 @@ interface BoardProps {
 // props로 boardType을 받습니다.
 export default function Board({ boardType }: BoardProps) {
     const navigate = useNavigate();
+
+    // API 기본 URL 설정
+    const API_BASE_URL =
+        import.meta.env.VITE_API_URL || "http://localhost:8080";
+
     const [posts, setPosts] = useState<Post[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("전체");
     const [searchTag, setSearchTag] = useState("");
@@ -89,25 +93,9 @@ export default function Board({ boardType }: BoardProps) {
 
             // axios를 사용하여 API 호출
             const params = boardType ? { boardType: boardType } : {};
-            const response = await axios.get(
-                "http://localhost:8080/api/posts",
-                { params },
-            );
-
-            console.log(
-                "API 호출 URL:",
-                "http://localhost:8080/api/posts",
+            const response = await axios.get(`${API_BASE_URL}/api/posts`, {
                 params,
-            );
-            console.log("API 응답 상태:", response.status);
-            console.log("API 응답 데이터:", response.data);
-            console.log("데이터 타입:", typeof response.data);
-            console.log(
-                "데이터 길이:",
-                Array.isArray(response.data)
-                    ? response.data.length
-                    : "배열 아님",
-            );
+            });
 
             // 데이터가 배열인지 확인
             if (Array.isArray(response.data)) {
@@ -141,20 +129,13 @@ export default function Board({ boardType }: BoardProps) {
 
     // 컴포넌트 마운트 시와 boardType 변경 시 API 호출
     useEffect(() => {
-        console.log("Board 컴포넌트 마운트/업데이트, boardType:", boardType); // 디버깅용
         fetchPosts();
         setSelectedCategory("전체");
         setSearchTag("");
     }, [boardType]);
 
-    // 서버에서 가져온 실제 데이터만 사용 (하드코딩된 더미 데이터 무시)
+    // 서버에서 가져온 실제 데이터만 사용
     const displayData = posts;
-    console.log("서버에서 가져온 데이터:", displayData); // 디버깅용
-    console.log("데이터 길이:", displayData.length);
-    if (displayData.length > 0) {
-        console.log("첫 번째 게시글:", displayData[0]);
-        console.log("첫 번째 게시글 카테고리:", displayData[0].category);
-    }
 
     // tags를 배열로 변환하는 헬퍼 함수
     const getTagsArray = useCallback((tags: string[] | string): string[] => {
@@ -195,15 +176,6 @@ export default function Board({ boardType }: BoardProps) {
     const currentPosts = filteredData.slice(indexOfFirstPost, indexOfLastPost);
     const totalPages = Math.ceil(filteredData.length / postsPerPage);
 
-    // 디버깅용 로그
-    console.log("페이지네이션 정보:", {
-        totalPosts: filteredData.length,
-        postsPerPage,
-        totalPages,
-        currentPage,
-        currentPostsLength: currentPosts.length,
-    });
-
     // 페이지 변경 함수
     const handlePageChange = useCallback((pageNumber: number) => {
         setCurrentPage(pageNumber);
@@ -216,19 +188,12 @@ export default function Board({ boardType }: BoardProps) {
         setCurrentPage(1);
     }, [selectedCategory, searchTag]);
 
-    console.log("필터링된 데이터:", filteredData); // 디버깅용
-    console.log("선택된 카테고리:", selectedCategory);
-    console.log("카테고리 배열:", boardCategories);
-    console.log("필터링된 데이터 길이:", filteredData.length);
-
     if (loading) {
         return (
             <div className="board-container">
-                <div style={{ textAlign: "center", padding: "2rem" }}>
-                    <div style={{ fontSize: "1.2rem", marginBottom: "1rem" }}>
-                        게시글을 불러오는 중...
-                    </div>
-                    <div style={{ color: "#666" }}>잠시만 기다려주세요</div>
+                <div className="loading-container">
+                    <div className="loading-title">게시글을 불러오는 중...</div>
+                    <div className="loading-subtitle">잠시만 기다려주세요</div>
                 </div>
             </div>
         );
@@ -276,23 +241,11 @@ export default function Board({ boardType }: BoardProps) {
 
                 <div className="card-list">
                     {currentPosts.length === 0 ? (
-                        <div
-                            style={{
-                                textAlign: "center",
-                                padding: "3rem",
-                                color: "#666",
-                                gridColumn: "1 / -1",
-                            }}
-                        >
-                            <div
-                                style={{
-                                    fontSize: "1.2rem",
-                                    marginBottom: "0.5rem",
-                                }}
-                            >
+                        <div className="empty-data-container">
+                            <div className="empty-data-title">
                                 게시글이 없습니다
                             </div>
-                            <div style={{ fontSize: "0.9rem" }}>
+                            <div className="empty-data-subtitle">
                                 총 {filteredData.length}개의 데이터 중 검색
                                 결과가 없습니다
                             </div>
@@ -348,15 +301,9 @@ export default function Board({ boardType }: BoardProps) {
                     )}
                 </div>
 
-                {/* 페이지네이션 - 항상 표시 (테스트용) */}
+                {/* 페이지네이션 */}
                 <div className="pagination-container">
-                    <div
-                        style={{
-                            marginBottom: "1rem",
-                            textAlign: "center",
-                            color: "#666",
-                        }}
-                    >
+                    <div className="pagination-info">
                         페이지 {currentPage} / {totalPages}
                     </div>
                     <button
