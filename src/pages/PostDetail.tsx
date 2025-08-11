@@ -20,12 +20,12 @@ export default function PostDetail() {
     const [editTags, setEditTags] = useState<string[]>([]);
     const [editTagInput, setEditTagInput] = useState("");
 
-    // 게시판별 카테고리 매핑 (CreatePost.tsx와 동일)
+    // 게시판별 카테고리 매핑 (Board.tsx와 동일하게 통일)
     const boardCategories = {
-        it: ["Frontend", "Backend", "Database", "기타"],
-        japanese: ["JLPT", "문법", "회화", "기타"],
-        culture: ["문화", "기타"],
-        daily: ["일상", "게임", "영화", "드라마", "애니메이션", "음악", "기타"],
+        IT: ["Frontend", "Backend", "Database", "기타"],
+        JAPANESE: ["JLPT", "문법", "회화", "기타"],
+        CULTURE: ["문화", "기타"],
+        DAILY: ["일상", "게임", "영화", "드라마", "애니메이션", "음악", "기타"],
     };
 
     useEffect(() => {
@@ -394,7 +394,6 @@ export default function PostDetail() {
                                     }))
                                 }
                                 required
-                                disabled
                             >
                                 {/* 현재 게시글의 카테고리가 옵션에 없을 경우를 대비해 추가 */}
                                 {editForm.category && (
@@ -407,7 +406,7 @@ export default function PostDetail() {
                                 )}
                                 {editForm.boardType &&
                                     boardCategories[
-                                        editForm.boardType as keyof typeof boardCategories
+                                        editForm.boardType.toUpperCase() as keyof typeof boardCategories
                                     ]?.map((cat) => (
                                         <option key={cat} value={cat}>
                                             {cat}
