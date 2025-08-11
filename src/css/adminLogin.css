@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 240px;
+    padding: 1rem 0; /* 2rem에서 1rem으로 더 줄임 */
     transition: color 0.5s ease, background-color 0.5s ease;
 }
 

@@ -1,0 +1,50 @@
+/* Blog 페이지 스타일 */
+.blog-container {
+    min-height: calc(100vh - 200px);
+    background-color: #f5f7fa;
+}
+
+.blog-header {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    margin-bottom: 2rem;
+}
+
+.blog-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.blog-header p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    margin: 0;
+}
+
+/* 다크모드 지원 */
+.dark .blog-container {
+    background-color: #1a202c;
+}
+
+.dark .blog-header {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .blog-header {
+        padding: 2rem 1rem 1.5rem;
+    }
+
+    .blog-header h1 {
+        font-size: 2rem;
+    }
+
+    .blog-header p {
+        font-size: 1rem;
+    }
+}

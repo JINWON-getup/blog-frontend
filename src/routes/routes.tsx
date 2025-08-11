@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/home";
+import About from "../pages/About";
+import Blog from "../pages/Blog";
 import ItBoardPage from "../pages/section/ItBoardPage";
 import JapaneseBoardPage from "../pages/section/JapaneseBoardPage";
 import CultureBoardPage from "../pages/section/CultureBoardPage";
@@ -12,6 +14,8 @@ export default function AppRoutes() {
     return (
         <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/blog" element={<Blog />} />
             <Route path="/it" element={<ItBoardPage />} />
             <Route path="/japanese" element={<JapaneseBoardPage />} />
             <Route path="/culture" element={<CultureBoardPage />} />
