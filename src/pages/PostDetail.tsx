@@ -1,18 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import type { Post } from "../services/api";
 import "../css/postDetail.css";
-
-interface Post {
-    id: number;
-    title: string;
-    category: string;
-    tags: string[] | string;
-    board_type?: string;
-    content?: string;
-    createdAt?: string;
-    author?: string;
-}
 
 export default function PostDetail() {
     const { id } = useParams<{ id: string }>();
@@ -49,7 +39,7 @@ export default function PostDetail() {
                 // 수정 폼 초기값 설정
                 setEditForm({
                     title: response.data.title,
-                    boardType: response.data.board_type || "",
+                    boardType: response.data.boardType || "",
                     category: response.data.category,
                     content: response.data.content || "",
                     tags: Array.isArray(response.data.tags)
@@ -74,7 +64,7 @@ export default function PostDetail() {
         const tagsArray = getTagsArray(post.tags);
         setEditForm({
             title: post.title,
-            boardType: post.board_type || "",
+            boardType: post.boardType || "",
             category: post.category,
             content: post.content || "",
             tags: tagsArray.join(", "),
@@ -90,7 +80,7 @@ export default function PostDetail() {
         if (post) {
             setEditForm({
                 title: post.title,
-                boardType: post.board_type || "",
+                boardType: post.boardType || "",
                 category: post.category,
                 content: post.content || "",
                 tags: Array.isArray(post.tags)

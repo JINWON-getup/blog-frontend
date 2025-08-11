@@ -1,18 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import type { Post } from "../services/api";
+import { API_BASE_URL } from "../services/api";
 import "../css/board.css";
-
-// 게시글(Post) 데이터의 타입을 미리 정의
-interface Post {
-    id: number;
-    title: string;
-    category: string;
-    tags: string[] | string; // 백엔드에서 string으로 오거나 프론트엔드에서 string[]로 처리
-    content?: string; // 게시글 내용 추가
-    createdAt?: string; // 생성일 추가
-    author?: string; // 작성자 추가
-}
 
 // Board 컴포넌트가 받을 props의 타입을 정의
 interface BoardProps {
@@ -22,10 +13,6 @@ interface BoardProps {
 // props로 boardType을 받습니다.
 export default function Board({ boardType }: BoardProps) {
     const navigate = useNavigate();
-
-    // API 기본 URL 설정
-    const API_BASE_URL =
-        import.meta.env.VITE_API_URL || "http://localhost:8080";
 
     const [posts, setPosts] = useState<Post[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("전체");
@@ -255,7 +242,9 @@ export default function Board({ boardType }: BoardProps) {
                             <div
                                 className="card"
                                 key={post.id}
-                                onClick={() => handlePostClick(post.id)}
+                                onClick={() =>
+                                    post.id && handlePostClick(post.id)
+                                }
                                 style={{ cursor: "pointer" }}
                             >
                                 <div className="card-header">

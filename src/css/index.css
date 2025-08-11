@@ -1,6 +1,29 @@
 @import "tailwindcss";
 
-/* ########## major premise ########## */
+/* ======================================== CSS 공통 변수 ======================================== */
+:root {
+    /* 색상 */
+    --primary-bg: #f5f7fa;
+    --dark-bg: #1a202c;
+    --card-bg: #ffffff;
+    --dark-card-bg: #2d3748;
+
+    /* 높이 */
+    --header-height: 200px;
+    --home-height: 150px;
+    --board-height: 180px;
+
+    /* 전환 효과 */
+    --transition-fast: all 0.3s ease;
+    --transition-medium: all 0.5s ease;
+
+    /* 테두리 */
+    --border-radius: 12px;
+    --border-color: #e1e5e9;
+    --dark-border-color: #4a5568;
+}
+
+/* ======================================== major premise ======================================== */
 * {
     margin: 0;
     padding: 0;
@@ -12,8 +35,6 @@ body {
     /* 👇 페이지 전체의 색상 전환을 위해 이 줄을 추가합니다. */
     transition: color 0.5s ease, background-color 0.5s ease;
 }
-
-/* ########## major premise ########## */
 
 /* ======================================== 라이트 모드 ======================================== */
 main {
@@ -55,16 +76,16 @@ html.dark body {
 .create-post-container,
 .post-detail-container,
 .admin-login-container {
-    min-height: calc(100vh - 200px); /* 헤더, 푸터 높이를 고려한 최소 높이 */
+    min-height: calc(100vh - var(--header-height)); /* CSS 변수 사용 */
 }
 
 /* 특정 페이지별 추가 높이 조정 */
 .home-container {
-    min-height: calc(100vh - 150px);
+    min-height: calc(100vh - var(--home-height));
 }
 
 .board-container {
-    min-height: calc(100vh - 180px);
+    min-height: calc(100vh - var(--board-height));
 }
 
 /* 로그인 페이지는 중앙 정렬을 위해 높이 조정 */
