@@ -52,3 +52,86 @@ export const createPost = async (
         throw error;
     }
 };
+
+// 관리자 로그인 관련 인터페이스
+export interface AdminLoginRequest {
+    id: string;
+    password: string;
+}
+
+export interface AdminLoginResponse {
+    success: boolean;
+    message: string;
+}
+
+export interface AdminInfo {
+    adminName: string;
+    id: string;
+    email: string;
+    role: string;
+}
+
+// 관리자 로그인 API 함수
+export const adminLogin = async (
+    loginData: AdminLoginRequest,
+): Promise<AdminLoginResponse> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(loginData),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "로그인에 실패했습니다.");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("관리자 로그인 API 요청 실패:", error);
+        throw error;
+    }
+};
+
+// 관리자 로그아웃 API 함수
+export const adminLogout = async (): Promise<void> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/admin/logout`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("로그아웃에 실패했습니다.");
+        }
+    } catch (error) {
+        console.error("관리자 로그아웃 API 요청 실패:", error);
+        throw error;
+    }
+};
+
+// 관리자 정보 조회 API 함수
+export const getAdminInfo = async (id: string): Promise<AdminInfo> => {
+    try {
+        const response = await fetch(`${API_BASE_URL}/api/admin/${id}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("관리자 정보 조회에 실패했습니다.");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("관리자 정보 조회 API 요청 실패:", error);
+        throw error;
+    }
+};
