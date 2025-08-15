@@ -367,3 +367,34 @@
 .dark .char-counter {
     color: #9ca3af;
 }
+
+/* 관리자 작성자 입력 필드 스타일 */
+.admin-indicator {
+    color: #667eea;
+    font-weight: 600;
+    margin-left: 8px;
+    font-size: 0.9em;
+}
+
+.admin-author-input {
+    background-color: #f8f9fa;
+    border: 2px solid #667eea;
+    color: #495057;
+    cursor: not-allowed;
+}
+
+.admin-author-input:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.admin-info-display {
+    margin-top: 4px;
+    color: #667eea;
+    font-size: 0.85em;
+}
+
+.admin-info-display small {
+    color: #6c757d;
+    font-style: italic;
+}

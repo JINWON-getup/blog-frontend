@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPost } from "../services/api";
+import { useAdmin } from "../contexts/AdminContext";
 import "../css/createPost.css";
 
 const CreatePost: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { adminInfo, isLoggedIn } = useAdmin();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
@@ -13,6 +15,18 @@ const CreatePost: React.FC = () => {
     const [category, setCategory] = useState("");
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState("");
+
+    // 관리자 로그인 상태 확인 및 작성자 자동 입력
+    useEffect(() => {
+        if (!isLoggedIn || !adminInfo) {
+            alert("관리자만 글을 작성할 수 있습니다.");
+            navigate("/adminLogin");
+            return;
+        }
+
+        // 관리자 정보로 작성자 자동 설정
+        setAuthor(adminInfo.adminName);
+    }, [isLoggedIn, adminInfo, navigate]);
 
     // URL state에서 boardType을 받아와서 초기값 설정
     useEffect(() => {
@@ -330,13 +344,28 @@ const CreatePost: React.FC = () => {
                     <div className="author-input">
                         <label>
                             작성자 <span className="required">*</span>
+                            {adminInfo && (
+                                <span className="admin-indicator">
+                                    (관리자)
+                                </span>
+                            )}
                         </label>
                         <input
                             value={author}
                             onChange={(e) => setAuthor(e.target.value)}
                             placeholder="작성자"
                             required
+                            readOnly={!!adminInfo}
+                            className={adminInfo ? "admin-author-input" : ""}
                         />
+                        {adminInfo && (
+                            <div className="admin-info-display">
+                                <small>
+                                    관리자: {adminInfo.adminName} (
+                                    {adminInfo.id})
+                                </small>
+                            </div>
+                        )}
                     </div>
                     <button type="submit" className="submit-button">
                         등록

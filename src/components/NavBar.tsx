@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
 import DarkModeToggle from "../components/Darkmode-toggle";
+import { useAdmin } from "../contexts/AdminContext";
 import "../css/nav-bar.css";
 
 export default function NavBar() {
+    const { adminInfo, isLoggedIn } = useAdmin();
+
     return (
         <nav className="nav-bar">
             <ul className="nav-list">
@@ -48,6 +51,18 @@ export default function NavBar() {
                         <span>Daily</span>
                     </Link>
                 </li>
+                {/* 관리자 메뉴 - 로그인된 관리자에게만 표시 */}
+                {isLoggedIn && adminInfo && (
+                    <li>
+                        <Link
+                            to="/admin-dashboard"
+                            className="nav-link admin-link"
+                        >
+                            <i className="bi bi-speedometer2"></i>
+                            <span>대시보드</span>
+                        </Link>
+                    </li>
+                )}
             </ul>
             <div className="nav-toggle">
                 <DarkModeToggle />
