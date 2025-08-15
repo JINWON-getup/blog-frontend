@@ -1,44 +1,35 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { adminLogout, getAdminInfo } from "../services/api";
+import { adminLogout } from "../services/api";
+import { useAdmin } from "../contexts/AdminContext";
+import { useTheme } from "../components/ThemeContext";
 import "../css/adminDashboard.css";
 
-interface AdminInfo {
-    adminName: string;
-    id: string;
-    email: string;
-    role: string;
-}
-
 export default function AdminDashboard() {
-    const [adminInfo, setAdminInfo] = useState<AdminInfo | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
+    const { adminInfo, isLoading, logout: contextLogout } = useAdmin();
+    const { isDark } = useTheme();
 
-    // 관리자 정보 가져오기
+    // 로그인 상태 확인
     useEffect(() => {
-        const fetchAdminInfo = async () => {
-            try {
-                // TODO: 실제 로그인된 관리자 ID를 가져와야 함
-                // 현재는 임시로 하드코딩된 ID 사용
-                const tempAdminId = "admin"; // 나중에 로그인 상태에서 가져올 예정
-                const info = await getAdminInfo(tempAdminId);
-                setAdminInfo(info);
-            } catch (error) {
-                console.error("관리자 정보 조회 실패:", error);
-                alert("관리자 정보를 불러올 수 없습니다.");
-            } finally {
-                setIsLoading(false);
-            }
-        };
+        console.log("AdminDashboard: adminInfo 변경됨:", adminInfo);
 
-        fetchAdminInfo();
-    }, []);
+        // 로딩이 완료되고 관리자 정보가 없는 경우에만 리다이렉트
+        if (!isLoading && !adminInfo) {
+            console.log(
+                "AdminDashboard: 로그인되지 않음, 로그인 페이지로 이동",
+            );
+            navigate("/adminLogin");
+        }
+    }, [adminInfo, isLoading, navigate]);
 
     // 로그아웃 처리
     const handleLogout = async () => {
         try {
+            // 백엔드 로그아웃 API 호출
             await adminLogout();
+            // Context에서 로그아웃 처리
+            contextLogout();
             alert("로그아웃되었습니다.");
             navigate("/"); // 메인화면(홈)으로 이동
         } catch (error) {
@@ -49,14 +40,24 @@ export default function AdminDashboard() {
 
     if (isLoading) {
         return (
-            <div className="admin-dashboard-container">
+            <div
+                className={`admin-dashboard-container ${
+                    isDark ? "dark-mode" : ""
+                }`}
+            >
                 <div className="loading">로딩 중...</div>
             </div>
         );
     }
 
+    if (!adminInfo) {
+        return null; // 리다이렉트 중일 때 아무것도 렌더링하지 않음
+    }
+
     return (
-        <div className="admin-dashboard-container">
+        <div
+            className={`admin-dashboard-container ${isDark ? "dark-mode" : ""}`}
+        >
             {/* 헤더 영역 */}
             <header className="dashboard-header">
                 <h1>관리자 대시보드</h1>
@@ -68,26 +69,24 @@ export default function AdminDashboard() {
             {/* 관리자 정보 영역 */}
             <section className="admin-info-section">
                 <h2>관리자 정보</h2>
-                {adminInfo && (
-                    <div className="admin-info-card">
-                        <div className="info-item">
-                            <span className="label">이름:</span>
-                            <span className="value">{adminInfo.adminName}</span>
-                        </div>
-                        <div className="info-item">
-                            <span className="label">아이디:</span>
-                            <span className="value">{adminInfo.id}</span>
-                        </div>
-                        <div className="info-item">
-                            <span className="label">이메일:</span>
-                            <span className="value">{adminInfo.email}</span>
-                        </div>
-                        <div className="info-item">
-                            <span className="label">역할:</span>
-                            <span className="value">{adminInfo.role}</span>
-                        </div>
+                <div className="admin-info-card">
+                    <div className="info-item">
+                        <span className="label">이름:</span>
+                        <span className="value">{adminInfo.adminName}</span>
                     </div>
-                )}
+                    <div className="info-item">
+                        <span className="label">아이디:</span>
+                        <span className="value">{adminInfo.id}</span>
+                    </div>
+                    <div className="info-item">
+                        <span className="label">이메일:</span>
+                        <span className="value">{adminInfo.email}</span>
+                    </div>
+                    <div className="info-item">
+                        <span className="label">역할:</span>
+                        <span className="value">{adminInfo.role}</span>
+                    </div>
+                </div>
             </section>
 
             {/* 메뉴 영역 */}
