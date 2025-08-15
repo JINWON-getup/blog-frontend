@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import "../../css/adminLogin.css";
 
 // 백엔드 응답 구조에 맞는 인터페이스
@@ -12,6 +13,7 @@ export default function Login() {
     const [id, setId] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,8 +31,8 @@ export default function Login() {
             if (response.data.success) {
                 // 로그인 성공
                 alert("로그인 성공!");
-                // TODO: 로그인 성공 후 이동할 페이지 설정
-                // navigate("/admin-dashboard"); // 예시
+                // 관리자 대시보드로 이동
+                navigate("/admin-dashboard");
                 console.log("로그인 성공:", response.data.message);
             } else {
                 // 로그인 실패

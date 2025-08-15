@@ -80,7 +80,7 @@ export default function Board({ boardType }: BoardProps) {
 
             // axios를 사용하여 API 호출
             const params = boardType ? { boardType: boardType } : {};
-            const response = await axios.get(`${API_BASE_URL}/api/posts`, {
+            const response = await axios.get(`${API_BASE_URL}/api/post`, {
                 params,
             });
 

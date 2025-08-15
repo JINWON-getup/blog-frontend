@@ -7,6 +7,7 @@ import JapaneseBoardPage from "../pages/section/JapaneseBoardPage";
 import CultureBoardPage from "../pages/section/CultureBoardPage";
 import DailyBoardPage from "../pages/section/DailyBoardPage";
 import AdminLogin from "../pages/login/AdminLogin";
+import AdminDashboard from "../pages/AdminDashboard";
 import CreatePost from "../components/CreatePost";
 import PostDetail from "../pages/PostDetail";
 
@@ -21,6 +22,7 @@ export default function AppRoutes() {
             <Route path="/culture" element={<CultureBoardPage />} />
             <Route path="/daily" element={<DailyBoardPage />} />
             <Route path="/adminLogin" element={<AdminLogin />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/write" element={<CreatePost />} />
             <Route path="/post/:id" element={<PostDetail />} />
         </Routes>

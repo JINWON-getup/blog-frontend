@@ -15,7 +15,7 @@ export interface Post {
 export const API_BASE_URL =
     import.meta.env.VITE_API_URL || "http://localhost:8080";
 
-const API_URL = `${API_BASE_URL}/api/posts`;
+const API_URL = `${API_BASE_URL}/api/post`;
 
 export const getPosts = async (): Promise<Post[]> => {
     const res = await fetch(API_URL);
