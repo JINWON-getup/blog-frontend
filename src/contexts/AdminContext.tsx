@@ -2,7 +2,7 @@ import {
     createContext,
     useContext,
     useState,
-    ReactElement,
+    type ReactElement,
     useEffect,
 } from "react";
 
@@ -86,6 +86,7 @@ export const AdminProvider = ({
     );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAdmin = () => {
     const context = useContext(AdminContext);
     if (!context) {
