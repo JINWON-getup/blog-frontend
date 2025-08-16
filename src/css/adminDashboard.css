@@ -208,6 +208,7 @@
 
     .admin-info-card {
         padding: 20px;
+        max-width: 500px;
     }
 
     .info-item {

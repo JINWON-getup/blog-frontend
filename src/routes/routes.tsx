@@ -2,14 +2,11 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../pages/home";
 import About from "../pages/About";
 import Blog from "../pages/Blog";
-import ItBoardPage from "../pages/section/ItBoardPage";
-import JapaneseBoardPage from "../pages/section/JapaneseBoardPage";
-import CultureBoardPage from "../pages/section/CultureBoardPage";
-import DailyBoardPage from "../pages/section/DailyBoardPage";
 import AdminLogin from "../pages/login/AdminLogin";
 import AdminDashboard from "../pages/AdminDashboard";
 import CreatePost from "../components/CreatePost";
 import PostDetail from "../pages/PostDetail";
+import BoardPage from "../pages/BoardPage";
 
 export default function AppRoutes() {
     return (
@@ -17,10 +14,8 @@ export default function AppRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
-            <Route path="/it" element={<ItBoardPage />} />
-            <Route path="/japanese" element={<JapaneseBoardPage />} />
-            <Route path="/culture" element={<CultureBoardPage />} />
-            <Route path="/daily" element={<DailyBoardPage />} />
+            {/* 기존 4개 라우트를 1개로 통합 */}
+            <Route path="/:boardType" element={<BoardPage />} />
             <Route path="/adminLogin" element={<AdminLogin />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/write" element={<CreatePost />} />
