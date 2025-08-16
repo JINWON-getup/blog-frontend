@@ -51,20 +51,15 @@ export default function NavBar() {
                         <span>Daily</span>
                     </Link>
                 </li>
-                {/* 관리자 메뉴 - 로그인된 관리자에게만 표시 */}
-                {isLoggedIn && adminInfo && (
-                    <li>
-                        <Link
-                            to="/admin-dashboard"
-                            className="nav-link admin-link"
-                        >
-                            <i className="bi bi-speedometer2"></i>
-                            <span>대시보드</span>
-                        </Link>
-                    </li>
-                )}
             </ul>
             <div className="nav-toggle">
+                {/* 관리자 메뉴 - 로그인된 관리자에게만 표시 */}
+                {isLoggedIn && adminInfo && (
+                    <Link to="/admin-dashboard" className="nav-link admin-link">
+                        <i className="bi bi-speedometer2"></i>
+                        <span>대시보드</span>
+                    </Link>
+                )}
                 <DarkModeToggle />
             </div>
         </nav>
