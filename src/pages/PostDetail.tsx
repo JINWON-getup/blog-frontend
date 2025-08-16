@@ -2,11 +2,13 @@ import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import type { Post } from "../services/api";
+import { useAdmin } from "../contexts/AdminContext";
 import "../css/postDetail.css";
 
 export default function PostDetail() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
+    const { adminInfo, isLoggedIn } = useAdmin();
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
@@ -32,8 +34,10 @@ export default function PostDetail() {
         const fetchPost = async () => {
             try {
                 setLoading(true);
+
+                // 기본 요청으로 시도 (인증 헤더 없이)
                 const response = await axios.get<Post>(
-                    `http://localhost:8080/api/posts/${id}`,
+                    `http://localhost:8080/api/post/${id}`,
                 );
                 setPost(response.data);
                 // 수정 폼 초기값 설정
@@ -57,7 +61,7 @@ export default function PostDetail() {
         if (id) {
             fetchPost();
         }
-    }, [id]);
+    }, [id, isLoggedIn, adminInfo]);
 
     const handleEdit = () => {
         if (!post) return;
@@ -110,10 +114,10 @@ export default function PostDetail() {
             };
 
             console.log("수정할 데이터:", updatedPost);
-            console.log("요청 URL:", `http://localhost:8080/api/posts/${id}`);
+            console.log("요청 URL:", `http://localhost:8080/api/post/${id}`);
 
             const response = await axios.put(
-                `http://localhost:8080/api/posts/${id}`,
+                `http://localhost:8080/api/post/${id}`,
                 updatedPost,
             );
 
@@ -188,11 +192,11 @@ export default function PostDetail() {
         try {
             console.log(
                 "삭제 요청 URL:",
-                `http://localhost:8080/api/posts/${id}`,
+                `http://localhost:8080/api/post/${id}`,
             );
 
             const response = await axios.delete(
-                `http://localhost:8080/api/posts/${id}`,
+                `http://localhost:8080/api/post/${id}`,
             );
 
             console.log("삭제 응답:", response.data);
