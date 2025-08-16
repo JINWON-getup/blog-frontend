@@ -342,28 +342,15 @@ const CreatePost: React.FC = () => {
                 {/* 작성자 + 버튼 */}
                 <div className="form-row">
                     <div className="author-input">
-                        <label>
-                            작성자 <span className="required">*</span>
-                            {adminInfo && (
-                                <span className="admin-indicator">
-                                    (관리자)
-                                </span>
-                            )}
-                        </label>
-                        <input
-                            value={author}
-                            onChange={(e) => setAuthor(e.target.value)}
-                            placeholder="작성자"
-                            required
-                            readOnly={!!adminInfo}
-                            className={adminInfo ? "admin-author-input" : ""}
-                        />
                         {adminInfo && (
                             <div className="admin-info-display">
-                                <small>
-                                    관리자: {adminInfo.adminName} (
-                                    {adminInfo.id})
-                                </small>
+                                <label>작성자</label>
+                                <div className="admin-author-info">
+                                    <span className="admin-name">
+                                        {adminInfo.adminName}
+                                    </span>
+                                    <span className="admin-role">관리자</span>
+                                </div>
                             </div>
                         )}
                     </div>

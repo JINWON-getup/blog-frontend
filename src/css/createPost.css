@@ -143,7 +143,7 @@
 .form-row {
     display: flex;
     gap: 1rem;
-    align-items: flex-end;
+    align-items: center; /* 중앙 정렬 */
 }
 
 .author-input {
@@ -151,7 +151,7 @@
 }
 
 .submit-button {
-    padding: 0.75rem 2rem;
+    padding: 0 2rem; /* 상하 패딩 제거 */
     background: #3b82f6;
     color: white;
     border: none;
@@ -160,6 +160,11 @@
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    height: 48px; /* 관리자 정보와 동일한 높이 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box; /* 패딩과 테두리를 높이에 포함 */
 }
 
 .submit-button:hover {
@@ -397,4 +402,61 @@
 .admin-info-display small {
     color: #6c757d;
     font-style: italic;
+}
+
+/* 관리자 작성자 정보 표시 스타일 */
+.admin-info-display {
+    margin-bottom: 0; /* 하단 마진 제거 */
+}
+
+.admin-info-display label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.admin-author-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    color: #374151;
+    font-weight: 500;
+    height: 48px; /* 등록 버튼과 동일한 높이 */
+    box-sizing: border-box; /* 패딩과 테두리를 높이에 포함 */
+}
+
+.admin-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.admin-role {
+    background: #e5e7eb;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #374151;
+}
+
+/* 다크모드에서의 관리자 정보 스타일 */
+.dark .admin-info-display label {
+    color: #f9fafb;
+}
+
+.dark .admin-author-info {
+    background: #374151;
+    border-color: #4b5563;
+    color: #f9fafb;
+}
+
+.dark .admin-role {
+    background: #4b5563;
+    color: #f9fafb;
 }
