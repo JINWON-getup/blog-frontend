@@ -109,6 +109,11 @@
     color: #333;
 }
 
+.write-icon svg {
+    width: 48px;
+    height: 48px;
+}
+
 .write-card p {
     color: #333 !important;
     font-weight: 600;
