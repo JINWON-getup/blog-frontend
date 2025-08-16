@@ -8,9 +8,12 @@ import "../../css/adminLogin.css";
 interface AdminLoginResponse {
     success: boolean;
     message: string;
-    adminName?: string;
-    email?: string;
-    role?: string;
+    admin: {
+        adminName?: string;
+        role?: string;
+        id?: string;
+        email?: string;
+    };
 }
 
 export default function Login() {
@@ -47,10 +50,10 @@ export default function Login() {
             if (response.data.success) {
                 // 로그인 성공 시 Context에 관리자 정보 저장
                 const adminInfo = {
-                    adminName: response.data.adminName || "관리자",
-                    id: id,
-                    email: response.data.email || "",
-                    role: response.data.role || "admin",
+                    adminName: response.data.admin.adminName || "",
+                    id: response.data.admin.id || "",
+                    email: response.data.admin.email || "",
+                    role: response.data.admin.role || "",
                 };
 
                 // Context에 관리자 정보 저장
