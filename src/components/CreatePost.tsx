@@ -25,7 +25,7 @@ const CreatePost: React.FC = () => {
         }
 
         // 관리자 정보로 작성자 자동 설정
-        setAuthor(adminInfo.adminName);
+        setAuthor("관리자");
     }, [isLoggedIn, adminInfo, navigate]);
 
     // URL state에서 boardType을 받아와서 초기값 설정
@@ -346,9 +346,7 @@ const CreatePost: React.FC = () => {
                             <div className="admin-info-display">
                                 <label>작성자</label>
                                 <div className="admin-author-info">
-                                    <span className="admin-name">
-                                        {adminInfo.adminName}
-                                    </span>
+                                    <span className="admin-name">관리자</span>
                                     <span className="admin-role">관리자</span>
                                 </div>
                             </div>

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import type { Post } from "../services/api";
 import { API_BASE_URL } from "../services/api";
+import { useAdmin } from "../contexts/AdminContext";
 import "../css/board.css";
 
 // Board 컴포넌트가 받을 props의 타입을 정의
@@ -13,6 +14,7 @@ interface BoardProps {
 // props로 boardType을 받습니다.
 export default function Board({ boardType }: BoardProps) {
     const navigate = useNavigate();
+    const { isLoggedIn } = useAdmin();
 
     const [posts, setPosts] = useState<Post[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("전체");
@@ -210,12 +212,14 @@ export default function Board({ boardType }: BoardProps) {
                             전체 게시글{" "}
                             <span className="count">{filteredData.length}</span>
                         </div>
-                        <button
-                            className="create-post-button"
-                            onClick={handleWriteClick}
-                        >
-                            글쓰기
-                        </button>
+                        {isLoggedIn && (
+                            <button
+                                className="create-post-button"
+                                onClick={handleWriteClick}
+                            >
+                                글쓰기
+                            </button>
+                        )}
                     </div>
                     <input
                         className="tag-search-input"
