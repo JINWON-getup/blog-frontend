@@ -6,12 +6,7 @@ import {
     useEffect,
 } from "react";
 
-interface AdminInfo {
-    adminName: string;
-    id: string;
-    email: string;
-    role: string;
-}
+import type { AdminInfo } from "../services/api";
 
 interface AdminContextType {
     adminInfo: AdminInfo | null;
