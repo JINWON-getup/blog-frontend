@@ -4,8 +4,38 @@
     justify-content: space-between;
     align-items: center;
     border-bottom: 1px solid #ddd;
-    padding: 10px 20px;
-    padding-top: 0;
+    padding: 5px 5px;
+    transition: all 0.3s ease; /* 부드러운 애니메이션 */
+}
+
+/* 스크롤 후 고정 상태 */
+.nav-bar-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    animation: slideDown 0.3s ease;
+}
+
+/* 다크모드에서 고정 상태 */
+.dark .nav-bar-fixed {
+    background: #1f2937;
+    border-bottom-color: #4b5563;
+}
+
+/* 애니메이션 */
+@keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .nav-list {

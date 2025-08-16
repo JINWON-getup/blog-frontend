@@ -1,13 +1,30 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import DarkModeToggle from "../components/Darkmode-toggle";
 import { useAdmin } from "../contexts/AdminContext";
 import "../css/nav-bar.css";
 
 export default function NavBar() {
     const { adminInfo, isLoggedIn } = useAdmin();
+    const [isScrolled, setIsScrolled] = useState(false);
+
+    // 스크롤 감지
+    useEffect(() => {
+        const handleScroll = () => {
+            const scrollTop = window.scrollY;
+            setIsScrolled(scrollTop > 100); // 100px 스크롤 후 고정
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        // 컴포넌트 언마운트 시 이벤트 리스너 제거
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, []);
 
     return (
-        <nav className="nav-bar">
+        <nav className={`nav-bar ${isScrolled ? "nav-bar-fixed" : ""}`}>
             <ul className="nav-list">
                 <li>
                     <Link to="/" className="nav-link">
