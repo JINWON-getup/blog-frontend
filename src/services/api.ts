@@ -154,10 +154,37 @@ export interface RegisterResponse {
     };
 }
 
+// 로그인 관련 인터페이스
+export interface LoginRequest {
+    userId: string;
+    password: string;
+}
+
+export interface LoginResponse {
+    success: boolean;
+    message: string;
+    user?: {
+        pid: number;
+        userId: string;
+        email: string;
+        phoneNumber: string;
+        experience: number;
+        level: number;
+        point: number;
+        totalPost: number;
+        totalComment: number;
+        totalLike: number;
+        consecutiveLogin: number;
+    };
+}
+
 // 회원가입 API 함수
 export const register = async (
     registerData: RegisterRequest,
 ): Promise<RegisterResponse> => {
+    console.log("회원가입 요청 데이터:", registerData);
+    console.log("API URL:", `${API_BASE_URL}/api/users/register`);
+
     try {
         const response = await axios.post<RegisterResponse>(
             `${API_BASE_URL}/api/users/register`,
@@ -169,6 +196,9 @@ export const register = async (
             },
         );
 
+        console.log("회원가입 응답:", response.data);
+        console.log("응답 상태:", response.status);
+
         if (!response.data.success) {
             throw new Error(
                 response.data.message || "회원가입에 실패했습니다.",
@@ -176,8 +206,108 @@ export const register = async (
         }
 
         return response.data;
-    } catch (error) {
+    } catch (error: unknown) {
         console.error("회원가입 API 요청 실패:", error);
+
+        // Axios 에러인 경우 더 자세한 정보 출력
+        if (error && typeof error === "object" && "response" in error) {
+            const axiosError = error as {
+                response: { status: number; data: unknown; headers: unknown };
+            };
+            console.error("에러 응답 상태:", axiosError.response.status);
+            console.error("에러 응답 데이터:", axiosError.response.data);
+            console.error("에러 응답 헤더:", axiosError.response.headers);
+
+            // 서버에서 보낸 에러 메시지가 있으면 사용
+            if (
+                axiosError.response?.data &&
+                typeof axiosError.response.data === "object" &&
+                "message" in axiosError.response.data
+            ) {
+                throw new Error(String(axiosError.response.data.message));
+            }
+        } else if (error && typeof error === "object" && "request" in error) {
+            console.error(
+                "요청은 보냈지만 응답을 받지 못함:",
+                (error as { request: unknown }).request,
+            );
+        } else if (error instanceof Error) {
+            console.error("요청 설정 중 에러:", error.message);
+
+            // 네트워크 에러인 경우
+            if (error.message.includes("Network Error")) {
+                throw new Error(
+                    "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.",
+                );
+            }
+        }
+
+        throw error;
+    }
+};
+
+// 로그인 API 함수
+export const login = async (
+    loginData: LoginRequest,
+): Promise<LoginResponse> => {
+    console.log("로그인 요청 데이터:", loginData);
+    console.log("API URL:", `${API_BASE_URL}/api/users/login`);
+
+    try {
+        const response = await axios.post<LoginResponse>(
+            `${API_BASE_URL}/api/users/login`,
+            loginData,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+
+        console.log("로그인 응답:", response.data);
+        console.log("응답 상태:", response.status);
+
+        if (!response.data.success) {
+            throw new Error(response.data.message || "로그인에 실패했습니다.");
+        }
+
+        return response.data;
+    } catch (error: unknown) {
+        console.error("로그인 API 요청 실패:", error);
+
+        // Axios 에러인 경우 더 자세한 정보 출력
+        if (error && typeof error === "object" && "response" in error) {
+            const axiosError = error as {
+                response: { status: number; data: unknown; headers: unknown };
+            };
+            console.error("에러 응답 상태:", axiosError.response.status);
+            console.error("에러 응답 데이터:", axiosError.response.data);
+            console.error("에러 응답 헤더:", axiosError.response.headers);
+
+            // 서버에서 보낸 에러 메시지가 있으면 사용
+            if (
+                axiosError.response?.data &&
+                typeof axiosError.response.data === "object" &&
+                "message" in axiosError.response.data
+            ) {
+                throw new Error(String(axiosError.response.data.message));
+            }
+        } else if (error && typeof error === "object" && "request" in error) {
+            console.error(
+                "요청은 보냈지만 응답을 받지 못함:",
+                (error as { request: unknown }).request,
+            );
+        } else if (error instanceof Error) {
+            console.error("요청 설정 중 에러:", error.message);
+
+            // 네트워크 에러인 경우
+            if (error.message.includes("Network Error")) {
+                throw new Error(
+                    "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.",
+                );
+            }
+        }
+
         throw error;
     }
 };

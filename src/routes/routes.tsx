@@ -7,7 +7,9 @@ import AdminDashboard from "../pages/AdminDashboard";
 import CreatePost from "../components/CreatePost";
 import PostDetail from "../pages/PostDetail";
 import BoardPage from "../pages/BoardPage";
+import Login from "../pages/Login";
 import Register from "../pages/Register";
+import MyPage from "../pages/MyPage";
 
 export default function AppRoutes() {
     return (
@@ -21,7 +23,9 @@ export default function AppRoutes() {
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/write" element={<CreatePost />} />
             <Route path="/post/:id" element={<PostDetail />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Register />} />
+            <Route path="/my-page" element={<MyPage />} />
         </Routes>
     );
 }

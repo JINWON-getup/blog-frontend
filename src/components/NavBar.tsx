@@ -2,10 +2,12 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import DarkModeToggle from "../components/Darkmode-toggle";
 import { useAdmin } from "../contexts/AdminContext";
+import { useUser } from "../contexts/UserContext";
 import "../css/nav-bar.css";
 
 export default function NavBar() {
-    const { adminInfo, isLoggedIn } = useAdmin();
+    const { adminInfo, isLoggedIn: isAdminLoggedIn } = useAdmin();
+    const { isLoggedIn: isUserLoggedIn } = useUser();
     const [isScrolled, setIsScrolled] = useState(false);
 
     // 스크롤 감지
@@ -71,15 +73,22 @@ export default function NavBar() {
             </ul>
             {/* 오른쪽 요소들을 하나의 그룹으로 묶기 */}
             <div className="nav-right-group">
-                {/* 회원가입 링크 */}
-                <Link to="/signup" className="nav-link signup-link">
-                    <i className="bi bi-person-plus"></i>
-                    <span>회원가입</span>
-                </Link>
+                {/* 로그인/마이페이지 링크 */}
+                {isUserLoggedIn ? (
+                    <Link to="/my-page" className="nav-link signup-link">
+                        <i className="bi bi-person-lines-fill"></i>
+                        <span>마이페이지</span>
+                    </Link>
+                ) : (
+                    <Link to="/login" className="nav-link signup-link">
+                        <i className="bi bi-box-arrow-in-right"></i>
+                        <span>로그인</span>
+                    </Link>
+                )}
 
                 <div className="nav-toggle">
                     {/* 관리자 메뉴 - 로그인된 관리자에게만 표시 */}
-                    {isLoggedIn && adminInfo && (
+                    {isAdminLoggedIn && adminInfo && (
                         <Link
                             to="/admin-dashboard"
                             className="nav-link admin-link"
