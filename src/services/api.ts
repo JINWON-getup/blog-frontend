@@ -1,3 +1,5 @@
+import axios from "axios";
+
 // src/services/api.ts
 export interface Post {
     id?: number;
@@ -18,8 +20,8 @@ export const API_BASE_URL =
 const API_URL = `${API_BASE_URL}/api/post`;
 
 export const getPosts = async (): Promise<Post[]> => {
-    const res = await fetch(API_URL);
-    return res.json();
+    const res = await axios.get<Post[]>(API_URL);
+    return res.data;
 };
 
 export const createPost = async (
@@ -28,23 +30,13 @@ export const createPost = async (
     console.log("API 요청 데이터:", post);
 
     try {
-        const res = await fetch(API_URL, {
-            method: "POST",
+        const res = await axios.post<Post>(API_URL, post, {
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(post),
         });
 
         console.log("API 응답 상태:", res.status, res.statusText);
 
-        if (!res.ok) {
-            const errorText = await res.text();
-            console.error("API 에러 응답:", errorText);
-            throw new Error(
-                `HTTP ${res.status}: ${res.statusText} - ${errorText}`,
-            );
-        }
-
-        const result = await res.json();
+        const result = res.data;
         console.log("API 응답 데이터:", result);
         return result;
     } catch (error) {
@@ -76,20 +68,21 @@ export const adminLogin = async (
     loginData: AdminLoginRequest,
 ): Promise<AdminLoginResponse> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
+        const response = await axios.post<AdminLoginResponse>(
+            `${API_BASE_URL}/api/admin/login`,
+            loginData,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
             },
-            body: JSON.stringify(loginData),
-        });
+        );
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || "로그인에 실패했습니다.");
+        if (!response.data.success) {
+            throw new Error(response.data.message || "로그인에 실패했습니다.");
         }
 
-        return await response.json();
+        return response.data;
     } catch (error) {
         console.error("관리자 로그인 API 요청 실패:", error);
         throw error;
@@ -99,14 +92,17 @@ export const adminLogin = async (
 // 관리자 로그아웃 API 함수
 export const adminLogout = async (): Promise<void> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/logout`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
+        const response = await axios.post<{ success: boolean }>(
+            `${API_BASE_URL}/api/admin/logout`,
+            {},
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
             },
-        });
+        );
 
-        if (!response.ok) {
+        if (!response.data.success) {
             throw new Error("로그아웃에 실패했습니다.");
         }
     } catch (error) {
@@ -118,20 +114,70 @@ export const adminLogout = async (): Promise<void> => {
 // 관리자 정보 조회 API 함수
 export const getAdminInfo = async (id: string): Promise<AdminInfo> => {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
+        const response = await axios.get<{ success: boolean; data: AdminInfo }>(
+            `${API_BASE_URL}/api/admin/${id}`,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
             },
-        });
+        );
 
-        if (!response.ok) {
+        if (!response.data.success) {
             throw new Error("관리자 정보 조회에 실패했습니다.");
         }
 
-        return await response.json();
+        return response.data.data;
     } catch (error) {
         console.error("관리자 정보 조회 API 요청 실패:", error);
+        throw error;
+    }
+};
+
+// 회원가입 관련 인터페이스
+export interface RegisterRequest {
+    userId: string;
+    nickName: string;
+    password: string;
+    email: string;
+    phoneNumber: string;
+}
+
+export interface RegisterResponse {
+    success: boolean;
+    message: string;
+    data?: {
+        pid: number;
+        userId: string;
+        nickName: string;
+        email: string;
+    };
+}
+
+// 회원가입 API 함수
+export const register = async (
+    registerData: RegisterRequest,
+): Promise<RegisterResponse> => {
+    try {
+        const response = await axios.post<RegisterResponse>(
+            `${API_BASE_URL}/api/users/register`,
+            registerData,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+
+        if (!response.data.success) {
+            throw new Error(
+                response.data.message || "회원가입에 실패했습니다.",
+            );
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("회원가입 API 요청 실패:", error);
         throw error;
     }
 };
