@@ -7,6 +7,7 @@ import AdminDashboard from "../pages/AdminDashboard";
 import CreatePost from "../components/CreatePost";
 import PostDetail from "../pages/PostDetail";
 import BoardPage from "../pages/BoardPage";
+import SignUp from "../pages/SignUp";
 
 export default function AppRoutes() {
     return (
@@ -20,6 +21,7 @@ export default function AppRoutes() {
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
             <Route path="/write" element={<CreatePost />} />
             <Route path="/post/:id" element={<PostDetail />} />
+            <Route path="/signup" element={<SignUp />} />
         </Routes>
     );
 }

@@ -69,15 +69,27 @@ export default function NavBar() {
                     </Link>
                 </li>
             </ul>
-            <div className="nav-toggle">
-                {/* 관리자 메뉴 - 로그인된 관리자에게만 표시 */}
-                {isLoggedIn && adminInfo && (
-                    <Link to="/admin-dashboard" className="nav-link admin-link">
-                        <i className="bi bi-speedometer2"></i>
-                        <span>대시보드</span>
-                    </Link>
-                )}
-                <DarkModeToggle />
+            {/* 오른쪽 요소들을 하나의 그룹으로 묶기 */}
+            <div className="nav-right-group">
+                {/* 회원가입 링크 */}
+                <Link to="/signup" className="nav-link signup-link">
+                    <i className="bi bi-person-plus"></i>
+                    <span>회원가입</span>
+                </Link>
+
+                <div className="nav-toggle">
+                    {/* 관리자 메뉴 - 로그인된 관리자에게만 표시 */}
+                    {isLoggedIn && adminInfo && (
+                        <Link
+                            to="/admin-dashboard"
+                            className="nav-link admin-link"
+                        >
+                            <i className="bi bi-speedometer2"></i>
+                            <span>대시보드</span>
+                        </Link>
+                    )}
+                    <DarkModeToggle />
+                </div>
             </div>
         </nav>
     );

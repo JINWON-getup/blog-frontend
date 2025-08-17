@@ -1,7 +1,7 @@
 /* ======================================== 라이트 모드 ======================================== */
 .nav-bar {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
     border-bottom: 1px solid #ddd;
     padding: 5px 5px;
@@ -85,6 +85,13 @@
     align-items: center;
 }
 
+/* 오른쪽 요소들을 그룹화 */
+.nav-right-group {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* 왼쪽 요소들과의 간격을 최대화 */
+}
+
 /* ======================================== 다크 모드 ======================================== */
 .darkmode-toggle {
     background-color: transparent;
@@ -166,4 +173,51 @@
 /* 기존 nav-link와 구분하기 위한 스타일 */
 .admin-link span {
     font-weight: 600;
+}
+
+/* 회원가입 링크 스타일 - 독립적으로 배치 */
+.signup-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: #333;
+    font-size: 16px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    margin-right: 0; /* nav-toggle과의 간격 완전 제거 */
+    /* 강제로 ::before 애니메이션 비활성화 */
+    position: static !important;
+    overflow: visible !important;
+}
+
+/* ::before 가상 요소를 완전히 제거 */
+.signup-link::before {
+    display: none !important;
+    content: none !important;
+}
+
+.signup-link:hover {
+    color: #667eea;
+    transform: translateY(-1px);
+}
+
+.signup-link i {
+    margin-right: 6px;
+}
+
+.signup-link span {
+    font-weight: 600;
+}
+
+/* 다크모드에서 회원가입 링크 스타일 */
+.dark .signup-link {
+    color: #eee;
+}
+
+.dark .signup-link:hover {
+    color: #667eea;
+    transform: translateY(-1px);
 }
