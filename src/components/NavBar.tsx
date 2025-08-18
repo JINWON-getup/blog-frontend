@@ -79,7 +79,7 @@ export default function NavBar() {
                         <i className="bi bi-person-lines-fill"></i>
                         <span>마이페이지</span>
                     </Link>
-                ) : (
+                ) : isAdminLoggedIn ? null : (
                     <Link to="/login" className="nav-link signup-link">
                         <i className="bi bi-box-arrow-in-right"></i>
                         <span>로그인</span>

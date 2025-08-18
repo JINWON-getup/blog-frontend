@@ -82,10 +82,6 @@ export default function AdminDashboard() {
                         <span className="label">이메일:</span>
                         <span className="value">{adminInfo.email}</span>
                     </div>
-                    <div className="info-item">
-                        <span className="label">역할:</span>
-                        <span className="value">{adminInfo.role}</span>
-                    </div>
                 </div>
             </section>
 
@@ -103,13 +99,6 @@ export default function AdminDashboard() {
                     <div className="menu-item">
                         <h3>사용자 관리</h3>
                         <p>사용자 계정 관리</p>
-                        <button className="menu-button" disabled>
-                            준비 중
-                        </button>
-                    </div>
-                    <div className="menu-item">
-                        <h3>설정</h3>
-                        <p>사이트 설정, 관리자 설정</p>
                         <button className="menu-button" disabled>
                             준비 중
                         </button>
