@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import itImg from "../assets/images/section_article_card-IT.jfif";
-import japanImg from "../assets/images/section_article_card-japan.jfif";
-import cultureImg from "../assets/images/section_article_card-culture.jfif";
+import japaneseImg from "../assets/images/section_article_card-japanese.jfif";
 import { useAdmin } from "../contexts/AdminContext";
 import "../css/contents.css";
 
@@ -18,14 +17,14 @@ export default function Contents() {
             </article>
             <article className="article-card">
                 <Link to="/japanese">
-                    <img src={japanImg} alt="Japanese" />
+                    <img src={japaneseImg} alt="Japanese" />
                     <p>Japanese</p>
                 </Link>
             </article>
             <article className="article-card">
-                <Link to="/culture">
-                    <img src={cultureImg} alt="Culture" />
-                    <p>Culture</p>
+                <Link to="/daily">
+                    <img src={japaneseImg} alt="Daily" />
+                    <p>Daily</p>
                 </Link>
             </article>
             {isLoggedIn && (

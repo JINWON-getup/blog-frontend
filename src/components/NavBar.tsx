@@ -59,12 +59,6 @@ export default function NavBar() {
                     </Link>
                 </li>
                 <li>
-                    <Link to="/culture" className="nav-link">
-                        <i className="bi bi-globe"></i>
-                        <span>Culture</span>
-                    </Link>
-                </li>
-                <li>
                     <Link to="/daily" className="nav-link">
                         <i className="bi bi-calendar-heart"></i>
                         <span>Daily</span>
@@ -91,7 +85,7 @@ export default function NavBar() {
                     {isAdminLoggedIn && adminInfo && (
                         <Link
                             to="/admin-dashboard"
-                            className="nav-link admin-link"
+                            className="nav-link signup-link"
                         >
                             <i className="bi bi-speedometer2"></i>
                             <span>대시보드</span>

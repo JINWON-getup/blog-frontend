@@ -5,7 +5,7 @@ export default function BoardPage() {
     const { boardType } = useParams<{ boardType: string }>();
 
     // 유효한 boardType (전부 소문자)
-    const validBoardTypes = ["it", "culture", "japanese", "daily"];
+    const validBoardTypes = ["it", "japanese", "daily"];
 
     if (!boardType || !validBoardTypes.includes(boardType)) {
         return <div>잘못된 게시판입니다.</div>;

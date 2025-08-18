@@ -4,6 +4,7 @@ import axios from "axios";
 import type { Post } from "../services/api";
 import { API_BASE_URL } from "../services/api";
 import { useAdmin } from "../contexts/AdminContext";
+import { useUser } from "../contexts/UserContext";
 import "../css/board.css";
 
 // Board 컴포넌트가 받을 props의 타입을 정의
@@ -15,6 +16,7 @@ interface BoardProps {
 export default function Board({ boardType }: BoardProps) {
     const navigate = useNavigate();
     const { isLoggedIn } = useAdmin();
+    const { isLoggedIn: isUserLoggedIn } = useUser();
 
     const [posts, setPosts] = useState<Post[]>([]);
     const [selectedCategory, setSelectedCategory] = useState("전체");
@@ -28,15 +30,12 @@ export default function Board({ boardType }: BoardProps) {
     // 게시판별 카테고리 매핑 (CreatePost.tsx와 동일)
     const boardCategories = {
         IT: ["전체", "Frontend", "Backend", "Database", "기타"],
-        JAPANESE: ["전체", "JLPT", "문법", "회화", "기타"],
-        CULTURE: ["전체", "문화", "기타"],
+        JAPANESE: ["전체", "일본어", "문화", "기타"],
         DAILY: [
             "전체",
             "일상",
             "게임",
-            "영화",
-            "드라마",
-            "애니메이션",
+            "영화/드라마/애니메이션",
             "음악",
             "기타",
         ],
@@ -212,7 +211,7 @@ export default function Board({ boardType }: BoardProps) {
                             전체 게시글{" "}
                             <span className="count">{filteredData.length}</span>
                         </div>
-                        {isLoggedIn && (
+                        {(isLoggedIn || isUserLoggedIn) && (
                             <button
                                 className="create-post-button"
                                 onClick={handleWriteClick}

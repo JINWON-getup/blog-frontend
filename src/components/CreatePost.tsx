@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPost } from "../services/api";
 import { useAdmin } from "../contexts/AdminContext";
+import { useUser } from "../contexts/UserContext";
 import "../css/createPost.css";
 
 const CreatePost: React.FC = () => {
     const navigate = useNavigate();
     const location = useLocation();
-    const { adminInfo, isLoggedIn } = useAdmin();
+    const { adminInfo, isLoggedIn: isAdminLoggedIn } = useAdmin();
+    const { userInfo, isLoggedIn: isUserLoggedIn } = useUser();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
     const [author, setAuthor] = useState("");
@@ -16,17 +18,21 @@ const CreatePost: React.FC = () => {
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState("");
 
-    // 관리자 로그인 상태 확인 및 작성자 자동 입력
+    // 로그인 상태 확인 및 작성자 자동 입력
     useEffect(() => {
-        if (!isLoggedIn || !adminInfo) {
-            alert("관리자만 글을 작성할 수 있습니다.");
-            navigate("/adminLogin");
+        if (!isAdminLoggedIn && !isUserLoggedIn) {
+            alert("로그인이 필요합니다.");
+            navigate("/login");
             return;
         }
 
-        // 관리자 정보로 작성자 자동 설정 (닉네임 사용)
-        setAuthor(adminInfo.adminName || "관리자");
-    }, [isLoggedIn, adminInfo, navigate]);
+        // 작성자 자동 설정
+        if (isAdminLoggedIn && adminInfo) {
+            setAuthor(adminInfo.adminName || "관리자");
+        } else if (isUserLoggedIn && userInfo) {
+            setAuthor(userInfo.nickName || userInfo.userId);
+        }
+    }, [isAdminLoggedIn, isUserLoggedIn, adminInfo, userInfo, navigate]);
 
     // URL state에서 boardType을 받아와서 초기값 설정
     useEffect(() => {
@@ -342,14 +348,16 @@ const CreatePost: React.FC = () => {
                 {/* 작성자 + 버튼 */}
                 <div className="form-row">
                     <div className="author-input">
-                        {adminInfo && (
+                        {(adminInfo || userInfo) && (
                             <div className="admin-info-display">
                                 <label>작성자</label>
                                 <div className="admin-author-info">
                                     <span className="admin-name">
-                                        {author || "관리자"}
+                                        {author || "사용자"}
                                     </span>
-                                    <span className="admin-role">관리자</span>
+                                    <span className="admin-role">
+                                        {isAdminLoggedIn ? "관리자" : "사용자"}
+                                    </span>
                                 </div>
                             </div>
                         )}

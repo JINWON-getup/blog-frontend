@@ -182,13 +182,22 @@ export interface LoginResponse {
 export const register = async (
     registerData: RegisterRequest,
 ): Promise<RegisterResponse> => {
-    console.log("회원가입 요청 데이터:", registerData);
+    console.log("회원가입 요청 데이터(원본):", registerData);
     console.log("API URL:", `${API_BASE_URL}/api/users/register`);
+
+    // 백엔드 필드명에 맞춰 변환
+    const payload = {
+        userId: registerData.userId,
+        nickName: registerData.nickName,
+        userPassword: registerData.password,
+        userEmail: registerData.email,
+        phoneNumber: registerData.phoneNumber,
+    } as const;
 
     try {
         const response = await axios.post<RegisterResponse>(
             `${API_BASE_URL}/api/users/register`,
-            registerData,
+            payload,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -205,7 +214,34 @@ export const register = async (
             );
         }
 
-        return response.data;
+        // 서버 응답을 프론트에서 기대하는 형태로 정규화
+        const server = response.data as unknown as {
+            success: boolean;
+            message: string;
+            data?: {
+                pid?: number;
+                id?: number;
+                userId: string;
+                nickName: string;
+                email?: string;
+                userEmail?: string;
+            };
+        };
+
+        if (server.data) {
+            return {
+                success: server.success,
+                message: server.message,
+                data: {
+                    pid: server.data.pid ?? server.data.id ?? 0,
+                    userId: server.data.userId,
+                    nickName: server.data.nickName,
+                    email: server.data.email ?? server.data.userEmail ?? "",
+                },
+            } satisfies RegisterResponse;
+        }
+
+        return server as unknown as RegisterResponse;
     } catch (error: unknown) {
         console.error("회원가입 API 요청 실패:", error);
 
