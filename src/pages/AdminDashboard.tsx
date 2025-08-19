@@ -69,6 +69,13 @@ export default function AdminDashboard() {
         }
     };
 
+    // 날짜 안전 포맷터
+    const formatDateSafely = (value?: string | number | Date) => {
+        if (!value) return "";
+        const date = new Date(value);
+        return isNaN(date.getTime()) ? "-" : date.toLocaleDateString("ko-KR");
+    };
+
     // 검색 필터링
     const handleSearch = (searchValue: string) => {
         setSearchTerm(searchValue);
@@ -129,8 +136,13 @@ export default function AdminDashboard() {
     // 사용자 목록 가져오기
     const fetchUsers = async () => {
         try {
+            console.log("[AdminDashboard] fetchUsers: start");
             setUserLoading(true);
             const fetchedUsers = await getUsers();
+            console.log(
+                "[AdminDashboard] fetchUsers: loaded",
+                Array.isArray(fetchedUsers) ? fetchedUsers.length : 0,
+            );
             setUsers(fetchedUsers);
             setFilteredUsers(fetchedUsers);
         } catch (error) {
@@ -139,6 +151,7 @@ export default function AdminDashboard() {
             setUsers([]);
             setFilteredUsers([]);
         } finally {
+            console.log("[AdminDashboard] fetchUsers: end");
             setUserLoading(false);
         }
     };
@@ -153,15 +166,19 @@ export default function AdminDashboard() {
             return;
         }
 
-        const filtered = (users || []).filter(
-            (user) =>
-                user.userId.toLowerCase().includes(searchValue.toLowerCase()) ||
-                user.nickName
-                    .toLowerCase()
-                    .includes(searchValue.toLowerCase()) ||
-                user.email.toLowerCase().includes(searchValue.toLowerCase()) ||
-                user.phoneNumber.includes(searchValue),
-        );
+        const safeQuery = searchValue.toLowerCase();
+        const filtered = (users || []).filter((user) => {
+            const uid = (user.userId || "").toLowerCase();
+            const nick = (user.nickName || "").toLowerCase();
+            const mail = (user.email || "").toLowerCase();
+            const phone = user.phoneNumber || "";
+            return (
+                uid.includes(safeQuery) ||
+                nick.includes(safeQuery) ||
+                mail.includes(safeQuery) ||
+                phone.includes(searchValue)
+            );
+        });
         setFilteredUsers(filtered);
     };
 
@@ -210,10 +227,18 @@ export default function AdminDashboard() {
 
     // 사용자 관리 모드 토글
     const toggleUserManagementMode = () => {
+        console.log(
+            "[AdminDashboard] toggleUserManagementMode: before",
+            isUserManagementMode,
+        );
         if (!isUserManagementMode) {
             fetchUsers();
         }
         setIsUserManagementMode(!isUserManagementMode);
+        console.log(
+            "[AdminDashboard] toggleUserManagementMode: after",
+            !isUserManagementMode,
+        );
     };
 
     // 로그아웃 처리
@@ -398,12 +423,9 @@ export default function AdminDashboard() {
                                                         </span>
                                                     </td>
                                                     <td className="post-date">
-                                                        {post.createdAt &&
-                                                            new Date(
-                                                                post.createdAt,
-                                                            ).toLocaleDateString(
-                                                                "ko-KR",
-                                                            )}
+                                                        {formatDateSafely(
+                                                            post.createdAt,
+                                                        )}
                                                     </td>
                                                     <td className="post-actions">
                                                         <button
@@ -541,9 +563,6 @@ export default function AdminDashboard() {
                                             <th>아이디</th>
                                             <th>닉네임</th>
                                             <th>이메일</th>
-                                            <th>레벨</th>
-                                            <th>포인트</th>
-                                            <th>가입일</th>
                                             <th>관리</th>
                                         </tr>
                                     </thead>
@@ -551,7 +570,7 @@ export default function AdminDashboard() {
                                         {currentUsers.length === 0 ? (
                                             <tr>
                                                 <td
-                                                    colSpan={8}
+                                                    colSpan={5}
                                                     className="no-posts"
                                                 >
                                                     {userSearchTerm
@@ -580,22 +599,6 @@ export default function AdminDashboard() {
                                                     </td>
                                                     <td className="post-author">
                                                         {user.email}
-                                                    </td>
-                                                    <td className="post-category">
-                                                        <span className="category-badge">
-                                                            Lv.{user.level}
-                                                        </span>
-                                                    </td>
-                                                    <td className="post-date">
-                                                        {user.point}P
-                                                    </td>
-                                                    <td className="post-date">
-                                                        {user.createdAt &&
-                                                            new Date(
-                                                                user.createdAt,
-                                                            ).toLocaleDateString(
-                                                                "ko-KR",
-                                                            )}
                                                     </td>
                                                     <td className="post-actions">
                                                         <button

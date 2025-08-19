@@ -535,8 +535,104 @@ export interface User {
 
 // 사용자 관련 API 함수들
 export const getUsers = async (): Promise<User[]> => {
-    const response = await axios.get<User[]>(`${API_BASE_URL}/api/users`);
-    return response.data;
+    const response = await axios.get(`${API_BASE_URL}/api/users`);
+    const root: unknown = response.data;
+
+    // 응답이 배열이든 여러 중첩 구조이든 안전하게 정규화
+    const extractArray = (source: unknown): unknown[] => {
+        if (Array.isArray(source)) return source;
+        if (!source || typeof source !== "object") return [];
+        const obj = source as Record<string, unknown>;
+
+        const directArrayKeys = [
+            "data",
+            "users",
+            "userList",
+            "list",
+            "items",
+            "content",
+            "result",
+            "results",
+        ];
+
+        for (const key of directArrayKeys) {
+            const value = obj[key];
+            if (Array.isArray(value)) return value;
+        }
+
+        // 흔한 중첩: { success, data: { users | list | items | content } }
+        if (obj["data"] && typeof obj["data"] === "object") {
+            const nested = obj["data"] as Record<string, unknown>;
+            for (const key of directArrayKeys) {
+                const value = nested[key];
+                if (Array.isArray(value)) return value;
+            }
+        }
+
+        return [];
+    };
+
+    const raw = extractArray(root);
+
+    const toNumber = (value: unknown, fallback = 0): number => {
+        if (typeof value === "number") return value;
+        if (
+            typeof value === "string" &&
+            value.trim() !== "" &&
+            !isNaN(Number(value))
+        ) {
+            return Number(value);
+        }
+        return fallback;
+    };
+
+    const toString = (value: unknown, fallback = ""): string => {
+        if (typeof value === "string") return value;
+        if (typeof value === "number") return String(value);
+        return fallback;
+    };
+
+    const coerceUser = (input: unknown): User => {
+        const obj: Record<string, unknown> =
+            input && typeof input === "object"
+                ? (input as Record<string, unknown>)
+                : {};
+
+        const createdAtRaw =
+            obj["createdAt"] ?? obj["created_at"] ?? obj["joinedAt"];
+        const updatedAtRaw = obj["updatedAt"] ?? obj["updated_at"];
+
+        return {
+            pid: toNumber(obj["pid"] ?? obj["id"], 0),
+            userId: toString(obj["userId"] ?? obj["id"], ""),
+            nickName: toString(
+                obj["nickName"] ?? obj["nickname"] ?? obj["name"],
+                "",
+            ),
+            email: toString(obj["email"] ?? obj["userEmail"], ""),
+            phoneNumber: toString(obj["phoneNumber"] ?? obj["phone"], ""),
+            experience: toNumber(obj["experience"] ?? obj["exp"], 0),
+            level: toNumber(obj["level"], 0),
+            point: toNumber(obj["point"] ?? obj["points"], 0),
+            totalPost: toNumber(obj["totalPost"] ?? obj["postCount"], 0),
+            totalComment: toNumber(
+                obj["totalComment"] ?? obj["commentCount"],
+                0,
+            ),
+            totalLike: toNumber(obj["totalLike"] ?? obj["likeCount"], 0),
+            consecutiveLogin: toNumber(
+                obj["consecutiveLogin"] ?? obj["streak"],
+                0,
+            ),
+            createdAt:
+                typeof createdAtRaw === "string" ? createdAtRaw : undefined,
+            updatedAt:
+                typeof updatedAtRaw === "string" ? updatedAtRaw : undefined,
+        };
+    };
+
+    const arrayData = Array.isArray(raw) ? raw : [];
+    return arrayData.map(coerceUser);
 };
 
 export const deleteUser = async (pid: number): Promise<void> => {
