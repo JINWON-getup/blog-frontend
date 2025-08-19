@@ -103,11 +103,8 @@ const Register: React.FC = () => {
             });
 
             if (result.success) {
-                alert("회원가입이 완료되었습니다!");
-                if (result.data) {
-                    login(result.data); // UserContext에 사용자 정보 저장
-                }
-                navigate("/"); // 홈 페이지로 이동
+                alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
+                navigate("/login"); // 로그인 페이지로 이동
             } else {
                 alert(result.message || "회원가입에 실패했습니다.");
             }
