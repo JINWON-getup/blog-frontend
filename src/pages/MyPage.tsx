@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../components/ThemeContext";
 import { useUser } from "../contexts/UserContext";
@@ -7,7 +7,25 @@ import "../css/myPage.css";
 const MyPage: React.FC = () => {
     const navigate = useNavigate();
     const { isDark } = useTheme();
-    const { userInfo, logout, isLoading } = useUser();
+    const {
+        userInfo,
+        logout,
+        isLoading,
+        updateUserPassword,
+        withdrawUserAccount,
+    } = useUser();
+
+    // 상태 관리
+    const [isEditingPassword, setIsEditingPassword] = useState(false);
+    const [currentPassword, setCurrentPassword] = useState("");
+    const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
+
+    // 회원탈퇴 관련 상태
+    const [showWithdrawModal, setShowWithdrawModal] = useState(false);
+    const [withdrawPassword, setWithdrawPassword] = useState("");
+    const [isLoadingWithdraw, setIsLoadingWithdraw] = useState(false);
 
     // 로그인되지 않은 사용자는 홈으로 리다이렉트
     useEffect(() => {
@@ -37,6 +55,89 @@ const MyPage: React.FC = () => {
         navigate("/");
     };
 
+    // 비밀번호 변경 처리
+    const handlePasswordUpdate = async () => {
+        if (!currentPassword || !newPassword || !confirmPassword) {
+            alert("모든 필드를 입력해주세요.");
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert("새 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            alert("비밀번호는 최소 6자 이상이어야 합니다.");
+            return;
+        }
+
+        setIsLoadingUpdate(true);
+        try {
+            await updateUserPassword(currentPassword, newPassword);
+            alert("비밀번호가 성공적으로 변경되었습니다.");
+            setIsEditingPassword(false);
+            setCurrentPassword("");
+            setNewPassword("");
+            setConfirmPassword("");
+        } catch (error) {
+            alert(
+                error instanceof Error
+                    ? error.message
+                    : "비밀번호 변경에 실패했습니다.",
+            );
+        } finally {
+            setIsLoadingUpdate(false);
+        }
+    };
+
+    // 비밀번호 편집 취소
+    const cancelPasswordEdit = () => {
+        setIsEditingPassword(false);
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+    };
+
+    // 회원탈퇴 처리
+    const handleWithdraw = async () => {
+        if (!withdrawPassword) {
+            alert("비밀번호를 입력해주세요.");
+            return;
+        }
+
+        if (
+            !confirm(
+                "정말로 회원탈퇴를 하시겠습니까? 이 작업은 되돌릴 수 없습니다.",
+            )
+        ) {
+            return;
+        }
+
+        setIsLoadingWithdraw(true);
+        try {
+            await withdrawUserAccount(withdrawPassword);
+            alert("회원탈퇴가 완료되었습니다.");
+            navigate("/");
+        } catch (error) {
+            alert(
+                error instanceof Error
+                    ? error.message
+                    : "회원탈퇴에 실패했습니다.",
+            );
+        } finally {
+            setIsLoadingWithdraw(false);
+            setShowWithdrawModal(false);
+            setWithdrawPassword("");
+        }
+    };
+
+    // 회원탈퇴 모달 닫기
+    const closeWithdrawModal = () => {
+        setShowWithdrawModal(false);
+        setWithdrawPassword("");
+    };
+
     return (
         <div className={`mypage-container ${isDark ? "dark" : ""}`}>
             <div className="mypage-wrapper">
@@ -48,6 +149,13 @@ const MyPage: React.FC = () => {
                         <div className="info-item">
                             <label>아이디:</label>
                             <span>{userInfo.userId}</span>
+                            <button
+                                className="withdraw-btn-small"
+                                onClick={() => setShowWithdrawModal(true)}
+                                title="회원탈퇴"
+                            >
+                                회원탈퇴
+                            </button>
                         </div>
                         <div className="info-item">
                             <label>닉네임:</label>
@@ -57,32 +165,83 @@ const MyPage: React.FC = () => {
                             <label>이메일:</label>
                             <span>{userInfo.email}</span>
                         </div>
-                        <div className="info-item">
-                            <label>회원번호:</label>
-                            <span>{userInfo.pid}</span>
-                        </div>
                     </div>
                 </div>
 
                 <div className="actions-section">
                     <h2>계정 관리</h2>
                     <div className="action-buttons">
-                        <button
-                            className="edit-profile-btn"
-                            onClick={() =>
-                                alert("프로필 수정 기능은 준비 중입니다.")
-                            }
-                        >
-                            프로필 수정
-                        </button>
-                        <button
-                            className="change-password-btn"
-                            onClick={() =>
-                                alert("비밀번호 변경 기능은 준비 중입니다.")
-                            }
-                        >
-                            비밀번호 변경
-                        </button>
+                        {!isEditingPassword ? (
+                            <button
+                                className="edit-profile-btn"
+                                onClick={() => setIsEditingPassword(true)}
+                            >
+                                비밀번호 변경
+                            </button>
+                        ) : (
+                            <div className="password-edit-section">
+                                <h3>비밀번호 변경</h3>
+                                <div className="password-form">
+                                    <div className="form-group">
+                                        <label>현재 비밀번호:</label>
+                                        <input
+                                            type="password"
+                                            value={currentPassword}
+                                            onChange={(e) =>
+                                                setCurrentPassword(
+                                                    e.target.value,
+                                                )
+                                            }
+                                            placeholder="현재 비밀번호 입력"
+                                            className="edit-input"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>새 비밀번호:</label>
+                                        <input
+                                            type="password"
+                                            value={newPassword}
+                                            onChange={(e) =>
+                                                setNewPassword(e.target.value)
+                                            }
+                                            placeholder="새 비밀번호 입력 (6자 이상)"
+                                            className="edit-input"
+                                        />
+                                    </div>
+                                    <div className="form-group">
+                                        <label>새 비밀번호 확인:</label>
+                                        <input
+                                            type="password"
+                                            value={confirmPassword}
+                                            onChange={(e) =>
+                                                setConfirmPassword(
+                                                    e.target.value,
+                                                )
+                                            }
+                                            placeholder="새 비밀번호 재입력"
+                                            className="edit-input"
+                                        />
+                                    </div>
+                                    <div className="edit-buttons">
+                                        <button
+                                            onClick={handlePasswordUpdate}
+                                            disabled={isLoadingUpdate}
+                                            className="save-btn"
+                                        >
+                                            {isLoadingUpdate
+                                                ? "변경 중..."
+                                                : "비밀번호 변경"}
+                                        </button>
+                                        <button
+                                            onClick={cancelPasswordEdit}
+                                            className="cancel-btn"
+                                        >
+                                            취소
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                         <button className="logout-btn" onClick={handleLogout}>
                             로그아웃
                         </button>
@@ -97,6 +256,49 @@ const MyPage: React.FC = () => {
                         홈으로 돌아가기
                     </button>
                 </div>
+
+                {/* 회원탈퇴 모달 */}
+                {showWithdrawModal && (
+                    <div className="modal-overlay">
+                        <div className="modal-content">
+                            <h3>회원탈퇴</h3>
+                            <p>정말로 회원탈퇴를 하시겠습니까?</p>
+                            <p className="warning-text">
+                                ⚠️ 이 작업은 되돌릴 수 없으며, 모든 데이터가
+                                삭제됩니다.
+                            </p>
+                            <div className="form-group">
+                                <label>비밀번호 확인:</label>
+                                <input
+                                    type="password"
+                                    value={withdrawPassword}
+                                    onChange={(e) =>
+                                        setWithdrawPassword(e.target.value)
+                                    }
+                                    placeholder="비밀번호를 입력하세요"
+                                    className="edit-input"
+                                />
+                            </div>
+                            <div className="modal-buttons">
+                                <button
+                                    onClick={handleWithdraw}
+                                    disabled={isLoadingWithdraw}
+                                    className="withdraw-confirm-btn"
+                                >
+                                    {isLoadingWithdraw
+                                        ? "처리 중..."
+                                        : "회원탈퇴"}
+                                </button>
+                                <button
+                                    onClick={closeWithdrawModal}
+                                    className="cancel-btn"
+                                >
+                                    취소
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );

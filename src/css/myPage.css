@@ -46,6 +46,13 @@
     padding-bottom: 10px;
 }
 
+.mypage-wrapper h3 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
 /* 사용자 정보 섹션 */
 .user-info-section {
     margin-bottom: 40px;
@@ -75,6 +82,123 @@
 .info-item span {
     color: #666;
     font-size: 1.1rem;
+}
+
+/* 편집 관련 스타일 */
+.info-with-edit {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
+}
+
+.edit-btn {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.edit-btn:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+.edit-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1;
+}
+
+.edit-input {
+    padding: 10px 12px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.edit-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.save-btn {
+    background: #667eea;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.save-btn:hover:not(:disabled) {
+    background: #5a6fd8;
+    transform: translateY(-1px);
+}
+
+.save-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.cancel-btn {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cancel-btn:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+/* 비밀번호 편집 섹션 */
+.password-edit-section {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 15px;
+    border: 2px solid #667eea;
+}
+
+.password-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-group label {
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9rem;
 }
 
 /* 계정 관리 섹션 */
@@ -121,13 +245,141 @@
 }
 
 .logout-btn {
-    background: #dc3545;
+    background-color: #6c757d;
     color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
 }
 
 .logout-btn:hover {
-    background: #c82333;
-    transform: translateY(-2px);
+    background-color: #5a6268;
+}
+
+.withdraw-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.withdraw-btn:hover {
+    background-color: #c82333;
+}
+
+.withdraw-btn-small {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    margin-left: 15px;
+    white-space: nowrap;
+}
+
+.withdraw-btn-small:hover {
+    background-color: #c82333;
+}
+
+/* info-item 내부 버튼 정렬 */
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.info-item label {
+    min-width: 80px;
+    font-weight: bold;
+}
+
+.info-item span {
+    flex: 1;
+}
+
+/* 모달 스타일 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+}
+
+.modal-content h3 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.modal-content p {
+    margin-bottom: 15px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.warning-text {
+    color: #dc3545 !important;
+    font-weight: bold;
+    font-size: 14px;
+    background-color: #f8d7da;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #f5c6cb;
+}
+
+.modal-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.withdraw-confirm-btn {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.withdraw-confirm-btn:hover:not(:disabled) {
+    background-color: #c82333;
+}
+
+.withdraw-confirm-btn:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
 }
 
 /* 뒤로가기 섹션 */
@@ -177,6 +429,16 @@
     .action-buttons {
         gap: 12px;
     }
+
+    .edit-buttons {
+        flex-direction: column;
+    }
+
+    .info-with-edit {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
 }
 
 /* 다크모드 지원 */
@@ -190,7 +452,8 @@
 }
 
 .mypage-container.dark .mypage-wrapper h1,
-.mypage-container.dark .mypage-wrapper h2 {
+.mypage-container.dark .mypage-wrapper h2,
+.mypage-container.dark .mypage-wrapper h3 {
     color: white;
 }
 
@@ -205,4 +468,43 @@
 
 .mypage-container.dark .info-item span {
     color: #b0b0b0;
+}
+
+.mypage-container.dark .password-edit-section {
+    background: #2a2a2a;
+    border-color: #667eea;
+}
+
+.mypage-container.dark .edit-input {
+    background: #3a3a3a;
+    border-color: #555;
+    color: white;
+}
+
+.mypage-container.dark .edit-input:focus {
+    border-color: #667eea;
+}
+
+.mypage-container.dark .form-group label {
+    color: #e0e0e0;
+}
+
+/* 다크모드 모달 스타일 */
+.dark .modal-content {
+    background-color: #2d3748;
+    color: #e2e8f0;
+}
+
+.dark .modal-content h3 {
+    color: #e2e8f0;
+}
+
+.dark .modal-content p {
+    color: #a0aec0;
+}
+
+.dark .warning-text {
+    background-color: #742a2a;
+    border-color: #c53030;
+    color: #fed7d7 !important;
 }

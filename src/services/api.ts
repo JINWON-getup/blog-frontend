@@ -356,6 +356,11 @@ export interface UpdatePasswordRequest {
     newPassword: string;
 }
 
+export interface WithdrawRequest {
+    pid: number;
+    password: string;
+}
+
 export interface UpdateResponse {
     success: boolean;
     message: string;
@@ -366,6 +371,11 @@ export interface UpdateResponse {
         phoneNumber: string;
         nickName: string;
     };
+}
+
+export interface WithdrawResponse {
+    success: boolean;
+    message: string;
 }
 
 // 비밀번호 변경 API 함수
@@ -406,6 +416,63 @@ export const updatePassword = async (
         return response.data;
     } catch (error) {
         console.error("비밀번호 변경 API 요청 실패:", error);
+
+        // Axios 에러인 경우 더 자세한 정보 출력
+        if (error && typeof error === "object" && "response" in error) {
+            const axiosError = error as {
+                response: { status: number; data: unknown; headers: unknown };
+            };
+            console.error("에러 응답 상태:", axiosError.response.status);
+            console.error("에러 응답 데이터:", axiosError.response.data);
+            console.error("에러 응답 헤더:", axiosError.response.headers);
+
+            // 서버에서 보낸 에러 메시지가 있으면 사용
+            if (
+                axiosError.response?.data &&
+                typeof axiosError.response.data === "object" &&
+                "message" in axiosError.response.data
+            ) {
+                throw new Error(String(axiosError.response.data.message));
+            }
+        }
+
+        throw error;
+    }
+};
+
+// 회원탈퇴 API 함수
+export const withdrawUser = async (
+    withdrawData: WithdrawRequest,
+): Promise<WithdrawResponse> => {
+    console.log("회원탈퇴 요청 데이터:", withdrawData);
+    console.log(
+        "회원탈퇴 API URL:",
+        `${API_BASE_URL}/api/users/${withdrawData.pid}/withdraw`,
+    );
+
+    try {
+        const response = await axios.post<WithdrawResponse>(
+            `${API_BASE_URL}/api/users/${withdrawData.pid}/withdraw`,
+            { password: withdrawData.password },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+
+        console.log("회원탈퇴 응답:", response.data);
+        console.log("응답 상태:", response.status);
+
+        if (!response.data.success) {
+            throw new Error(
+                response.data.message || "회원탈퇴에 실패했습니다.",
+            );
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("회원탈퇴 API 요청 실패:", error);
 
         // Axios 에러인 경우 더 자세한 정보 출력
         if (error && typeof error === "object" && "response" in error) {

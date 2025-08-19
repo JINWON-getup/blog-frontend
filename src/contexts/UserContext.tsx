@@ -5,6 +5,7 @@ import {
     type ReactElement,
     useEffect,
 } from "react";
+import { updatePassword, withdrawUser } from "../services/api";
 
 interface UserInfo {
     userId: string;
@@ -20,6 +21,11 @@ interface UserContextType {
     isLoading: boolean;
     login: (info: UserInfo) => void;
     logout: () => void;
+    updateUserPassword: (
+        currentPassword: string,
+        newPassword: string,
+    ) => Promise<void>;
+    withdrawUserAccount: (password: string) => Promise<void>;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -62,6 +68,43 @@ export const UserProvider = ({
         localStorage.removeItem("userInfo");
     };
 
+    const updateUserPassword = async (
+        currentPassword: string,
+        newPassword: string,
+    ): Promise<void> => {
+        if (!userInfo) {
+            throw new Error("로그인이 필요합니다.");
+        }
+
+        try {
+            await updatePassword({
+                pid: userInfo.pid, // userId 대신 pid 사용
+                currentPassword,
+                newPassword,
+            });
+        } catch (error) {
+            console.error("비밀번호 업데이트 실패:", error);
+            throw error;
+        }
+    };
+
+    const withdrawUserAccount = async (password: string): Promise<void> => {
+        if (!userInfo) {
+            throw new Error("로그인이 필요합니다.");
+        }
+
+        try {
+            await withdrawUser({
+                pid: userInfo.pid,
+                password,
+            });
+            logout(); // 회원탈퇴 성공 시 로그아웃
+        } catch (error) {
+            console.error("회원탈퇴 실패:", error);
+            throw error;
+        }
+    };
+
     const isLoggedIn = !!userInfo;
 
     return (
@@ -73,6 +116,8 @@ export const UserProvider = ({
                 isLoading,
                 login,
                 logout,
+                updateUserPassword,
+                withdrawUserAccount,
             }}
         >
             {children}
