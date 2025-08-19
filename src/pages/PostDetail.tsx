@@ -3,12 +3,14 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import type { Post } from "../services/api";
 import { useAdmin } from "../contexts/AdminContext";
+import { useUser } from "../contexts/UserContext";
 import "../css/postDetail.css";
 
 export default function PostDetail() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
     const { adminInfo, isLoggedIn } = useAdmin();
+    const { userInfo } = useUser();
     const [post, setPost] = useState<Post | null>(null);
     const [loading, setLoading] = useState(true);
     const [isEditing, setIsEditing] = useState(false);
@@ -104,12 +106,13 @@ export default function PostDetail() {
             // 서버가 기대하는 형식으로 데이터 구성
             const updatedPost = {
                 id: post.id,
+                userId: post.userId,
                 title: editForm.title,
                 boardType: editForm.boardType,
                 category: editForm.category,
                 content: editForm.content,
                 tags: editForm.tags, // 이미 문자열 형태이므로 그대로 사용
-                author: post.author || "익명", // author가 없을 경우 기본값 설정
+                nickName: userInfo?.nickName || post.nickName || "익명", // 현재 로그인한 사용자의 닉네임 사용
                 createdAt: post.createdAt, // 기존 값 유지
             };
 
@@ -533,7 +536,7 @@ export default function PostDetail() {
                                 </span>
                             </label>
                             <input
-                                value={post.author || "익명"}
+                                value={userInfo?.nickName || "익명"}
                                 disabled
                                 placeholder="작성자"
                                 className="disabled-field"
@@ -560,17 +563,13 @@ export default function PostDetail() {
                 </button>
                 <h1 className="post-title">{post.title}</h1>
                 <div className="post-meta">
-                    <span className="post-category">[{post.category}]</span>
-                    {post.author && (
-                        <span className="post-author">
-                            작성자: {post.author}
-                        </span>
-                    )}
-                    {post.createdAt && (
-                        <span className="post-date">
-                            {formatDate(post.createdAt)}
-                        </span>
-                    )}
+                    <span className="post-category">{post.category}</span>
+                    <span className="post-author">작성자: {post.nickName}</span>
+                    <span className="post-date">
+                        {post.createdAt
+                            ? new Date(post.createdAt).toLocaleDateString()
+                            : "날짜 없음"}
+                    </span>
                 </div>
             </div>
 
