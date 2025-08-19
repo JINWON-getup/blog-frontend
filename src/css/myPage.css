@@ -214,7 +214,8 @@
 
 .edit-profile-btn,
 .change-password-btn,
-.logout-btn {
+.logout-btn,
+.withdraw-btn {
     padding: 15px 20px;
     border: none;
     border-radius: 10px;
@@ -245,33 +246,21 @@
 }
 
 .logout-btn {
-    background-color: #6c757d;
+    background-color: #dc3545;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
 }
 
 .logout-btn:hover {
-    background-color: #5a6268;
+    background-color: #c82333;
 }
 
 .withdraw-btn {
-    background-color: #dc3545;
+    background-color: #fd7e14;
     color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
 }
 
 .withdraw-btn:hover {
-    background-color: #c82333;
+    background-color: #e8690b;
 }
 
 .withdraw-btn-small {

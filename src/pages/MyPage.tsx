@@ -150,11 +150,10 @@ const MyPage: React.FC = () => {
                             <label>아이디:</label>
                             <span>{userInfo.userId}</span>
                             <button
-                                className="withdraw-btn-small"
-                                onClick={() => setShowWithdrawModal(true)}
-                                title="회원탈퇴"
+                                className="logout-btn"
+                                onClick={handleLogout}
                             >
-                                회원탈퇴
+                                로그아웃
                             </button>
                         </div>
                         <div className="info-item">
@@ -242,8 +241,11 @@ const MyPage: React.FC = () => {
                                 </div>
                             </div>
                         )}
-                        <button className="logout-btn" onClick={handleLogout}>
-                            로그아웃
+                        <button
+                            className="withdraw-btn"
+                            onClick={() => setShowWithdrawModal(true)}
+                        >
+                            회원탈퇴
                         </button>
                     </div>
                 </div>
