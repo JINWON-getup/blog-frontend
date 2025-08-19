@@ -14,6 +14,19 @@ export interface Post {
     updatedAt?: string;
 }
 
+// 댓글 인터페이스 추가
+export interface Comment {
+    id?: number;
+    content: string;
+    postId: number;
+    userId: number;
+    parentCommentId?: number;
+    isReply: boolean;
+    createdAt?: string;
+    updatedAt?: string;
+    nickName?: string; // 프론트엔드에서 사용할 닉네임
+}
+
 // API 기본 URL (공통으로 사용)
 export const API_BASE_URL =
     import.meta.env.VITE_API_URL || "http://localhost:8080";
@@ -495,4 +508,48 @@ export const withdrawUser = async (
 
         throw error;
     }
+};
+
+// 댓글 관련 API 함수들
+export const createComment = async (
+    comment: Omit<Comment, "id" | "createdAt" | "updatedAt">,
+): Promise<Comment> => {
+    const response = await axios.post<Comment>(
+        `${API_BASE_URL}/api/comments`,
+        comment,
+    );
+    return response.data;
+};
+
+export const getCommentsByPostId = async (
+    postId: number,
+): Promise<Comment[]> => {
+    const response = await axios.get<Comment[]>(
+        `${API_BASE_URL}/api/comments/post/${postId}`,
+    );
+    return response.data;
+};
+
+export const updateComment = async (
+    id: number,
+    comment: Pick<Comment, "content">,
+): Promise<Comment> => {
+    const response = await axios.put<Comment>(
+        `${API_BASE_URL}/api/comments/${id}`,
+        comment,
+    );
+    return response.data;
+};
+
+export const deleteComment = async (id: number): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/api/comments/${id}`);
+};
+
+export const getCommentCountByPostId = async (
+    postId: number,
+): Promise<number> => {
+    const response = await axios.get<number>(
+        `${API_BASE_URL}/api/comments/post/${postId}/count`,
+    );
+    return response.data;
 };

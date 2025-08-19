@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { register } from "../services/api";
 import { useTheme } from "../components/ThemeContext";
-import { useUser } from "../contexts/UserContext";
+
 import "../css/signUp.css";
 
 const Register: React.FC = () => {
     const navigate = useNavigate();
     const { isDark } = useTheme();
-    const { login } = useUser();
+
     const [formData, setFormData] = useState({
         userId: "",
         nickName: "",

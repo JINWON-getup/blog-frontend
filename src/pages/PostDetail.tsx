@@ -4,6 +4,7 @@ import axios from "axios";
 import type { Post } from "../services/api";
 import { useAdmin } from "../contexts/AdminContext";
 import { useUser } from "../contexts/UserContext";
+import CommentSection from "../components/CommentSection";
 import "../css/postDetail.css";
 
 export default function PostDetail() {
@@ -593,6 +594,9 @@ export default function PostDetail() {
                     </>
                 )}
             </div>
+
+            {/* 댓글 섹션 */}
+            <CommentSection postId={post.id!} />
         </div>
     );
 }

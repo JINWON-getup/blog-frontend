@@ -26,25 +26,13 @@ export default function About() {
                         </div>
                         <div className="category-item">
                             <h3>🇯🇵 Japanese</h3>
-                            <p>JLPT, 문법, 회화 등 일본어 학습 관련 글</p>
-                        </div>
-                        <div className="category-item">
-                            <h3>🌍 Culture</h3>
-                            <p>다양한 문화와 관습에 대한 글</p>
+                            <p>일본어, 문화 등 일본 관련 글</p>
                         </div>
                         <div className="category-item">
                             <h3>📅 Daily</h3>
-                            <p>일상, 게임, 영화, 음악 등 생활 관련 글</p>
+                            <p>일상, 게임, 애니메이션, 음악 등 생활 관련 글</p>
                         </div>
                     </div>
-                </section>
-
-                <section className="about-section">
-                    <h2>연락처</h2>
-                    <p>
-                        궁금한 점이나 제안사항이 있으시면 언제든 연락주세요.
-                        함께 성장하는 공간이 되었으면 합니다.
-                    </p>
                 </section>
             </div>
         </div>
