@@ -289,16 +289,16 @@ export default function AdminDashboard() {
                 <h2>관리자 정보</h2>
                 <div className="admin-info-card">
                     <div className="info-item">
-                        <span className="label">이름:</span>
-                        <span className="value">{adminInfo.adminName}</span>
+                        <span className="label">이름: <span className="value">{adminInfo.adminName}</span></span>
+                        
                     </div>
                     <div className="info-item">
-                        <span className="label">아이디:</span>
-                        <span className="value">{adminInfo.id}</span>
+                        <span className="label">아이디: <span className="value">{adminInfo.id}</span></span>
+                        
                     </div>
                     <div className="info-item">
-                        <span className="label">이메일:</span>
-                        <span className="value">{adminInfo.email}</span>
+                        <span className="label">이메일: <span className="value">{adminInfo.email}</span></span>
+                        
                     </div>
                 </div>
             </section>

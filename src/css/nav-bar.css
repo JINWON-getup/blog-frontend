@@ -5,7 +5,7 @@
     align-items: center;
     border-bottom: 1px solid #ddd;
     padding: 5px 5px;
-    transition: all 0.3s ease; /* 부드러운 애니메이션 */
+    transition: all 0.3s ease; 
 }
 
 /* 스크롤 후 고정 상태 */

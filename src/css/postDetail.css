@@ -297,13 +297,14 @@
 
 .edit-button,
 .delete-button {
-    padding: 10px 20px;
+    padding: 0.25rem 0.75rem;
     border: none;
-    border-radius: 6px;
-    font-size: 14px;
+    border-radius: 4px;
+    font-size: 0.8rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
 }
 
 .edit-button {
