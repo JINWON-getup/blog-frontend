@@ -407,6 +407,9 @@
     color: #333;
     margin-bottom: 0.25rem;
     line-height: 1.4;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .post-content-preview-small {
@@ -552,6 +555,9 @@
     font-weight: 600;
     color: #333;
     margin: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: 100%;
 }
 
 .post-category {

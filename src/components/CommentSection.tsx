@@ -216,11 +216,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                         placeholder="댓글을 작성하세요..."
                         className="comment-input"
                         rows={3}
-                        maxLength={500}
+                        maxLength={300}
                     />
                     <div className="comment-form-footer">
                         <span className="char-counter">
-                            {newComment.length}/500
+                            {newComment.length}/300
                         </span>
                         <button
                             type="submit"
@@ -259,11 +259,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                                         }
                                         className="comment-edit-input"
                                         rows={3}
-                                        maxLength={500}
+                                        maxLength={300}
                                     />
                                     <div className="comment-edit-actions">
                                         <span className="char-counter">
-                                            {editContent.length}/500
+                                            {editContent.length}/300
                                         </span>
                                         <button
                                             onClick={() =>

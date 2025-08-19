@@ -444,7 +444,7 @@ export default function PostDetail() {
                             maxLength={50}
                         />
                         <div className="char-counter">
-                            {editForm.title.length}/50
+                            {editForm.title.length}/40
                         </div>
                     </div>
 
@@ -550,9 +550,11 @@ export default function PostDetail() {
                 <button onClick={() => navigate(-1)} className="back-button">
                     ← 뒤로 가기
                 </button>
-                <h1 className="post-title">{post.title}</h1>
-                <div className="post-meta">
-                    <span className="post-category">{post.category}</span>
+            </div>
+            <h1 className="post-title">{post.title}</h1>
+            <div className="post-meta">
+                <span className="post-category">{post.category}</span>
+                <div className="post-meta-right">
                     <span className="post-author">작성자: {post.nickName}</span>
                     <span className="post-date">
                         {post.createdAt
