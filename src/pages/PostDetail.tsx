@@ -305,18 +305,6 @@ export default function PostDetail() {
         return tags ? tags.split(",").map((tag) => tag.trim()) : [];
     };
 
-    const formatDate = (dateString?: string) => {
-        if (!dateString) return "";
-        const date = new Date(dateString);
-        return date.toLocaleDateString("ko-KR", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit",
-            hour: "2-digit",
-            minute: "2-digit",
-        });
-    };
-
     if (loading) {
         return (
             <div className="post-detail-container">
@@ -590,12 +578,20 @@ export default function PostDetail() {
             </div>
 
             <div className="post-actions">
-                <button onClick={handleEdit} className="edit-button">
-                    수정
-                </button>
-                <button onClick={handleDelete} className="delete-button">
-                    삭제
-                </button>
+                {/* 본인이 작성한 게시글이거나 관리자인 경우에만 수정/삭제 버튼 표시 */}
+                {(userInfo?.pid === post.userId || isLoggedIn) && (
+                    <>
+                        <button onClick={handleEdit} className="edit-button">
+                            수정
+                        </button>
+                        <button
+                            onClick={handleDelete}
+                            className="delete-button"
+                        >
+                            삭제
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     );
