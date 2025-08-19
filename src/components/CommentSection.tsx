@@ -11,7 +11,7 @@ interface CommentSectionProps {
 
 const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     const { userInfo } = useUser();
-    const { isLoggedIn } = useAdmin();
+    const { isLoggedIn, adminInfo } = useAdmin();
     const [comments, setComments] = useState<Comment[]>([]);
     const [newComment, setNewComment] = useState("");
     const [editingCommentId, setEditingCommentId] = useState<number | null>(
@@ -72,10 +72,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!newComment.trim()) return;
 
         try {
+            // userId 설정 - 관리자와 일반 사용자 구분
+            let userId: number;
+            if (isLoggedIn && adminInfo) {
+                if (adminInfo.id && adminInfo.id !== "") {
+                    const parsedId = parseInt(adminInfo.id.toString());
+                    if (!isNaN(parsedId)) {
+                        userId = parsedId;
+                    } else {
+                        userId = 9999; // 기본 관리자 ID
+                    }
+                } else {
+                    userId = 9999; // 기본 관리자 ID
+                }
+            } else {
+                userId = userInfo?.pid || 0;
+            }
+
             const commentData = {
                 content: newComment.trim(),
                 postId: postId,
-                userId: userInfo?.pid || 0,
+                userId: userId,
                 parentCommentId: undefined,
                 isReply: false,
             };
@@ -84,7 +101,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             // 응답에 닉네임 정보 추가
             const commentWithNickname = {
                 ...response,
-                nickName: userInfo?.nickName || "익명",
+                nickName:
+                    isLoggedIn && adminInfo
+                        ? adminInfo.adminName
+                        : userInfo?.nickName || "익명",
             };
             setComments((prev) => [commentWithNickname, ...prev]);
             setNewComment("");
@@ -176,10 +196,27 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!replyContent.trim()) return;
 
         try {
+            // userId 설정 - 관리자와 일반 사용자 구분
+            let userId: number;
+            if (isLoggedIn && adminInfo) {
+                if (adminInfo.id && adminInfo.id !== "") {
+                    const parsedId = parseInt(adminInfo.id.toString());
+                    if (!isNaN(parsedId)) {
+                        userId = parsedId;
+                    } else {
+                        userId = 9999; // 기본 관리자 ID
+                    }
+                } else {
+                    userId = 9999; // 기본 관리자 ID
+                }
+            } else {
+                userId = userInfo?.pid || 0;
+            }
+
             const replyData = {
                 content: replyContent.trim(),
                 postId: postId,
-                userId: userInfo?.pid || 0,
+                userId: userId,
                 parentCommentId: parentCommentId,
                 isReply: true,
             };
@@ -187,7 +224,10 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             const response = await createComment(replyData);
             const replyWithNickname = {
                 ...response,
-                nickName: userInfo?.nickName || "익명",
+                nickName:
+                    isLoggedIn && adminInfo
+                        ? adminInfo.adminName
+                        : userInfo?.nickName || "익명",
             };
 
             setComments((prev) => [replyWithNickname, ...prev]);

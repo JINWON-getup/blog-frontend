@@ -525,7 +525,11 @@ export default function PostDetail() {
                                 </span>
                             </label>
                             <input
-                                value={userInfo?.nickName || "익명"}
+                                value={
+                                    isLoggedIn && adminInfo
+                                        ? adminInfo.adminName
+                                        : userInfo?.nickName || "익명"
+                                }
                                 disabled
                                 placeholder="작성자"
                                 className="disabled-field"

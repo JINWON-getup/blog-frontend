@@ -168,7 +168,10 @@ const CreatePost: React.FC = () => {
                 boardType: finalBoardType,
                 category,
                 tags: tagsString,
-                nickName: userInfo?.nickName || "사용자",
+                nickName:
+                    isAdminLoggedIn && adminInfo
+                        ? adminInfo.adminName
+                        : userInfo?.nickName || "사용자",
             });
 
             console.log("게시글 생성 성공:", result);
