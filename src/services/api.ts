@@ -3,12 +3,13 @@ import axios from "axios";
 // src/services/api.ts
 export interface Post {
     id?: number;
+    userId: number;
     title: string;
     content: string;
-    author: string;
     boardType: string;
     category: string;
     tags: string; // 배열에서 문자열로 변경!
+    nickName: string;
     createdAt?: string;
     updatedAt?: string;
 }
@@ -341,6 +342,87 @@ export const login = async (
                 throw new Error(
                     "서버에 연결할 수 없습니다. 서버가 실행 중인지 확인해주세요.",
                 );
+            }
+        }
+
+        throw error;
+    }
+};
+
+// 사용자 정보 업데이트 관련 인터페이스
+export interface UpdatePasswordRequest {
+    pid: number; // userId 대신 pid 사용
+    currentPassword: string;
+    newPassword: string;
+}
+
+export interface UpdateResponse {
+    success: boolean;
+    message: string;
+    user?: {
+        pid: number;
+        userId: string;
+        email: string;
+        phoneNumber: string;
+        nickName: string;
+    };
+}
+
+// 비밀번호 변경 API 함수
+export const updatePassword = async (
+    updateData: UpdatePasswordRequest,
+): Promise<UpdateResponse> => {
+    console.log("비밀번호 변경 요청 데이터:", updateData);
+    console.log(
+        "비밀번호 변경 API URL:",
+        `${API_BASE_URL}/api/users/${updateData.pid}`,
+    );
+
+    // 백엔드가 기대하는 User 객체 형태로 변환
+    const userDetails = {
+        userPassword: updateData.newPassword, // 백엔드가 기대하는 필드명
+    };
+
+    try {
+        const response = await axios.put<UpdateResponse>(
+            `${API_BASE_URL}/api/users/${updateData.pid}`,
+            userDetails,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        );
+
+        console.log("비밀번호 변경 응답:", response.data);
+        console.log("응답 상태:", response.status);
+
+        if (!response.data.success) {
+            throw new Error(
+                response.data.message || "비밀번호 변경에 실패했습니다.",
+            );
+        }
+
+        return response.data;
+    } catch (error) {
+        console.error("비밀번호 변경 API 요청 실패:", error);
+
+        // Axios 에러인 경우 더 자세한 정보 출력
+        if (error && typeof error === "object" && "response" in error) {
+            const axiosError = error as {
+                response: { status: number; data: unknown; headers: unknown };
+            };
+            console.error("에러 응답 상태:", axiosError.response.status);
+            console.error("에러 응답 데이터:", axiosError.response.data);
+            console.error("에러 응답 헤더:", axiosError.response.headers);
+
+            // 서버에서 보낸 에러 메시지가 있으면 사용
+            if (
+                axiosError.response?.data &&
+                typeof axiosError.response.data === "object" &&
+                "message" in axiosError.response.data
+            ) {
+                throw new Error(String(axiosError.response.data.message));
             }
         }
 

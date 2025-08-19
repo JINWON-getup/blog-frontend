@@ -12,7 +12,7 @@ const PostList: React.FC = () => {
         <ul>
             {posts.map((post) => (
                 <li key={post.id}>
-                    <strong>{post.title}</strong> - {post.author}
+                    <strong>{post.title}</strong> - {post.nickName}
                 </li>
             ))}
         </ul>

@@ -269,9 +269,9 @@ export default function Board({ boardType }: BoardProps) {
                                 )}
 
                                 <div className="card-meta">
-                                    {post.author && (
+                                    {post.nickName && (
                                         <span className="card-author">
-                                            작성자: {post.author}
+                                            작성자: {post.nickName}
                                         </span>
                                     )}
                                     {post.createdAt && (

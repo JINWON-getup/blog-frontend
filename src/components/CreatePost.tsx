@@ -12,27 +12,19 @@ const CreatePost: React.FC = () => {
     const { userInfo, isLoggedIn: isUserLoggedIn } = useUser();
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
-    const [author, setAuthor] = useState("");
     const [boardType, setBoardType] = useState("");
     const [category, setCategory] = useState("");
     const [tags, setTags] = useState<string[]>([]);
     const [tagInput, setTagInput] = useState("");
 
-    // 로그인 상태 확인 및 작성자 자동 입력
+    // 로그인 상태 확인
     useEffect(() => {
         if (!isAdminLoggedIn && !isUserLoggedIn) {
             alert("로그인이 필요합니다.");
             navigate("/login");
             return;
         }
-
-        // 작성자 자동 설정
-        if (isAdminLoggedIn && adminInfo) {
-            setAuthor(adminInfo.adminName || "관리자");
-        } else if (isUserLoggedIn && userInfo) {
-            setAuthor(userInfo.nickName || userInfo.userId);
-        }
-    }, [isAdminLoggedIn, isUserLoggedIn, adminInfo, userInfo, navigate]);
+    }, [isAdminLoggedIn, isUserLoggedIn, navigate]);
 
     // URL state에서 boardType을 받아와서 초기값 설정
     useEffect(() => {
@@ -126,7 +118,6 @@ const CreatePost: React.FC = () => {
         console.log("게시글 생성 시도:", {
             title,
             content,
-            author,
             boardType: finalBoardType,
             category,
             tags: tagsString,
@@ -135,12 +126,15 @@ const CreatePost: React.FC = () => {
 
         try {
             const result = await createPost({
+                userId: isAdminLoggedIn 
+                    ? (adminInfo?.id ? parseInt(adminInfo.id) : 0) 
+                    : (userInfo?.pid || 0),
                 title,
                 content,
-                author,
                 boardType: finalBoardType,
                 category,
                 tags: tagsString,
+                nickName: userInfo?.nickName || "사용자",  // ← 여기에 추가!
             });
 
             console.log("게시글 생성 성공:", result);
@@ -149,7 +143,6 @@ const CreatePost: React.FC = () => {
             // 폼 초기화
             setTitle("");
             setContent("");
-            setAuthor("");
             setBoardType("");
             setCategory("");
             setTags([]);
@@ -353,7 +346,11 @@ const CreatePost: React.FC = () => {
                                 <label>작성자</label>
                                 <div className="admin-author-info">
                                     <span className="admin-name">
-                                        {author || "사용자"}
+                                        {isAdminLoggedIn
+                                            ? adminInfo?.adminName || "관리자"
+                                            : userInfo?.nickName ||
+                                              userInfo?.userId ||
+                                              "사용자"}
                                     </span>
                                     <span className="admin-role">
                                         {isAdminLoggedIn ? "관리자" : "사용자"}
