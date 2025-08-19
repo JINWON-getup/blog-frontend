@@ -38,6 +38,11 @@ export const getPosts = async (): Promise<Post[]> => {
     return res.data;
 };
 
+// 관리자용 게시글 삭제 API
+export const deletePost = async (postId: number): Promise<void> => {
+    await axios.delete(`${API_URL}/${postId}`);
+};
+
 export const createPost = async (
     post: Omit<Post, "id" | "createdAt" | "updatedAt">,
 ): Promise<Post> => {
@@ -508,6 +513,34 @@ export const withdrawUser = async (
 
         throw error;
     }
+};
+
+// 사용자 관련 인터페이스
+export interface User {
+    pid: number;
+    userId: string;
+    nickName: string;
+    email: string;
+    phoneNumber: string;
+    experience: number;
+    level: number;
+    point: number;
+    totalPost: number;
+    totalComment: number;
+    totalLike: number;
+    consecutiveLogin: number;
+    createdAt?: string;
+    updatedAt?: string;
+}
+
+// 사용자 관련 API 함수들
+export const getUsers = async (): Promise<User[]> => {
+    const response = await axios.get<User[]>(`${API_BASE_URL}/api/users`);
+    return response.data;
+};
+
+export const deleteUser = async (pid: number): Promise<void> => {
+    await axios.delete(`${API_BASE_URL}/api/users/${pid}`);
 };
 
 // 댓글 관련 API 함수들
