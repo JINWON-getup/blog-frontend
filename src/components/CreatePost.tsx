@@ -114,6 +114,38 @@ const CreatePost: React.FC = () => {
             return;
         }
 
+        // userId 설정 - 더 안전한 검증 추가
+        let userId: number;
+
+        if (isAdminLoggedIn && adminInfo) {
+            // adminInfo.id가 존재하는지 확인하고 숫자로 변환
+            if (adminInfo.id && adminInfo.id !== "") {
+                const parsedId = parseInt(adminInfo.id.toString());
+                if (!isNaN(parsedId)) {
+                    userId = parsedId;
+                } else {
+                    console.error(
+                        "adminInfo.id를 숫자로 변환할 수 없음:",
+                        adminInfo.id,
+                    );
+                    // 기본 관리자 ID 사용 (예: 9999)
+                    userId = 9999;
+                }
+            } else {
+                console.error("adminInfo.id가 비어있음:", adminInfo.id);
+                // 기본 관리자 ID 사용 (예: 9999)
+                userId = 9999;
+            }
+        } else {
+            userId = userInfo?.pid || 0;
+        }
+
+        // userId가 유효한지 확인 (0이 아닌 경우만 허용)
+        if (userId === 0) {
+            alert("사용자 ID를 가져올 수 없습니다. 다시 로그인해주세요.");
+            return;
+        }
+
         // 디버깅을 위한 로그 추가
         console.log("게시글 생성 시도:", {
             title,
@@ -122,19 +154,21 @@ const CreatePost: React.FC = () => {
             category,
             tags: tagsString,
             tagsLength: tagsString.length,
+            userId,
+            isAdminLoggedIn,
+            adminInfo,
+            userInfo,
         });
 
         try {
             const result = await createPost({
-                userId: isAdminLoggedIn 
-                    ? (adminInfo?.id ? parseInt(adminInfo.id) : 0) 
-                    : (userInfo?.pid || 0),
+                userId,
                 title,
                 content,
                 boardType: finalBoardType,
                 category,
                 tags: tagsString,
-                nickName: userInfo?.nickName || "사용자",  // ← 여기에 추가!
+                nickName: userInfo?.nickName || "사용자",
             });
 
             console.log("게시글 생성 성공:", result);
