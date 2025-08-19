@@ -13,6 +13,12 @@ export default function Intro() {
     const [isFading, setIsFading] = useState(false);
 
     useEffect(() => {
+        console.log("Intro 컴포넌트 마운트됨");
+        console.log("현재 테마:", isDark ? "다크" : "라이트");
+        console.log("프로필 이미지:", currentImage);
+    }, []);
+
+    useEffect(() => {
         if (currentImage === (isDark ? profileNight : profileMorning)) return;
 
         setIsFading(true);
@@ -23,6 +29,12 @@ export default function Intro() {
         }, 100);
     }, [isDark]);
 
+    const handleImageError = (
+        e: React.SyntheticEvent<HTMLImageElement, Event>,
+    ) => {
+        console.error("이미지 로딩 실패:", e.currentTarget.src);
+    };
+
     return (
         <section className="intro-section">
             <div className="intro-container">
@@ -32,6 +44,7 @@ export default function Intro() {
                     className={`intro-image ${
                         isFading ? "opacity-0" : "opacity-100"
                     }`}
+                    onError={handleImageError}
                 />
                 <h1 className="intro-title">JINmono</h1>
                 <p className="intro-description">

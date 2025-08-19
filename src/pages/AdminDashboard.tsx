@@ -62,6 +62,8 @@ export default function AdminDashboard() {
         } catch (error) {
             console.error("게시글 목록을 가져오는 중 오류:", error);
             alert("게시글 목록을 가져오는데 실패했습니다.");
+            setPosts([]);
+            setFilteredPosts([]);
         } finally {
             setLoading(false);
         }
@@ -73,11 +75,11 @@ export default function AdminDashboard() {
         setCurrentPage(1); // 검색 시 첫 페이지로 이동
 
         if (!searchValue.trim()) {
-            setFilteredPosts(posts);
+            setFilteredPosts(posts || []);
             return;
         }
 
-        const filtered = posts.filter(
+        const filtered = (posts || []).filter(
             (post) =>
                 post.title.toLowerCase().includes(searchValue.toLowerCase()) ||
                 post.content
@@ -94,8 +96,11 @@ export default function AdminDashboard() {
     // 페이지네이션 계산
     const indexOfLastPost = currentPage * postsPerPage;
     const indexOfFirstPost = indexOfLastPost - postsPerPage;
-    const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-    const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+    const currentPosts = (filteredPosts || []).slice(
+        indexOfFirstPost,
+        indexOfLastPost,
+    );
+    const totalPages = Math.ceil((filteredPosts || []).length / postsPerPage);
 
     // 페이지 변경
     const handlePageChange = (pageNumber: number) => {
@@ -131,6 +136,8 @@ export default function AdminDashboard() {
         } catch (error) {
             console.error("사용자 목록을 가져오는 중 오류:", error);
             alert("사용자 목록을 가져오는데 실패했습니다.");
+            setUsers([]);
+            setFilteredUsers([]);
         } finally {
             setUserLoading(false);
         }
@@ -142,11 +149,11 @@ export default function AdminDashboard() {
         setUserCurrentPage(1); // 검색 시 첫 페이지로 이동
 
         if (!searchValue.trim()) {
-            setFilteredUsers(users);
+            setFilteredUsers(users || []);
             return;
         }
 
-        const filtered = users.filter(
+        const filtered = (users || []).filter(
             (user) =>
                 user.userId.toLowerCase().includes(searchValue.toLowerCase()) ||
                 user.nickName
@@ -161,8 +168,13 @@ export default function AdminDashboard() {
     // 사용자 페이지네이션 계산
     const indexOfLastUser = userCurrentPage * usersPerPage;
     const indexOfFirstUser = indexOfLastUser - usersPerPage;
-    const currentUsers = filteredUsers.slice(indexOfFirstUser, indexOfLastUser);
-    const totalUserPages = Math.ceil(filteredUsers.length / usersPerPage);
+    const currentUsers = (filteredUsers || []).slice(
+        indexOfFirstUser,
+        indexOfLastUser,
+    );
+    const totalUserPages = Math.ceil(
+        (filteredUsers || []).length / usersPerPage,
+    );
 
     // 사용자 페이지 변경
     const handleUserPageChange = (pageNumber: number) => {
@@ -314,9 +326,11 @@ export default function AdminDashboard() {
                             />
                         </div>
                         <div className="post-stats">
-                            총 {filteredPosts.length}개 게시글
+                            총 {(filteredPosts || []).length}개 게시글
                             {searchTerm &&
-                                ` (검색 결과: ${filteredPosts.length}개)`}
+                                ` (검색 결과: ${
+                                    (filteredPosts || []).length
+                                }개)`}
                         </div>
                     </div>
 
@@ -506,9 +520,11 @@ export default function AdminDashboard() {
                             />
                         </div>
                         <div className="post-stats">
-                            총 {filteredUsers.length}명 사용자
+                            총 {(filteredUsers || []).length}명 사용자
                             {userSearchTerm &&
-                                ` (검색 결과: ${filteredUsers.length}명)`}
+                                ` (검색 결과: ${
+                                    (filteredUsers || []).length
+                                }명)`}
                         </div>
                     </div>
 
