@@ -160,10 +160,6 @@ const MyPage: React.FC = () => {
                             <label>닉네임:</label>
                             <span>{userInfo.nickName}</span>
                         </div>
-                        <div className="info-item">
-                            <label>이메일:</label>
-                            <span>{userInfo.email}</span>
-                        </div>
                     </div>
                 </div>
 

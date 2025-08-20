@@ -248,10 +248,18 @@
 .logout-btn {
     background-color: #dc3545;
     color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .logout-btn:hover {
     background-color: #c82333;
+    transform: translateY(-1px);
 }
 
 .withdraw-btn {

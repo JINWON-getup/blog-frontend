@@ -284,28 +284,8 @@ export default function AdminDashboard() {
                 </button>
             </header>
 
-            {/* 관리자 정보 영역 */}
-            <section className="admin-info-section">
-                <h2>관리자 정보</h2>
-                <div className="admin-info-card">
-                    <div className="info-item">
-                        <span className="label">이름: <span className="value">{adminInfo.adminName}</span></span>
-                        
-                    </div>
-                    <div className="info-item">
-                        <span className="label">아이디: <span className="value">{adminInfo.id}</span></span>
-                        
-                    </div>
-                    <div className="info-item">
-                        <span className="label">이메일: <span className="value">{adminInfo.email}</span></span>
-                        
-                    </div>
-                </div>
-            </section>
-
             {/* 메뉴 영역 */}
             <section className="menu-section">
-                <h2>관리 메뉴</h2>
                 <div className="menu-grid">
                     <div className="menu-item">
                         <h3>게시글 관리</h3>
