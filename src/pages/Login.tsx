@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { login } from "../services/api";
 import { useTheme } from "../components/ThemeContext";
@@ -55,8 +55,6 @@ const Login: React.FC = () => {
         }
 
         try {
-            console.log("로그인 폼 데이터:", formData);
-
             // 로그인 API 호출
             const result = await login({
                 userId: formData.userId,
@@ -66,37 +64,24 @@ const Login: React.FC = () => {
             if (result.success) {
                 alert("로그인이 완료되었습니다!");
                 if (result.user) {
-                    console.log("로그인 성공, 사용자 정보:", result.user);
-
                     // 서버 응답에서 필요한 필드만 추출
                     const userInfo = {
                         userId: result.user.userId,
-                        nickName: result.user.userId, // nickName이 없으므로 userId 사용
+                        nickName: result.user.userId, // 서버에서 nickName을 제공하지 않으므로 userId 사용
                         email: result.user.email,
                         pid: result.user.pid,
                     };
 
                     userLogin(userInfo); // UserContext에 사용자 정보 저장
-                    console.log("UserContext 업데이트 완료");
-                } else {
-                    console.log(
-                        "로그인 성공했지만 user 데이터가 없음:",
-                        result,
-                    );
                 }
                 navigate("/"); // 홈 페이지로 이동
             } else {
-                console.log("로그인 실패, 응답:", result);
                 alert(result.message || "로그인이 실패했습니다.");
             }
         } catch (error) {
-            console.error("로그인 실패:", error);
-
             let errorMessage = "로그인에 실패했습니다. 다시 시도해주세요.";
 
             if (error instanceof Error) {
-                errorMessage = error.message;
-
                 // 특정 에러 메시지에 대한 사용자 친화적인 안내
                 if (error.message.includes("서버에 연결할 수 없습니다")) {
                     errorMessage =
