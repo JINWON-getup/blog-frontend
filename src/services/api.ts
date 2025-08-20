@@ -79,7 +79,6 @@ export interface AdminInfo {
     adminName: string;
     id: string;
     email: string;
-    role: string;
 }
 
 // 관리자 로그인 API 함수
