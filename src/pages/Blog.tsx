@@ -1,4 +1,4 @@
-import Board from "../components/Board";
+import Board from "../pages/Board/Board";
 import "../css/blog.css";
 
 export default function Blog() {

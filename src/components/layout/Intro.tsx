@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useTheme } from "../components/ThemeContext";
-import profileMorning from "../assets/images/profile-morning.png";
-import profileNight from "../assets/images/profile-evening.png";
-import "../css/intro.css";
+import { useTheme } from "../ThemeContext";
+import profileMorning from "../../assets/images/profile-morning.png";
+import profileNight from "../../assets/images/profile-evening.png";
+import "../../css/intro.css";
 
 export default function Intro() {
     const { isDark } = useTheme();

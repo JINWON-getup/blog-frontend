@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import type { Post } from "../services/api";
-import { API_BASE_URL } from "../services/api";
-import { useAdmin } from "../contexts/AdminContext";
-import { useUser } from "../contexts/UserContext";
-import "../css/board.css";
+import type { Post } from "../../services/api";
+import { API_BASE_URL } from "../../services/api";
+import { useAdmin } from "../../contexts/AdminContext";
+import { useUser } from "../../contexts/UserContext";
+import "../../css/board.css";
 
 // Board 컴포넌트가 받을 props의 타입을 정의
 interface BoardProps {

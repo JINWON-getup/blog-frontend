@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import itImg from "../assets/images/section_article_card-IT.jfif";
-import japaneseImg from "../assets/images/section_article_card-japanese.jfif";
-import dailyImg from "../assets/images/section_article_card-daily.jfif";
-import "../css/contents.css";
+import itImg from "../../assets/images/section_article_card-IT.jfif";
+import japaneseImg from "../../assets/images/section_article_card-japanese.jfif";
+import dailyImg from "../../assets/images/section_article_card-daily.jfif";
+import "../../css/contents.css";
 
 export default function Contents() {
     const handleImageError = (

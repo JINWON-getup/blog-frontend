@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/api";
-import { useTheme } from "../components/ThemeContext";
-import { useUser } from "../contexts/UserContext";
-import "../css/signUp.css";
+import { login } from "../../services/api";
+import { useTheme } from "../../components/ThemeContext";
+import { useUser } from "../../contexts/UserContext";
+import "../../css/signUp.css";
 
 const Login: React.FC = () => {
     const navigate = useNavigate();

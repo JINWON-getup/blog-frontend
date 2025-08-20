@@ -6,11 +6,11 @@ import {
     deletePost,
     getUsers,
     deleteUser,
-} from "../services/api";
-import { useAdmin } from "../contexts/AdminContext";
-import { useTheme } from "../components/ThemeContext";
-import type { Post, User } from "../services/api";
-import "../css/adminDashboard.css";
+} from "../../services/api";
+import { useAdmin } from "../../contexts/AdminContext";
+import { useTheme } from "../../components/ThemeContext";
+import type { Post, User } from "../../services/api";
+import "../../css/adminDashboard.css";
 
 export default function AdminDashboard() {
     const navigate = useNavigate();

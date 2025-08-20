@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import type { Post } from "../services/api";
-import { useAdmin } from "../contexts/AdminContext";
-import { useUser } from "../contexts/UserContext";
-import CommentSection from "../components/CommentSection";
-import "../css/postDetail.css";
+import type { Post } from "../../services/api";
+import { useAdmin } from "../../contexts/AdminContext";
+import { useUser } from "../../contexts/UserContext";
+import CommentSection from "../../components/forms/CommentSection";
+import "../../css/postDetail.css";
 
 // API 기본 URL
 const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";

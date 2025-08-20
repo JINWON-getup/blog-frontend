@@ -1,14 +1,14 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/home";
+import Home from "../pages/Home";
 import About from "../pages/About";
 import Blog from "../pages/Blog";
-import AdminLogin from "../pages/login/AdminLogin";
-import AdminDashboard from "../pages/AdminDashboard";
-import CreatePost from "../components/CreatePost";
-import PostDetail from "../pages/PostDetail";
-import BoardPage from "../pages/BoardPage";
-import Login from "../pages/Login";
-import Register from "../pages/Register";
+import AdminLogin from "../pages/Admin/AdminLogin";
+import AdminDashboard from "../pages/Admin/AdminDashboard";
+import CreatePost from "../components/forms/CreatePost";
+import PostDetail from "../pages/Post/PostDetail";
+import BoardPage from "../pages/Board/BoardPage";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
 import MyPage from "../pages/MyPage";
 
 export default function AppRoutes() {

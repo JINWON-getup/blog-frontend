@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { register } from "../services/api";
-import { useTheme } from "../components/ThemeContext";
+import { register } from "../../services/api";
+import { useTheme } from "../../components/ThemeContext";
 
-import "../css/signUp.css";
+import "../../css/signUp.css";
 
 const Register: React.FC = () => {
     const navigate = useNavigate();

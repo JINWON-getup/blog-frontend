@@ -1,5 +1,5 @@
 // 1. useState와 useEffect를 지우고, useTheme 훅을 가져옵니다.
-import { useTheme } from "./ThemeContext";
+import { useTheme } from "../ThemeContext";
 
 export default function ProfileImage() {
     // 2. Context에서 isDark 상태만 가져옵니다.

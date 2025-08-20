@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
-import { useUser } from "../contexts/UserContext";
-import { useAdmin } from "../contexts/AdminContext";
-import type { Comment } from "../services/api";
-import { createComment, updateComment, deleteComment } from "../services/api";
+import { useUser } from "../../contexts/UserContext";
+import { useAdmin } from "../../contexts/AdminContext";
+import type { Comment } from "../../services/api";
+import {
+    createComment,
+    updateComment,
+    deleteComment,
+} from "../../services/api";
 import axios from "axios";
-import "../css/commentSection.css";
+import "../../css/commentSection.css";
 
 interface CommentSectionProps {
     postId: number;

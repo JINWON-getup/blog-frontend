@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { createPost } from "../services/api";
-import { useAdmin } from "../contexts/AdminContext";
-import { useUser } from "../contexts/UserContext";
-import "../css/createPost.css";
+import { createPost } from "../../services/api";
+import { useAdmin } from "../../contexts/AdminContext";
+import { useUser } from "../../contexts/UserContext";
+import "../../css/createPost.css";
 
 const CreatePost: React.FC = () => {
     const navigate = useNavigate();

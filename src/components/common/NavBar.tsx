@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import DarkModeToggle from "../components/Darkmode-toggle";
-import { useAdmin } from "../contexts/AdminContext";
-import { useUser } from "../contexts/UserContext";
-import "../css/nav-bar.css";
+import DarkModeToggle from "./DarkModeToggle";
+import { useAdmin } from "../../contexts/AdminContext";
+import { useUser } from "../../contexts/UserContext";
+import "../../css/nav-bar.css";
 
 export default function NavBar() {
     const { adminInfo, isLoggedIn: isAdminLoggedIn } = useAdmin();

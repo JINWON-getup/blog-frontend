@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPosts, type Post } from "../services/api";
+import { getPosts, type Post } from "../../services/api";
 
 const PostList: React.FC = () => {
     const [posts, setPosts] = useState<Post[]>([]);
