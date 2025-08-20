@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "../contexts/UserContext";
 import { useAdmin } from "../contexts/AdminContext";
 import type { Comment } from "../services/api";
 import { createComment, updateComment, deleteComment } from "../services/api";
+import axios from "axios";
 import "../css/commentSection.css";
 
 interface CommentSectionProps {
@@ -25,21 +26,30 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     >(null);
     const [replyContent, setReplyContent] = useState("");
 
+    // userId 설정 함수 (중복 제거)
+    const getUserId = (): number => {
+        if (isLoggedIn && adminInfo) {
+            return adminInfo.id;
+        }
+        return userInfo?.pid || 0;
+    };
+
     // 댓글 목록 가져오기
     const fetchComments = async () => {
         try {
-            const response = await fetch(
-                `http://localhost:8080/api/comments/post/${postId}`,
+            const response = await axios.get(
+                `${
+                    import.meta.env.VITE_API_URL || "http://localhost:8080"
+                }/api/comments/post/${postId}`,
             );
-            if (response.ok) {
-                const data = await response.json();
-                // 댓글 데이터에 닉네임 정보 추가
-                const commentsWithNickname = data.map((comment: Comment) => ({
+            // 댓글 데이터에 닉네임 정보 추가
+            const commentsWithNickname = (response.data as Comment[]).map(
+                (comment: Comment) => ({
                     ...comment,
                     nickName: comment.nickName || `사용자${comment.userId}`,
-                }));
-                setComments(commentsWithNickname);
-            }
+                }),
+            );
+            setComments(commentsWithNickname);
         } catch (error) {
             console.error("댓글을 불러오는 중 오류:", error);
         }
@@ -55,14 +65,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!newComment.trim()) return;
 
         try {
-            // userId 설정 - 관리자와 일반 사용자 구분
-            let userId: number;
-            if (isLoggedIn && adminInfo) {
-                userId = adminInfo.id;
-            } else {
-                userId = userInfo?.pid || 0;
-            }
-
+            const userId = getUserId();
             const commentData = {
                 content: newComment.trim(),
                 postId: postId,
@@ -171,14 +174,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!replyContent.trim()) return;
 
         try {
-            // userId 설정 - 관리자와 일반 사용자 구분
-            let userId: number;
-            if (isLoggedIn && adminInfo) {
-                userId = adminInfo.id;
-            } else {
-                userId = userInfo?.pid || 0;
-            }
-
+            const userId = getUserId();
             const replyData = {
                 content: replyContent.trim(),
                 postId: postId,
@@ -204,6 +200,54 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             console.error("대댓글 작성 중 오류:", error);
             alert("대댓글 작성에 실패했습니다.");
         }
+    };
+
+    // 대댓글 목록 렌더링 함수 (복잡한 IIFE 제거)
+    const renderReplies = (commentId: number) => {
+        const replies = comments.filter(
+            (reply) => reply.isReply && reply.parentCommentId === commentId,
+        );
+
+        if (replies.length === 0) return null;
+
+        return (
+            <div className="comment-replies">
+                {replies.map((reply) => (
+                    <div key={reply.id} className="comment-reply-item">
+                        <div className="comment-reply-header">
+                            <span className="comment-reply-author">
+                                {reply.nickName || "익명"}
+                            </span>
+                            <span className="comment-reply-date">
+                                {reply.createdAt && formatDate(reply.createdAt)}
+                            </span>
+                        </div>
+                        <div className="comment-reply-content">
+                            {reply.content}
+                        </div>
+                        {/* 대댓글 액션 버튼 */}
+                        {canModifyComment(reply) && (
+                            <div className="comment-reply-actions-small">
+                                <button
+                                    onClick={() => handleStartEdit(reply)}
+                                    className="comment-edit-btn-small"
+                                >
+                                    수정
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleDeleteComment(reply.id!)
+                                    }
+                                    className="comment-delete-btn-small"
+                                >
+                                    삭제
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                ))}
+            </div>
+        );
     };
 
     return (
@@ -369,67 +413,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                                 )}
 
                                 {/* 대댓글 목록 */}
-                                {(() => {
-                                    const replies = comments.filter(
-                                        (reply) =>
-                                            reply.isReply &&
-                                            reply.parentCommentId ===
-                                                comment.id,
-                                    );
-                                    return replies.length > 0 ? (
-                                        <div className="comment-replies">
-                                            {replies.map((reply) => (
-                                                <div
-                                                    key={reply.id}
-                                                    className="comment-reply-item"
-                                                >
-                                                    <div className="comment-reply-header">
-                                                        <span className="comment-reply-author">
-                                                            {reply.nickName ||
-                                                                "익명"}
-                                                        </span>
-                                                        <span className="comment-reply-date">
-                                                            {reply.createdAt &&
-                                                                formatDate(
-                                                                    reply.createdAt,
-                                                                )}
-                                                        </span>
-                                                    </div>
-                                                    <div className="comment-reply-content">
-                                                        {reply.content}
-                                                    </div>
-                                                    {/* 대댓글 액션 버튼 */}
-                                                    {canModifyComment(
-                                                        reply,
-                                                    ) && (
-                                                        <div className="comment-reply-actions-small">
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleStartEdit(
-                                                                        reply,
-                                                                    )
-                                                                }
-                                                                className="comment-edit-btn-small"
-                                                            >
-                                                                수정
-                                                            </button>
-                                                            <button
-                                                                onClick={() =>
-                                                                    handleDeleteComment(
-                                                                        reply.id!,
-                                                                    )
-                                                                }
-                                                                className="comment-delete-btn-small"
-                                                            >
-                                                                삭제
-                                                            </button>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            ))}
-                                        </div>
-                                    ) : null;
-                                })()}
+                                {comment.id && renderReplies(comment.id)}
                             </div>
                         ))
                 )}

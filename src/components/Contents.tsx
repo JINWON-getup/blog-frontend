@@ -8,10 +8,6 @@ import "../css/contents.css";
 export default function Contents() {
     const { isLoggedIn } = useAdmin();
 
-    console.log("Contents 컴포넌트 렌더링됨");
-    console.log("관리자 로그인 상태:", isLoggedIn);
-    console.log("이미지 경로들:", { itImg, japaneseImg, dailyImg });
-
     const handleImageError = (
         e: React.SyntheticEvent<HTMLImageElement, Event>,
     ) => {

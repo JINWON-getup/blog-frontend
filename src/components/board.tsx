@@ -102,13 +102,6 @@ export default function Board({ boardType }: BoardProps) {
             }
         } catch (error) {
             console.error("API 호출 중 오류:", error);
-            if (error && typeof error === "object" && "response" in error) {
-                const axiosError = error as {
-                    response?: { status?: number; data?: unknown };
-                };
-                console.error("HTTP 상태 코드:", axiosError.response?.status);
-                console.error("에러 메시지:", axiosError.response?.data);
-            }
             setPosts([]);
         } finally {
             setLoading(false);
@@ -121,9 +114,6 @@ export default function Board({ boardType }: BoardProps) {
         setSelectedCategory("전체");
         setSearchTag("");
     }, [boardType]);
-
-    // 서버에서 가져온 실제 데이터만 사용
-    const displayData = posts;
 
     // tags를 배열로 변환하는 헬퍼 함수
     const getTagsArray = useCallback((tags: string[] | string): string[] => {
@@ -146,7 +136,7 @@ export default function Board({ boardType }: BoardProps) {
     };
 
     // 필터링 로직
-    const filteredData = displayData.filter((post) => {
+    const filteredData = posts.filter((post) => {
         const categoryMatch =
             selectedCategory === "전체" || post.category === selectedCategory;
         const tagsArray = getTagsArray(post.tags);

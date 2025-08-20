@@ -13,12 +13,6 @@ export default function Intro() {
     const [isFading, setIsFading] = useState(false);
 
     useEffect(() => {
-        console.log("Intro 컴포넌트 마운트됨");
-        console.log("현재 테마:", isDark ? "다크" : "라이트");
-        console.log("프로필 이미지:", currentImage);
-    }, []);
-
-    useEffect(() => {
         if (currentImage === (isDark ? profileNight : profileMorning)) return;
 
         setIsFading(true);
@@ -27,7 +21,7 @@ export default function Intro() {
             setCurrentImage(isDark ? profileNight : profileMorning);
             setIsFading(false);
         }, 100);
-    }, [isDark]);
+    }, [isDark, currentImage]);
 
     const handleImageError = (
         e: React.SyntheticEvent<HTMLImageElement, Event>,

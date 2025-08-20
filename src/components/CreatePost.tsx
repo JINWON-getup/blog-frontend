@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { createPost } from "../services/api";
 import { useAdmin } from "../contexts/AdminContext";
@@ -129,37 +129,8 @@ const CreatePost: React.FC = () => {
             return;
         }
 
-        // 디버깅을 위한 로그 추가
-        console.log("게시글 생성 시도:", {
-            title,
-            content,
-            boardType: finalBoardType,
-            category,
-            tags: tagsString,
-            tagsLength: tagsString.length,
-            userId,
-            isAdminLoggedIn,
-            adminInfo,
-            userInfo,
-        });
-
-        // API 요청 데이터 구조 확인
-        const postData = {
-            userId,
-            title,
-            content,
-            boardType: finalBoardType,
-            category,
-            tags: tagsString,
-            nickName:
-                isAdminLoggedIn && adminInfo
-                    ? adminInfo.adminName
-                    : userInfo?.nickName || "사용자",
-        };
-        console.log("API 요청 데이터 구조:", postData);
-
         try {
-            const result = await createPost({
+            await createPost({
                 userId,
                 userType: isAdminLoggedIn ? "ADMIN" : "USER",
                 title,
@@ -173,7 +144,6 @@ const CreatePost: React.FC = () => {
                         : userInfo?.nickName || "사용자",
             });
 
-            console.log("게시글 생성 성공:", result);
             alert("게시글이 등록되었습니다!");
 
             // 폼 초기화
