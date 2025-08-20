@@ -41,13 +41,8 @@ export default function AdminDashboard() {
 
     // 로그인 상태 확인
     useEffect(() => {
-        console.log("AdminDashboard: adminInfo 변경됨:", adminInfo);
-
         // 로딩이 완료되고 관리자 정보가 없는 경우에만 리다이렉트
         if (!isLoading && !adminInfo) {
-            console.log(
-                "AdminDashboard: 로그인되지 않음, 로그인 페이지로 이동",
-            );
             navigate("/adminLogin");
         }
     }, [adminInfo, isLoading, navigate]);
@@ -136,13 +131,8 @@ export default function AdminDashboard() {
     // 사용자 목록 가져오기
     const fetchUsers = async () => {
         try {
-            console.log("[AdminDashboard] fetchUsers: start");
             setUserLoading(true);
             const fetchedUsers = await getUsers();
-            console.log(
-                "[AdminDashboard] fetchUsers: loaded",
-                Array.isArray(fetchedUsers) ? fetchedUsers.length : 0,
-            );
             setUsers(fetchedUsers);
             setFilteredUsers(fetchedUsers);
         } catch (error) {
@@ -151,7 +141,6 @@ export default function AdminDashboard() {
             setUsers([]);
             setFilteredUsers([]);
         } finally {
-            console.log("[AdminDashboard] fetchUsers: end");
             setUserLoading(false);
         }
     };
@@ -227,18 +216,10 @@ export default function AdminDashboard() {
 
     // 사용자 관리 모드 토글
     const toggleUserManagementMode = () => {
-        console.log(
-            "[AdminDashboard] toggleUserManagementMode: before",
-            isUserManagementMode,
-        );
         if (!isUserManagementMode) {
             fetchUsers();
         }
         setIsUserManagementMode(!isUserManagementMode);
-        console.log(
-            "[AdminDashboard] toggleUserManagementMode: after",
-            !isUserManagementMode,
-        );
     };
 
     // 로그아웃 처리
