@@ -18,8 +18,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         null,
     );
     const [editContent, setEditContent] = useState("");
-    const [loading, setLoading] = useState(false);
-
     // 대댓글 관련 상태
     const [replyingToCommentId, setReplyingToCommentId] = useState<
         number | null
@@ -29,7 +27,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     // 댓글 목록 가져오기
     const fetchComments = async () => {
         try {
-            setLoading(true);
             const response = await fetch(
                 `http://localhost:8080/api/comments/post/${postId}`,
             );
@@ -44,22 +41,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             }
         } catch (error) {
             console.error("댓글을 불러오는 중 오류:", error);
-        } finally {
-            setLoading(false);
         }
-    };
-
-    // 댓글과 대댓글을 계층적으로 정리
-    const organizeComments = (comments: Comment[]) => {
-        const mainComments = comments.filter((comment) => !comment.isReply);
-        const replies = comments.filter((comment) => comment.isReply);
-
-        return mainComments.map((comment) => ({
-            ...comment,
-            replies: replies.filter(
-                (reply) => reply.parentCommentId === comment.id,
-            ),
-        }));
     };
 
     useEffect(() => {
@@ -239,10 +221,6 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         }
     };
 
-    if (loading) {
-        return <div className="comment-loading">댓글을 불러오는 중...</div>;
-    }
-
     return (
         <div className="comment-section">
             <h3 className="comment-title">댓글 ({comments.length})</h3>
@@ -278,180 +256,197 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                 {comments.length === 0 ? (
                     <div className="no-comments">아직 댓글이 없습니다.</div>
                 ) : (
-                    organizeComments(comments).map((comment) => (
-                        <div key={comment.id} className="comment-item">
-                            <div className="comment-header">
-                                <span className="comment-author">
-                                    {comment.nickName || "익명"}
-                                </span>
-                                <span className="comment-date">
-                                    {comment.createdAt &&
-                                        formatDate(comment.createdAt)}
-                                </span>
-                            </div>
-
-                            {editingCommentId === comment.id ? (
-                                <div className="comment-edit-form">
-                                    <textarea
-                                        value={editContent}
-                                        onChange={(e) =>
-                                            setEditContent(e.target.value)
-                                        }
-                                        className="comment-edit-input"
-                                        rows={3}
-                                        maxLength={300}
-                                    />
-                                    <div className="comment-edit-actions">
-                                        <span className="char-counter">
-                                            {editContent.length}/300
-                                        </span>
-                                        <button
-                                            onClick={() =>
-                                                handleSaveEdit(comment.id!)
-                                            }
-                                            className="comment-save-btn"
-                                            disabled={!editContent.trim()}
-                                        >
-                                            저장
-                                        </button>
-                                        <button
-                                            onClick={handleCancelEdit}
-                                            className="comment-cancel-btn"
-                                        >
-                                            취소
-                                        </button>
-                                    </div>
+                    comments
+                        .filter((comment) => !comment.isReply)
+                        .map((comment) => (
+                            <div key={comment.id} className="comment-item">
+                                <div className="comment-header">
+                                    <span className="comment-author">
+                                        {comment.nickName || "익명"}
+                                    </span>
+                                    <span className="comment-date">
+                                        {comment.createdAt &&
+                                            formatDate(comment.createdAt)}
+                                    </span>
                                 </div>
-                            ) : (
-                                <div className="comment-content">
-                                    {comment.content}
-                                </div>
-                            )}
 
-                            {/* 댓글 액션 버튼 */}
-                            <div className="comment-actions">
-                                {/* 대댓글 버튼 */}
-                                <button
-                                    onClick={() =>
-                                        handleStartReply(comment.id!)
-                                    }
-                                    className="comment-reply-btn"
-                                >
-                                    답글
-                                </button>
-
-                                {/* 수정/삭제 버튼 (권한이 있는 경우만) */}
-                                {canModifyComment(comment) && (
-                                    <>
-                                        <button
-                                            onClick={() =>
-                                                handleStartEdit(comment)
+                                {editingCommentId === comment.id ? (
+                                    <div className="comment-edit-form">
+                                        <textarea
+                                            value={editContent}
+                                            onChange={(e) =>
+                                                setEditContent(e.target.value)
                                             }
-                                            className="comment-edit-btn"
-                                        >
-                                            수정
-                                        </button>
-                                        <button
-                                            onClick={() =>
-                                                handleDeleteComment(comment.id!)
-                                            }
-                                            className="comment-delete-btn"
-                                        >
-                                            삭제
-                                        </button>
-                                    </>
-                                )}
-                            </div>
-
-                            {/* 대댓글 작성 폼 */}
-                            {replyingToCommentId === comment.id && (
-                                <div className="comment-reply-form">
-                                    <textarea
-                                        value={replyContent}
-                                        onChange={(e) =>
-                                            setReplyContent(e.target.value)
-                                        }
-                                        placeholder="대댓글을 작성하세요..."
-                                        className="comment-reply-input"
-                                        rows={2}
-                                        maxLength={300}
-                                    />
-                                    <div className="comment-reply-actions">
-                                        <span className="char-counter">
-                                            {replyContent.length}/300
-                                        </span>
-                                        <button
-                                            onClick={() =>
-                                                handleSubmitReply(comment.id!)
-                                            }
-                                            className="comment-reply-submit-btn"
-                                            disabled={!replyContent.trim()}
-                                        >
-                                            답글 작성
-                                        </button>
-                                        <button
-                                            onClick={handleCancelReply}
-                                            className="comment-reply-cancel-btn"
-                                        >
-                                            취소
-                                        </button>
-                                    </div>
-                                </div>
-                            )}
-
-                            {/* 대댓글 목록 */}
-                            {comment.replies && comment.replies.length > 0 && (
-                                <div className="comment-replies">
-                                    {comment.replies.map((reply) => (
-                                        <div
-                                            key={reply.id}
-                                            className="comment-reply-item"
-                                        >
-                                            <div className="comment-reply-header">
-                                                <span className="comment-reply-author">
-                                                    {reply.nickName || "익명"}
-                                                </span>
-                                                <span className="comment-reply-date">
-                                                    {reply.createdAt &&
-                                                        formatDate(
-                                                            reply.createdAt,
-                                                        )}
-                                                </span>
-                                            </div>
-                                            <div className="comment-reply-content">
-                                                {reply.content}
-                                            </div>
-                                            {/* 대댓글 액션 버튼 */}
-                                            {canModifyComment(reply) && (
-                                                <div className="comment-reply-actions-small">
-                                                    <button
-                                                        onClick={() =>
-                                                            handleStartEdit(
-                                                                reply,
-                                                            )
-                                                        }
-                                                        className="comment-edit-btn-small"
-                                                    >
-                                                        수정
-                                                    </button>
-                                                    <button
-                                                        onClick={() =>
-                                                            handleDeleteComment(
-                                                                reply.id!,
-                                                            )
-                                                        }
-                                                        className="comment-delete-btn-small"
-                                                    >
-                                                        삭제
-                                                    </button>
-                                                </div>
-                                            )}
+                                            className="comment-edit-input"
+                                            rows={3}
+                                            maxLength={300}
+                                        />
+                                        <div className="comment-edit-actions">
+                                            <span className="char-counter">
+                                                {editContent.length}/300
+                                            </span>
+                                            <button
+                                                onClick={() =>
+                                                    handleSaveEdit(comment.id!)
+                                                }
+                                                className="comment-save-btn"
+                                                disabled={!editContent.trim()}
+                                            >
+                                                저장
+                                            </button>
+                                            <button
+                                                onClick={handleCancelEdit}
+                                                className="comment-cancel-btn"
+                                            >
+                                                취소
+                                            </button>
                                         </div>
-                                    ))}
+                                    </div>
+                                ) : (
+                                    <div className="comment-content">
+                                        {comment.content}
+                                    </div>
+                                )}
+
+                                {/* 댓글 액션 버튼 */}
+                                <div className="comment-actions">
+                                    {/* 대댓글 버튼 */}
+                                    <button
+                                        onClick={() =>
+                                            handleStartReply(comment.id!)
+                                        }
+                                        className="comment-reply-btn"
+                                    >
+                                        답글
+                                    </button>
+
+                                    {/* 수정/삭제 버튼 (권한이 있는 경우만) */}
+                                    {canModifyComment(comment) && (
+                                        <>
+                                            <button
+                                                onClick={() =>
+                                                    handleStartEdit(comment)
+                                                }
+                                                className="comment-edit-btn"
+                                            >
+                                                수정
+                                            </button>
+                                            <button
+                                                onClick={() =>
+                                                    handleDeleteComment(
+                                                        comment.id!,
+                                                    )
+                                                }
+                                                className="comment-delete-btn"
+                                            >
+                                                삭제
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
-                            )}
-                        </div>
-                    ))
+
+                                {/* 대댓글 작성 폼 */}
+                                {replyingToCommentId === comment.id && (
+                                    <div className="comment-reply-form">
+                                        <textarea
+                                            value={replyContent}
+                                            onChange={(e) =>
+                                                setReplyContent(e.target.value)
+                                            }
+                                            placeholder="대댓글을 작성하세요..."
+                                            className="comment-reply-input"
+                                            rows={2}
+                                            maxLength={300}
+                                        />
+                                        <div className="comment-reply-actions">
+                                            <span className="char-counter">
+                                                {replyContent.length}/300
+                                            </span>
+                                            <button
+                                                onClick={() =>
+                                                    handleSubmitReply(
+                                                        comment.id!,
+                                                    )
+                                                }
+                                                className="comment-reply-submit-btn"
+                                                disabled={!replyContent.trim()}
+                                            >
+                                                답글 작성
+                                            </button>
+                                            <button
+                                                onClick={handleCancelReply}
+                                                className="comment-reply-cancel-btn"
+                                            >
+                                                취소
+                                            </button>
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* 대댓글 목록 */}
+                                {(() => {
+                                    const replies = comments.filter(
+                                        (reply) =>
+                                            reply.isReply &&
+                                            reply.parentCommentId ===
+                                                comment.id,
+                                    );
+                                    return replies.length > 0 ? (
+                                        <div className="comment-replies">
+                                            {replies.map((reply) => (
+                                                <div
+                                                    key={reply.id}
+                                                    className="comment-reply-item"
+                                                >
+                                                    <div className="comment-reply-header">
+                                                        <span className="comment-reply-author">
+                                                            {reply.nickName ||
+                                                                "익명"}
+                                                        </span>
+                                                        <span className="comment-reply-date">
+                                                            {reply.createdAt &&
+                                                                formatDate(
+                                                                    reply.createdAt,
+                                                                )}
+                                                        </span>
+                                                    </div>
+                                                    <div className="comment-reply-content">
+                                                        {reply.content}
+                                                    </div>
+                                                    {/* 대댓글 액션 버튼 */}
+                                                    {canModifyComment(
+                                                        reply,
+                                                    ) && (
+                                                        <div className="comment-reply-actions-small">
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleStartEdit(
+                                                                        reply,
+                                                                    )
+                                                                }
+                                                                className="comment-edit-btn-small"
+                                                            >
+                                                                수정
+                                                            </button>
+                                                            <button
+                                                                onClick={() =>
+                                                                    handleDeleteComment(
+                                                                        reply.id!,
+                                                                    )
+                                                                }
+                                                                className="comment-delete-btn-small"
+                                                            >
+                                                                삭제
+                                                            </button>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : null;
+                                })()}
+                            </div>
+                        ))
                 )}
             </div>
         </div>
