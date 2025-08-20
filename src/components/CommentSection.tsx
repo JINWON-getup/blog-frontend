@@ -18,6 +18,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         null,
     );
     const [editContent, setEditContent] = useState("");
+
     // 대댓글 관련 상태
     const [replyingToCommentId, setReplyingToCommentId] = useState<
         number | null
@@ -57,16 +58,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             // userId 설정 - 관리자와 일반 사용자 구분
             let userId: number;
             if (isLoggedIn && adminInfo) {
-                if (adminInfo.id && adminInfo.id !== "") {
-                    const parsedId = parseInt(adminInfo.id.toString());
-                    if (!isNaN(parsedId)) {
-                        userId = parsedId;
-                    } else {
-                        userId = 9999; // 기본 관리자 ID
-                    }
-                } else {
-                    userId = 9999; // 기본 관리자 ID
-                }
+                userId = adminInfo.id;
             } else {
                 userId = userInfo?.pid || 0;
             }
@@ -75,6 +67,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                 content: newComment.trim(),
                 postId: postId,
                 userId: userId,
+                userType: isLoggedIn && adminInfo ? "ADMIN" : "USER",
                 parentCommentId: undefined,
                 isReply: false,
             };
@@ -181,16 +174,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             // userId 설정 - 관리자와 일반 사용자 구분
             let userId: number;
             if (isLoggedIn && adminInfo) {
-                if (adminInfo.id && adminInfo.id !== "") {
-                    const parsedId = parseInt(adminInfo.id.toString());
-                    if (!isNaN(parsedId)) {
-                        userId = parsedId;
-                    } else {
-                        userId = 9999; // 기본 관리자 ID
-                    }
-                } else {
-                    userId = 9999; // 기본 관리자 ID
-                }
+                userId = adminInfo.id;
             } else {
                 userId = userInfo?.pid || 0;
             }
@@ -199,6 +183,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                 content: replyContent.trim(),
                 postId: postId,
                 userId: userId,
+                userType: isLoggedIn && adminInfo ? "ADMIN" : "USER",
                 parentCommentId: parentCommentId,
                 isReply: true,
             };

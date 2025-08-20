@@ -114,28 +114,11 @@ const CreatePost: React.FC = () => {
             return;
         }
 
-        // userId 설정 - 더 안전한 검증 추가
+        // userId 설정 - 관리자와 일반 사용자 구분
         let userId: number;
 
         if (isAdminLoggedIn && adminInfo) {
-            // adminInfo.id가 존재하는지 확인하고 숫자로 변환
-            if (adminInfo.id && adminInfo.id !== "") {
-                const parsedId = parseInt(adminInfo.id.toString());
-                if (!isNaN(parsedId)) {
-                    userId = parsedId;
-                } else {
-                    console.error(
-                        "adminInfo.id를 숫자로 변환할 수 없음:",
-                        adminInfo.id,
-                    );
-                    // 기본 관리자 ID 사용 (예: 9999)
-                    userId = 9999;
-                }
-            } else {
-                console.error("adminInfo.id가 비어있음:", adminInfo.id);
-                // 기본 관리자 ID 사용 (예: 9999)
-                userId = 9999;
-            }
+            userId = adminInfo.id;
         } else {
             userId = userInfo?.pid || 0;
         }
@@ -160,9 +143,25 @@ const CreatePost: React.FC = () => {
             userInfo,
         });
 
+        // API 요청 데이터 구조 확인
+        const postData = {
+            userId,
+            title,
+            content,
+            boardType: finalBoardType,
+            category,
+            tags: tagsString,
+            nickName:
+                isAdminLoggedIn && adminInfo
+                    ? adminInfo.adminName
+                    : userInfo?.nickName || "사용자",
+        };
+        console.log("API 요청 데이터 구조:", postData);
+
         try {
             const result = await createPost({
                 userId,
+                userType: isAdminLoggedIn ? "ADMIN" : "USER",
                 title,
                 content,
                 boardType: finalBoardType,

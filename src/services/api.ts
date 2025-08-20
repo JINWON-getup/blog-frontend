@@ -4,6 +4,7 @@ import axios from "axios";
 export interface Post {
     id?: number;
     userId: number;
+    userType: string; // "USER" 또는 "ADMIN"
     title: string;
     content: string;
     boardType: string;
@@ -20,6 +21,7 @@ export interface Comment {
     content: string;
     postId: number;
     userId: number;
+    userType: string; // "USER" 또는 "ADMIN"
     parentCommentId?: number;
     isReply: boolean;
     createdAt?: string;
@@ -60,6 +62,25 @@ export const createPost = async (
         return result;
     } catch (error) {
         console.error("API 요청 실패:", error);
+
+        // Axios 에러인 경우 더 자세한 정보 출력
+        if (error && typeof error === "object" && "response" in error) {
+            const axiosError = error as {
+                response: { status: number; data: unknown; headers: unknown };
+            };
+            console.error("에러 응답 상태:", axiosError.response.status);
+            console.error("에러 응답 데이터:", axiosError.response.data);
+            console.error(
+                "에러 응답 데이터 타입:",
+                typeof axiosError.response.data,
+            );
+            console.error(
+                "에러 응답 데이터 JSON:",
+                JSON.stringify(axiosError.response.data, null, 2),
+            );
+            console.error("에러 응답 헤더:", axiosError.response.headers);
+        }
+
         throw error;
     }
 };
@@ -77,7 +98,7 @@ export interface AdminLoginResponse {
 
 export interface AdminInfo {
     adminName: string;
-    id: string;
+    id: number;
     email: string;
 }
 
