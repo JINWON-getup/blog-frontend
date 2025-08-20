@@ -48,17 +48,12 @@ export const deletePost = async (postId: number): Promise<void> => {
 export const createPost = async (
     post: Omit<Post, "id" | "createdAt" | "updatedAt">,
 ): Promise<Post> => {
-    console.log("API 요청 데이터:", post);
-
     try {
         const res = await axios.post<Post>(API_URL, post, {
             headers: { "Content-Type": "application/json" },
         });
 
-        console.log("API 응답 상태:", res.status, res.statusText);
-
         const result = res.data;
-        console.log("API 응답 데이터:", result);
         return result;
     } catch (error) {
         console.error("API 요청 실패:", error);
@@ -94,6 +89,12 @@ export interface AdminLoginRequest {
 export interface AdminLoginResponse {
     success: boolean;
     message: string;
+    admin: {
+        adminName: string;
+        id: number;
+        email: string;
+        role?: string;
+    };
 }
 
 export interface AdminInfo {
@@ -150,29 +151,6 @@ export const adminLogout = async (): Promise<void> => {
     }
 };
 
-// 관리자 정보 조회 API 함수
-export const getAdminInfo = async (id: string): Promise<AdminInfo> => {
-    try {
-        const response = await axios.get<{ success: boolean; data: AdminInfo }>(
-            `${API_BASE_URL}/api/admin/${id}`,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            },
-        );
-
-        if (!response.data.success) {
-            throw new Error("관리자 정보 조회에 실패했습니다.");
-        }
-
-        return response.data.data;
-    } catch (error) {
-        console.error("관리자 정보 조회 API 요청 실패:", error);
-        throw error;
-    }
-};
-
 // 회원가입 관련 인터페이스
 export interface RegisterRequest {
     userId: string;
@@ -221,9 +199,6 @@ export interface LoginResponse {
 export const register = async (
     registerData: RegisterRequest,
 ): Promise<RegisterResponse> => {
-    console.log("회원가입 요청 데이터(원본):", registerData);
-    console.log("API URL:", `${API_BASE_URL}/api/users/register`);
-
     // 백엔드 필드명에 맞춰 변환
     const payload = {
         userId: registerData.userId,
@@ -243,9 +218,6 @@ export const register = async (
                 },
             },
         );
-
-        console.log("회원가입 응답:", response.data);
-        console.log("응답 상태:", response.status);
 
         if (!response.data.success) {
             throw new Error(
@@ -325,9 +297,6 @@ export const register = async (
 export const login = async (
     loginData: LoginRequest,
 ): Promise<LoginResponse> => {
-    console.log("로그인 요청 데이터:", loginData);
-    console.log("API URL:", `${API_BASE_URL}/api/users/login`);
-
     try {
         const response = await axios.post<LoginResponse>(
             `${API_BASE_URL}/api/users/login`,
@@ -338,9 +307,6 @@ export const login = async (
                 },
             },
         );
-
-        console.log("로그인 응답:", response.data);
-        console.log("응답 상태:", response.status);
 
         if (!response.data.success) {
             throw new Error(response.data.message || "로그인에 실패했습니다.");
@@ -420,12 +386,6 @@ export interface WithdrawResponse {
 export const updatePassword = async (
     updateData: UpdatePasswordRequest,
 ): Promise<UpdateResponse> => {
-    console.log("비밀번호 변경 요청 데이터:", updateData);
-    console.log(
-        "비밀번호 변경 API URL:",
-        `${API_BASE_URL}/api/users/${updateData.pid}`,
-    );
-
     // 백엔드가 기대하는 User 객체 형태로 변환
     const userDetails = {
         userPassword: updateData.newPassword, // 백엔드가 기대하는 필드명
@@ -441,9 +401,6 @@ export const updatePassword = async (
                 },
             },
         );
-
-        console.log("비밀번호 변경 응답:", response.data);
-        console.log("응답 상태:", response.status);
 
         if (!response.data.success) {
             throw new Error(
@@ -482,12 +439,6 @@ export const updatePassword = async (
 export const withdrawUser = async (
     withdrawData: WithdrawRequest,
 ): Promise<WithdrawResponse> => {
-    console.log("회원탈퇴 요청 데이터:", withdrawData);
-    console.log(
-        "회원탈퇴 API URL:",
-        `${API_BASE_URL}/api/users/${withdrawData.pid}/withdraw`,
-    );
-
     try {
         const response = await axios.post<WithdrawResponse>(
             `${API_BASE_URL}/api/users/${withdrawData.pid}/withdraw`,
@@ -498,9 +449,6 @@ export const withdrawUser = async (
                 },
             },
         );
-
-        console.log("회원탈퇴 응답:", response.data);
-        console.log("응답 상태:", response.status);
 
         if (!response.data.success) {
             throw new Error(

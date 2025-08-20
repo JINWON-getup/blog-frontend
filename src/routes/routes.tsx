@@ -17,7 +17,6 @@ export default function AppRoutes() {
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/blog" element={<Blog />} />
-            {/* 기존 4개 라우트를 1개로 통합 */}
             <Route path="/:boardType" element={<BoardPage />} />
             <Route path="/adminLogin" element={<AdminLogin />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />

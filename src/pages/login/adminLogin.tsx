@@ -1,20 +1,8 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAdmin } from "../../contexts/AdminContext";
+import { adminLogin } from "../../services/api";
 import "../../css/adminLogin.css";
-
-// 백엔드 응답 구조에 맞는 인터페이스
-interface AdminLoginResponse {
-    success: boolean;
-    message: string;
-    admin: {
-        adminName?: string;
-        role?: string;
-        id?: string;
-        email?: string;
-    };
-}
 
 export default function Login() {
     const [id, setId] = useState("");
@@ -39,21 +27,15 @@ export default function Login() {
         setIsLoading(true);
 
         try {
-            const response = await axios.post<AdminLoginResponse>(
-                "http://localhost:8080/api/admin/login",
-                {
-                    id,
-                    password,
-                },
-            );
+            const response = await adminLogin({ id, password });
 
-            if (response.data.success) {
+            if (response.success) {
                 // 로그인 성공 시 Context에 관리자 정보 저장
                 const adminInfo = {
-                    adminName: response.data.admin.adminName || "",
-                    id: response.data.admin.id || "",
-                    email: response.data.admin.email || "",
-                    role: response.data.admin.role || "",
+                    adminName: response.admin.adminName,
+                    id: response.admin.id,
+                    email: response.admin.email,
+                    role: response.admin.role || "",
                 };
 
                 // Context에 관리자 정보 저장
@@ -62,20 +44,17 @@ export default function Login() {
                 alert("로그인 성공!");
                 // 관리자 대시보드로 이동
                 navigate("/admin-dashboard");
-                console.log("로그인 성공:", response.data.message);
+                console.log("로그인 성공:", response.message);
             } else {
                 // 로그인 실패
-                alert(`로그인 실패: ${response.data.message}`);
+                alert(`로그인 실패: ${response.message}`);
             }
         } catch (err) {
             console.error("로그인 실패", err);
 
             // 에러 응답에서 메시지 추출
-            const axiosError = err as {
-                response?: { data?: { message?: string } };
-            };
-            if (axiosError.response?.data?.message) {
-                alert(`로그인 실패: ${axiosError.response.data.message}`);
+            if (err instanceof Error) {
+                alert(`로그인 실패: ${err.message}`);
             } else {
                 alert("로그인 실패: 서버 연결에 문제가 있습니다.");
             }
