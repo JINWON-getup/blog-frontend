@@ -2,12 +2,9 @@ import { Link } from "react-router-dom";
 import itImg from "../assets/images/section_article_card-IT.jfif";
 import japaneseImg from "../assets/images/section_article_card-japanese.jfif";
 import dailyImg from "../assets/images/section_article_card-daily.jfif";
-import { useAdmin } from "../contexts/AdminContext";
 import "../css/contents.css";
 
 export default function Contents() {
-    const { isLoggedIn } = useAdmin();
-
     const handleImageError = (
         e: React.SyntheticEvent<HTMLImageElement, Event>,
     ) => {
@@ -42,27 +39,6 @@ export default function Contents() {
                     <p>Daily</p>
                 </Link>
             </article>
-            {isLoggedIn && (
-                <article className="article-card write-card">
-                    <Link to="/write">
-                        <div className="write-icon">
-                            <svg
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M12 4v16m8-8H4"
-                                />
-                            </svg>
-                        </div>
-                        <p>게시글 작성</p>
-                    </Link>
-                </article>
-            )}
         </section>
     );
 }
