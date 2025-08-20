@@ -56,11 +56,8 @@ export const UserProvider = ({
     }, []);
 
     const login = (info: UserInfo) => {
-        console.log("UserContext login 호출됨:", info);
         setUserInfo(info);
         localStorage.setItem("userInfo", JSON.stringify(info));
-        console.log("UserContext 상태 업데이트 완료, userInfo:", info);
-        console.log("localStorage 저장 완료");
     };
 
     const logout = () => {

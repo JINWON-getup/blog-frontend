@@ -8,20 +8,12 @@ import {
 
 // 시스템 테마 자동 감지 및 초기 테마 설정
 const getInitialTheme = () => {
-    if (typeof window !== "undefined" && window.localStorage) {
-        const savedTheme = window.localStorage.getItem("theme");
-        const prefersDark = window.matchMedia(
-            "(prefers-color-scheme: dark)",
-        ).matches;
+    if (typeof window === "undefined") return false;
 
-        // 저장된 테마가 있으면 그것을 사용
-        if (savedTheme === "dark") return true;
-        if (savedTheme === "light") return false;
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme) return savedTheme === "dark";
 
-        // 저장된 테마가 없으면 시스템 설정을 따름
-        return prefersDark;
-    }
-    return false;
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
 };
 
 interface ThemeContextType {

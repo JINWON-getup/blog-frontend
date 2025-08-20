@@ -13,11 +13,7 @@ export default function Login() {
 
     // 이미 로그인된 상태라면 대시보드로 리다이렉트
     useEffect(() => {
-        console.log("AdminLogin: adminInfo 확인:", adminInfo);
-        console.log("AdminLogin: contextLoading:", contextLoading);
-
         if (!contextLoading && adminInfo) {
-            console.log("AdminLogin: 이미 로그인됨, 대시보드로 이동");
             navigate("/admin-dashboard");
         }
     }, [adminInfo, contextLoading, navigate]);
@@ -30,29 +26,21 @@ export default function Login() {
             const response = await adminLogin({ id, password });
 
             if (response.success) {
-                // 로그인 성공 시 Context에 관리자 정보 저장
-                const adminInfo = {
+                // Context에 관리자 정보 저장
+                login({
                     adminName: response.admin.adminName,
                     id: response.admin.id,
                     email: response.admin.email,
-                    role: response.admin.role || "",
-                };
-
-                // Context에 관리자 정보 저장
-                login(adminInfo);
+                });
 
                 alert("로그인 성공!");
-                // 관리자 대시보드로 이동
                 navigate("/admin-dashboard");
-                console.log("로그인 성공:", response.message);
             } else {
-                // 로그인 실패
                 alert(`로그인 실패: ${response.message}`);
             }
         } catch (err) {
             console.error("로그인 실패", err);
 
-            // 에러 응답에서 메시지 추출
             if (err instanceof Error) {
                 alert(`로그인 실패: ${err.message}`);
             } else {

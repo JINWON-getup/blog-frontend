@@ -29,24 +29,16 @@ export const AdminProvider = ({
 
     // 컴포넌트 마운트 시 localStorage에서 관리자 정보 복원
     useEffect(() => {
-        console.log("AdminContext: localStorage 복원 시작");
         const savedAdminInfo = localStorage.getItem("adminInfo");
-        console.log(
-            "AdminContext: localStorage에서 가져온 데이터:",
-            savedAdminInfo,
-        );
 
         if (savedAdminInfo) {
             try {
                 const parsedInfo = JSON.parse(savedAdminInfo);
-                console.log("AdminContext: 파싱된 관리자 정보:", parsedInfo);
                 setAdminInfo(parsedInfo);
             } catch (error) {
                 console.error("저장된 관리자 정보 파싱 실패:", error);
                 localStorage.removeItem("adminInfo");
             }
-        } else {
-            console.log("AdminContext: localStorage에 저장된 정보 없음");
         }
 
         // 로딩 완료
