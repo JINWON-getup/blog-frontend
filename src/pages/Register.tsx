@@ -91,8 +91,6 @@ const Register: React.FC = () => {
         }
 
         try {
-            console.log("회원가입 폼 데이터:", formData);
-
             // 회원가입 API 호출
             const result = await register({
                 userId: formData.userId,
@@ -104,29 +102,18 @@ const Register: React.FC = () => {
 
             if (result.success) {
                 alert("회원가입이 완료되었습니다! 로그인 페이지로 이동합니다.");
-                navigate("/login"); // 로그인 페이지로 이동
+                navigate("/login");
             } else {
                 alert(result.message || "회원가입에 실패했습니다.");
             }
         } catch (error) {
             console.error("회원가입 실패:", error);
 
-            let errorMessage = "회원가입에 실패했습니다. 다시 시도해주세요.";
-
             if (error instanceof Error) {
-                errorMessage = error.message;
-
-                // 특정 에러 메시지에 대한 사용자 친화적인 안내
-                if (error.message.includes("서버에 연결할 수 없습니다")) {
-                    errorMessage =
-                        "서버에 연결할 수 없습니다. 잠시 후 다시 시도해주세요.";
-                } else if (error.message.includes("400")) {
-                    errorMessage =
-                        "입력한 정보를 확인해주세요. 모든 필수 항목을 올바르게 입력했는지 확인해주세요.";
-                }
+                alert(error.message);
+            } else {
+                alert("회원가입에 실패했습니다. 다시 시도해주세요.");
             }
-
-            alert(errorMessage);
         }
     };
 

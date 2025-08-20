@@ -7,6 +7,9 @@ import { useUser } from "../contexts/UserContext";
 import CommentSection from "../components/CommentSection";
 import "../css/postDetail.css";
 
+// API 기본 URL
+const API_BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8080";
+
 export default function PostDetail() {
     const { id } = useParams<{ id: string }>();
     const navigate = useNavigate();
@@ -40,7 +43,7 @@ export default function PostDetail() {
 
                 // 기본 요청으로 시도 (인증 헤더 없이)
                 const response = await axios.get<Post>(
-                    `http://localhost:8080/api/post/${id}`,
+                    `${API_BASE_URL}/api/post/${id}`,
                 );
                 setPost(response.data);
                 // 수정 폼 초기값 설정
@@ -117,15 +120,7 @@ export default function PostDetail() {
                 createdAt: post.createdAt, // 기존 값 유지
             };
 
-            console.log("수정할 데이터:", updatedPost);
-            console.log("요청 URL:", `http://localhost:8080/api/post/${id}`);
-
-            const response = await axios.put(
-                `http://localhost:8080/api/post/${id}`,
-                updatedPost,
-            );
-
-            console.log("서버 응답:", response.data);
+            await axios.put(`${API_BASE_URL}/api/post/${id}`, updatedPost);
 
             // 수정된 데이터로 상태 업데이트
             setPost(updatedPost as Post);
@@ -135,45 +130,10 @@ export default function PostDetail() {
         } catch (error: unknown) {
             console.error("게시글 수정 중 오류:", error);
 
-            // 더 자세한 에러 정보 출력
-            if (error && typeof error === "object" && "response" in error) {
-                const axiosError = error as {
-                    response: {
-                        status: number;
-                        statusText: string;
-                        data: unknown;
-                    };
-                };
-                console.error("서버 응답 에러:", {
-                    status: axiosError.response.status,
-                    statusText: axiosError.response.statusText,
-                    data: axiosError.response.data,
-                });
-                console.error(
-                    "서버 에러 상세:",
-                    JSON.stringify(axiosError.response.data, null, 2),
-                );
-                alert(
-                    `게시글 수정에 실패했습니다. (${axiosError.response.status}: ${axiosError.response.statusText})`,
-                );
-            } else if (
-                error &&
-                typeof error === "object" &&
-                "request" in error
-            ) {
-                console.error("요청 에러:", error);
-                alert(
-                    "서버에 연결할 수 없습니다. 백엔드가 실행 중인지 확인해주세요.",
-                );
+            if (error instanceof Error) {
+                alert(`게시글 수정에 실패했습니다: ${error.message}`);
             } else {
-                console.error("기타 에러:", error);
-                alert(
-                    `게시글 수정에 실패했습니다: ${
-                        error instanceof Error
-                            ? error.message
-                            : "알 수 없는 오류"
-                    }`,
-                );
+                alert("게시글 수정에 실패했습니다. 다시 시도해주세요.");
             }
         }
     };
@@ -194,16 +154,7 @@ export default function PostDetail() {
         }
 
         try {
-            console.log(
-                "삭제 요청 URL:",
-                `http://localhost:8080/api/post/${id}`,
-            );
-
-            const response = await axios.delete(
-                `http://localhost:8080/api/post/${id}`,
-            );
-
-            console.log("삭제 응답:", response.data);
+            await axios.delete(`${API_BASE_URL}/api/post/${id}`);
 
             alert("게시글이 성공적으로 삭제되었습니다!");
 
@@ -212,45 +163,10 @@ export default function PostDetail() {
         } catch (error: unknown) {
             console.error("게시글 삭제 중 오류:", error);
 
-            // 더 자세한 에러 정보 출력
-            if (error && typeof error === "object" && "response" in error) {
-                const axiosError = error as {
-                    response: {
-                        status: number;
-                        statusText: string;
-                        data: unknown;
-                    };
-                };
-                console.error("서버 응답 에러:", {
-                    status: axiosError.response.status,
-                    statusText: axiosError.response.statusText,
-                    data: axiosError.response.data,
-                });
-                console.error(
-                    "서버 에러 상세:",
-                    JSON.stringify(axiosError.response.data, null, 2),
-                );
-                alert(
-                    `게시글 삭제에 실패했습니다. (${axiosError.response.status}: ${axiosError.response.statusText})`,
-                );
-            } else if (
-                error &&
-                typeof error === "object" &&
-                "request" in error
-            ) {
-                console.error("요청 에러:", error);
-                alert(
-                    "서버에 연결할 수 없습니다. 백엔드가 실행 중인지 확인해주세요.",
-                );
+            if (error instanceof Error) {
+                alert(`게시글 삭제에 실패했습니다: ${error.message}`);
             } else {
-                console.error("기타 에러:", error);
-                alert(
-                    `게시글 삭제에 실패했습니다: ${
-                        error instanceof Error
-                            ? error.message
-                            : "알 수 없는 오류"
-                    }`,
-                );
+                alert("게시글 삭제에 실패했습니다. 다시 시도해주세요.");
             }
         }
     };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../components/ThemeContext";
 import { useUser } from "../contexts/UserContext";
@@ -17,9 +17,11 @@ const MyPage: React.FC = () => {
 
     // 상태 관리
     const [isEditingPassword, setIsEditingPassword] = useState(false);
-    const [currentPassword, setCurrentPassword] = useState("");
-    const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
+    const [passwordForm, setPasswordForm] = useState({
+        currentPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+    });
     const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
 
     // 회원탈퇴 관련 상태
@@ -57,6 +59,8 @@ const MyPage: React.FC = () => {
 
     // 비밀번호 변경 처리
     const handlePasswordUpdate = async () => {
+        const { currentPassword, newPassword, confirmPassword } = passwordForm;
+
         if (!currentPassword || !newPassword || !confirmPassword) {
             alert("모든 필드를 입력해주세요.");
             return;
@@ -77,9 +81,11 @@ const MyPage: React.FC = () => {
             await updateUserPassword(currentPassword, newPassword);
             alert("비밀번호가 성공적으로 변경되었습니다.");
             setIsEditingPassword(false);
-            setCurrentPassword("");
-            setNewPassword("");
-            setConfirmPassword("");
+            setPasswordForm({
+                currentPassword: "",
+                newPassword: "",
+                confirmPassword: "",
+            });
         } catch (error) {
             alert(
                 error instanceof Error
@@ -94,9 +100,11 @@ const MyPage: React.FC = () => {
     // 비밀번호 편집 취소
     const cancelPasswordEdit = () => {
         setIsEditingPassword(false);
-        setCurrentPassword("");
-        setNewPassword("");
-        setConfirmPassword("");
+        setPasswordForm({
+            currentPassword: "",
+            newPassword: "",
+            confirmPassword: "",
+        });
     };
 
     // 회원탈퇴 처리
@@ -181,11 +189,13 @@ const MyPage: React.FC = () => {
                                         <label>현재 비밀번호:</label>
                                         <input
                                             type="password"
-                                            value={currentPassword}
+                                            value={passwordForm.currentPassword}
                                             onChange={(e) =>
-                                                setCurrentPassword(
-                                                    e.target.value,
-                                                )
+                                                setPasswordForm((prev) => ({
+                                                    ...prev,
+                                                    currentPassword:
+                                                        e.target.value,
+                                                }))
                                             }
                                             placeholder="현재 비밀번호 입력"
                                             className="edit-input"
@@ -195,9 +205,12 @@ const MyPage: React.FC = () => {
                                         <label>새 비밀번호:</label>
                                         <input
                                             type="password"
-                                            value={newPassword}
+                                            value={passwordForm.newPassword}
                                             onChange={(e) =>
-                                                setNewPassword(e.target.value)
+                                                setPasswordForm((prev) => ({
+                                                    ...prev,
+                                                    newPassword: e.target.value,
+                                                }))
                                             }
                                             placeholder="새 비밀번호 입력 (6자 이상)"
                                             className="edit-input"
@@ -207,11 +220,13 @@ const MyPage: React.FC = () => {
                                         <label>새 비밀번호 확인:</label>
                                         <input
                                             type="password"
-                                            value={confirmPassword}
+                                            value={passwordForm.confirmPassword}
                                             onChange={(e) =>
-                                                setConfirmPassword(
-                                                    e.target.value,
-                                                )
+                                                setPasswordForm((prev) => ({
+                                                    ...prev,
+                                                    confirmPassword:
+                                                        e.target.value,
+                                                }))
                                             }
                                             placeholder="새 비밀번호 재입력"
                                             className="edit-input"
