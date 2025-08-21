@@ -5,8 +5,7 @@ import type { Comment } from "../../services/api";
 import axios from "axios";
 import "../../css/commentSection.css";
 import CommentForm from "./CommentForm";
-import CommentEditForm from "./CommentEditForm";
-import ReplyForm from "./ReplyForm";
+import CommentItem from "./CommentItem";
 
 interface CommentSectionProps {
     postId: number;
@@ -288,93 +287,33 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                     comments
                         .filter((comment) => !comment.isReply)
                         .map((comment) => (
-                            <div key={comment.id} className="comment-item">
-                                <div className="comment-header">
-                                    <span className="comment-author">
-                                        {comment.nickName ||
-                                            `사용자${comment.userId}`}
-                                    </span>
-                                    <span className="comment-date">
-                                        {comment.createdAt &&
-                                            formatDate(comment.createdAt)}
-                                    </span>
-                                </div>
-
-                                {editingCommentId === comment.id ? (
-                                    <CommentEditForm
-                                        value={editContent}
-                                        onChange={(e) =>
-                                            setEditContent(e.target.value)
-                                        }
-                                        onSave={() =>
-                                            handleSaveEdit(comment.id!)
-                                        }
-                                        onCancel={handleCancelEdit}
-                                        maxLength={COMMENT_MAX_LENGTH}
-                                        rows={COMMENT_ROWS}
-                                    />
-                                ) : (
-                                    <div className="comment-content">
-                                        {comment.content}
-                                    </div>
-                                )}
-
-                                {/* 댓글 액션 버튼 */}
-                                <div className="comment-actions">
-                                    {/* 대댓글 버튼 */}
-                                    <button
-                                        onClick={() =>
-                                            handleStartReply(comment.id!)
-                                        }
-                                        className="comment-reply-btn"
-                                    >
-                                        답글
-                                    </button>
-
-                                    {/* 수정/삭제 버튼 (권한이 있는 경우만) */}
-                                    {canModifyComment(comment) && (
-                                        <>
-                                            <button
-                                                onClick={() =>
-                                                    handleStartEdit(comment)
-                                                }
-                                                className="comment-edit-btn"
-                                            >
-                                                수정
-                                            </button>
-                                            <button
-                                                onClick={() =>
-                                                    handleDeleteComment(
-                                                        comment.id!,
-                                                    )
-                                                }
-                                                className="comment-delete-btn"
-                                            >
-                                                삭제
-                                            </button>
-                                        </>
-                                    )}
-                                </div>
-
-                                {/* 대댓글 작성 폼 */}
-                                {replyingToCommentId === comment.id && (
-                                    <ReplyForm
-                                        value={replyContent}
-                                        onChange={(e) =>
-                                            setReplyContent(e.target.value)
-                                        }
-                                        onSubmit={() =>
-                                            handleSubmitReply(comment.id!)
-                                        }
-                                        onCancel={handleCancelReply}
-                                        maxLength={COMMENT_MAX_LENGTH}
-                                        rows={REPLY_ROWS}
-                                    />
-                                )}
-
-                                {/* 대댓글 목록 */}
-                                {comment.id && renderReplies(comment.id)}
-                            </div>
+                            <CommentItem
+                                key={comment.id}
+                                comment={comment}
+                                editingCommentId={editingCommentId}
+                                editContent={editContent}
+                                replyingToCommentId={replyingToCommentId}
+                                replyContent={replyContent}
+                                canModifyComment={canModifyComment}
+                                formatDate={formatDate}
+                                onStartEdit={handleStartEdit}
+                                onSaveEdit={handleSaveEdit}
+                                onCancelEdit={handleCancelEdit}
+                                onDeleteComment={handleDeleteComment}
+                                onStartReply={handleStartReply}
+                                onCancelReply={handleCancelReply}
+                                onSubmitReply={handleSubmitReply}
+                                onEditContentChange={(e) =>
+                                    setEditContent(e.target.value)
+                                }
+                                onReplyContentChange={(e) =>
+                                    setReplyContent(e.target.value)
+                                }
+                                renderReplies={renderReplies}
+                                maxLength={COMMENT_MAX_LENGTH}
+                                rows={COMMENT_ROWS}
+                                replyRows={REPLY_ROWS}
+                            />
                         ))
                 )}
             </div>
