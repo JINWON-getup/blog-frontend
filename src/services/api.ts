@@ -4,12 +4,12 @@ import axios from "axios";
 export interface Post {
     id?: number;
     userId: number;
-    userType: string; // "USER" 또는 "ADMIN"
+    userType: string;
     title: string;
     content: string;
     boardType: string;
     category: string;
-    tags: string; // 배열에서 문자열로 변경!
+    tags: string;
     nickName: string;
     createdAt?: string;
     updatedAt?: string;
@@ -21,7 +21,7 @@ export interface Comment {
     content: string;
     postId: number;
     userId: number;
-    userType: string; // "USER" 또는 "ADMIN"
+    userType: string;
     parentCommentId?: number;
     isReply: boolean;
     createdAt?: string;
@@ -30,8 +30,7 @@ export interface Comment {
 }
 
 // API 기본 URL (공통으로 사용)
-export const API_BASE_URL =
-    import.meta.env.VITE_API_URL || "http://localhost:8080";
+export const API_BASE_URL = "http://localhost:8080";
 
 const API_URL = `${API_BASE_URL}/api/post`;
 
@@ -605,48 +604,4 @@ export const getUsers = async (): Promise<User[]> => {
 
 export const deleteUser = async (pid: number): Promise<void> => {
     await axios.delete(`${API_BASE_URL}/api/users/${pid}`);
-};
-
-// 댓글 관련 API 함수들
-export const createComment = async (
-    comment: Omit<Comment, "id" | "createdAt" | "updatedAt">,
-): Promise<Comment> => {
-    const response = await axios.post<Comment>(
-        `${API_BASE_URL}/api/comments`,
-        comment,
-    );
-    return response.data;
-};
-
-export const getCommentsByPostId = async (
-    postId: number,
-): Promise<Comment[]> => {
-    const response = await axios.get<Comment[]>(
-        `${API_BASE_URL}/api/comments/post/${postId}`,
-    );
-    return response.data;
-};
-
-export const updateComment = async (
-    id: number,
-    comment: Pick<Comment, "content">,
-): Promise<Comment> => {
-    const response = await axios.put<Comment>(
-        `${API_BASE_URL}/api/comments/${id}`,
-        comment,
-    );
-    return response.data;
-};
-
-export const deleteComment = async (id: number): Promise<void> => {
-    await axios.delete(`${API_BASE_URL}/api/comments/${id}`);
-};
-
-export const getCommentCountByPostId = async (
-    postId: number,
-): Promise<number> => {
-    const response = await axios.get<number>(
-        `${API_BASE_URL}/api/comments/post/${postId}/count`,
-    );
-    return response.data;
 };

@@ -2,11 +2,6 @@ import { useState, useEffect } from "react";
 import { useUser } from "../../contexts/UserContext";
 import { useAdmin } from "../../contexts/AdminContext";
 import type { Comment } from "../../services/api";
-import {
-    createComment,
-    updateComment,
-    deleteComment,
-} from "../../services/api";
 import axios from "axios";
 import "../../css/commentSection.css";
 
@@ -42,9 +37,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     const fetchComments = async () => {
         try {
             const response = await axios.get(
-                `${
-                    import.meta.env.VITE_API_URL || "http://localhost:8080"
-                }/api/comments/post/${postId}`,
+                `http://localhost:8080/api/comments/post/${postId}`,
             );
             // 댓글 데이터에 닉네임 정보 추가
             const commentsWithNickname = (response.data as Comment[]).map(
@@ -79,10 +72,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                 isReply: false,
             };
 
-            const response = await createComment(commentData);
+            const response = await axios.post(
+                `http://localhost:8080/api/comments`,
+                commentData,
+            );
             // 응답에 닉네임 정보 추가
-            const commentWithNickname = {
-                ...response,
+            const commentWithNickname: Comment = {
+                ...(response.data as Comment),
                 nickName:
                     isLoggedIn && adminInfo
                         ? adminInfo.adminName
@@ -113,7 +109,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!editContent.trim()) return;
 
         try {
-            await updateComment(commentId, { content: editContent.trim() });
+            await axios.put(`http://localhost:8080/api/comments/${commentId}`, {
+                content: editContent.trim(),
+            });
             setComments((prev) =>
                 prev.map((comment) =>
                     comment.id === commentId
@@ -134,7 +132,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!window.confirm("댓글을 삭제하시겠습니까?")) return;
 
         try {
-            await deleteComment(commentId);
+            await axios.delete(
+                `http://localhost:8080/api/comments/${commentId}`,
+            );
             setComments((prev) =>
                 prev.filter((comment) => comment.id !== commentId),
             );
@@ -188,9 +188,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                 isReply: true,
             };
 
-            const response = await createComment(replyData);
-            const replyWithNickname = {
-                ...response,
+            const response = await axios.post(
+                `http://localhost:8080/api/comments`,
+                replyData,
+            );
+            const replyWithNickname: Comment = {
+                ...(response.data as Comment),
                 nickName:
                     isLoggedIn && adminInfo
                         ? adminInfo.adminName
