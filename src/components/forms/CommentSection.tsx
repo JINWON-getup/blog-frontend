@@ -4,6 +4,9 @@ import { useAdmin } from "../../contexts/AdminContext";
 import type { Comment } from "../../services/api";
 import axios from "axios";
 import "../../css/commentSection.css";
+import CommentForm from "./CommentForm";
+import CommentEditForm from "./CommentEditForm";
+import ReplyForm from "./ReplyForm";
 
 interface CommentSectionProps {
     postId: number;
@@ -268,28 +271,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
 
             {/* 댓글 작성 폼 */}
             {(userInfo || isLoggedIn) && (
-                <form onSubmit={handleSubmitComment} className="comment-form">
-                    <textarea
-                        value={newComment}
-                        onChange={(e) => setNewComment(e.target.value)}
-                        placeholder="댓글을 작성하세요..."
-                        className="comment-input"
-                        rows={COMMENT_ROWS}
-                        maxLength={COMMENT_MAX_LENGTH}
-                    />
-                    <div className="comment-form-footer">
-                        <span className="char-counter">
-                            {newComment.length}/{COMMENT_MAX_LENGTH}
-                        </span>
-                        <button
-                            type="submit"
-                            className="comment-submit-btn"
-                            disabled={!newComment.trim()}
-                        >
-                            댓글 작성
-                        </button>
-                    </div>
-                </form>
+                <CommentForm
+                    onSubmit={handleSubmitComment}
+                    value={newComment}
+                    onChange={(e) => setNewComment(e.target.value)}
+                    maxLength={COMMENT_MAX_LENGTH}
+                    rows={COMMENT_ROWS}
+                />
             )}
 
             {/* 댓글 목록 */}
@@ -313,38 +301,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                                 </div>
 
                                 {editingCommentId === comment.id ? (
-                                    <div className="comment-edit-form">
-                                        <textarea
-                                            value={editContent}
-                                            onChange={(e) =>
-                                                setEditContent(e.target.value)
-                                            }
-                                            className="comment-edit-input"
-                                            rows={COMMENT_ROWS}
-                                            maxLength={COMMENT_MAX_LENGTH}
-                                        />
-                                        <div className="comment-edit-actions">
-                                            <span className="char-counter">
-                                                {editContent.length}/
-                                                {COMMENT_MAX_LENGTH}
-                                            </span>
-                                            <button
-                                                onClick={() =>
-                                                    handleSaveEdit(comment.id!)
-                                                }
-                                                className="comment-save-btn"
-                                                disabled={!editContent.trim()}
-                                            >
-                                                저장
-                                            </button>
-                                            <button
-                                                onClick={handleCancelEdit}
-                                                className="comment-cancel-btn"
-                                            >
-                                                취소
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <CommentEditForm
+                                        value={editContent}
+                                        onChange={(e) =>
+                                            setEditContent(e.target.value)
+                                        }
+                                        onSave={() =>
+                                            handleSaveEdit(comment.id!)
+                                        }
+                                        onCancel={handleCancelEdit}
+                                        maxLength={COMMENT_MAX_LENGTH}
+                                        rows={COMMENT_ROWS}
+                                    />
                                 ) : (
                                     <div className="comment-content">
                                         {comment.content}
@@ -390,41 +358,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
 
                                 {/* 대댓글 작성 폼 */}
                                 {replyingToCommentId === comment.id && (
-                                    <div className="comment-reply-form">
-                                        <textarea
-                                            value={replyContent}
-                                            onChange={(e) =>
-                                                setReplyContent(e.target.value)
-                                            }
-                                            placeholder="대댓글을 작성하세요..."
-                                            className="comment-reply-input"
-                                            rows={REPLY_ROWS}
-                                            maxLength={COMMENT_MAX_LENGTH}
-                                        />
-                                        <div className="comment-reply-actions">
-                                            <span className="char-counter">
-                                                {replyContent.length}/
-                                                {COMMENT_MAX_LENGTH}
-                                            </span>
-                                            <button
-                                                onClick={() =>
-                                                    handleSubmitReply(
-                                                        comment.id!,
-                                                    )
-                                                }
-                                                className="comment-reply-submit-btn"
-                                                disabled={!replyContent.trim()}
-                                            >
-                                                답글 작성
-                                            </button>
-                                            <button
-                                                onClick={handleCancelReply}
-                                                className="comment-reply-cancel-btn"
-                                            >
-                                                취소
-                                            </button>
-                                        </div>
-                                    </div>
+                                    <ReplyForm
+                                        value={replyContent}
+                                        onChange={(e) =>
+                                            setReplyContent(e.target.value)
+                                        }
+                                        onSubmit={() =>
+                                            handleSubmitReply(comment.id!)
+                                        }
+                                        onCancel={handleCancelReply}
+                                        maxLength={COMMENT_MAX_LENGTH}
+                                        rows={REPLY_ROWS}
+                                    />
                                 )}
 
                                 {/* 대댓글 목록 */}
