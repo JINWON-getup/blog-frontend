@@ -14,7 +14,7 @@ export default function NavBar() {
     useEffect(() => {
         const handleScroll = () => {
             const scrollTop = window.scrollY;
-            setIsScrolled(scrollTop > 100); // 100px 스크롤 후 고정
+            setIsScrolled(scrollTop > 100);
         };
 
         window.addEventListener("scroll", handleScroll);
@@ -65,9 +65,7 @@ export default function NavBar() {
                     </Link>
                 </li>
             </ul>
-            {/* 오른쪽 요소들을 하나의 그룹으로 묶기 */}
             <div className="nav-right-group">
-                {/* 로그인/마이페이지 링크 */}
                 {isUserLoggedIn ? (
                     <Link to="/my-page" className="nav-link signup-link">
                         <i className="bi bi-person-lines-fill"></i>
@@ -81,7 +79,6 @@ export default function NavBar() {
                 )}
 
                 <div className="nav-toggle">
-                    {/* 관리자 메뉴 - 로그인된 관리자에게만 표시 */}
                     {isAdminLoggedIn && adminInfo && (
                         <Link
                             to="/admin-dashboard"
