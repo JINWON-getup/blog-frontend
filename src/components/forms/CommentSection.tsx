@@ -15,6 +15,7 @@ interface CommentSectionProps {
 const COMMENT_MAX_LENGTH = 300;
 const COMMENT_ROWS = 3;
 const REPLY_ROWS = 2;
+const API_BASE_URL = "http://localhost:8080/api";
 
 const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     const { userInfo } = useUser();
@@ -26,11 +27,50 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     );
     const [editContent, setEditContent] = useState("");
 
+    // 에러 및 로딩 상태 관리
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
     // 대댓글 관련 상태
     const [replyingToCommentId, setReplyingToCommentId] = useState<
         number | null
     >(null);
     const [replyContent, setReplyContent] = useState("");
+
+    // 에러 처리 유틸리티 함수
+    const handleError = (error: unknown, defaultMessage: string) => {
+        console.error(error);
+        let errorMessage = defaultMessage;
+
+        // Axios 에러 타입 가드
+        if (error && typeof error === "object" && "response" in error) {
+            const axiosError = error as { response?: { status?: number } };
+            if (axiosError.response?.status === 401) {
+                errorMessage = "로그인이 필요합니다.";
+            } else if (axiosError.response?.status === 403) {
+                errorMessage = "권한이 없습니다.";
+            } else if (axiosError.response?.status === 404) {
+                errorMessage = "요청한 데이터를 찾을 수 없습니다.";
+            } else if (
+                axiosError.response?.status &&
+                axiosError.response.status >= 500
+            ) {
+                errorMessage =
+                    "서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.";
+            }
+        }
+
+        // 네트워크 에러 타입 가드
+        if (error && typeof error === "object" && "code" in error) {
+            const networkError = error as { code?: string };
+            if (networkError.code === "ERR_NETWORK") {
+                errorMessage = "네트워크 연결을 확인해주세요.";
+            }
+        }
+
+        setError(errorMessage);
+        setTimeout(() => setError(null), 5000); // 5초 후 에러 메시지 제거
+    };
 
     // userId 설정 함수 (중복 제거)
     const getUserId = (): number => {
@@ -42,9 +82,11 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
 
     // 댓글 목록 가져오기
     const fetchComments = async () => {
+        setIsLoading(true);
+        setError(null);
         try {
             const response = await axios.get(
-                `http://localhost:8080/api/comments/post/${postId}`,
+                `${API_BASE_URL}/comments/post/${postId}`,
             );
             // 댓글 데이터에 닉네임 정보 추가
             const commentsWithNickname = (response.data as Comment[]).map(
@@ -55,7 +97,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             );
             setComments(commentsWithNickname);
         } catch (error) {
-            console.error("댓글을 불러오는 중 오류:", error);
+            handleError(error, "댓글을 불러오는 중 오류가 발생했습니다.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -80,7 +124,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             };
 
             const response = await axios.post(
-                `http://localhost:8080/api/comments`,
+                `${API_BASE_URL}/comments`,
                 commentData,
             );
             // 응답에 닉네임 정보 추가
@@ -94,8 +138,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             setComments((prev) => [commentWithNickname, ...prev]);
             setNewComment("");
         } catch (error) {
-            console.error("댓글 작성 중 오류:", error);
-            alert("댓글 작성에 실패했습니다.");
+            handleError(error, "댓글 작성에 실패했습니다.");
         }
     };
 
@@ -116,7 +159,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!editContent.trim()) return;
 
         try {
-            await axios.put(`http://localhost:8080/api/comments/${commentId}`, {
+            await axios.put(`${API_BASE_URL}/comments/${commentId}`, {
                 content: editContent.trim(),
             });
             setComments((prev) =>
@@ -129,8 +172,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             setEditingCommentId(null);
             setEditContent("");
         } catch (error) {
-            console.error("댓글 수정 중 오류:", error);
-            alert("댓글 수정에 실패했습니다.");
+            handleError(error, "댓글 수정에 실패했습니다.");
         }
     };
 
@@ -139,15 +181,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         if (!window.confirm("댓글을 삭제하시겠습니까?")) return;
 
         try {
-            await axios.delete(
-                `http://localhost:8080/api/comments/${commentId}`,
-            );
+            await axios.delete(`${API_BASE_URL}/comments/${commentId}`);
             setComments((prev) =>
                 prev.filter((comment) => comment.id !== commentId),
             );
         } catch (error) {
-            console.error("댓글 삭제 중 오류:", error);
-            alert("댓글 삭제에 실패했습니다.");
+            handleError(error, "댓글 삭제에 실패했습니다.");
         }
     };
 
@@ -196,7 +235,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             };
 
             const response = await axios.post(
-                `http://localhost:8080/api/comments`,
+                `${API_BASE_URL}/comments`,
                 replyData,
             );
             const replyWithNickname: Comment = {
@@ -211,8 +250,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
             setReplyingToCommentId(null);
             setReplyContent("");
         } catch (error) {
-            console.error("대댓글 작성 중 오류:", error);
-            alert("대댓글 작성에 실패했습니다.");
+            handleError(error, "대댓글 작성에 실패했습니다.");
         }
     };
 
@@ -268,6 +306,23 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
         <div className="comment-section">
             <h3 className="comment-title">댓글 ({comments.length})</h3>
 
+            {/* 에러 메시지 */}
+            {error && (
+                <div
+                    className="error-message"
+                    style={{
+                        backgroundColor: "#fee",
+                        color: "#c33",
+                        padding: "10px",
+                        borderRadius: "4px",
+                        marginBottom: "15px",
+                        border: "1px solid #fcc",
+                    }}
+                >
+                    {error}
+                </div>
+            )}
+
             {/* 댓글 작성 폼 */}
             {(userInfo || isLoggedIn) && (
                 <CommentForm
@@ -281,7 +336,18 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
 
             {/* 댓글 목록 */}
             <div className="comment-list">
-                {comments.length === 0 ? (
+                {isLoading ? (
+                    <div
+                        className="loading-message"
+                        style={{
+                            textAlign: "center",
+                            padding: "20px",
+                            color: "#666",
+                        }}
+                    >
+                        댓글을 불러오는 중...
+                    </div>
+                ) : comments.length === 0 ? (
                     <div className="no-comments">아직 댓글이 없습니다.</div>
                 ) : (
                     comments
