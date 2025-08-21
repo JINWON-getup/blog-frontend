@@ -9,6 +9,11 @@ interface CommentSectionProps {
     postId: number;
 }
 
+// 상수 정의
+const COMMENT_MAX_LENGTH = 300;
+const COMMENT_ROWS = 3;
+const REPLY_ROWS = 2;
+
 const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
     const { userInfo } = useUser();
     const { isLoggedIn, adminInfo } = useAdmin();
@@ -82,7 +87,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                 nickName:
                     isLoggedIn && adminInfo
                         ? adminInfo.adminName
-                        : userInfo?.nickName || "익명",
+                        : userInfo?.nickName,
             };
             setComments((prev) => [commentWithNickname, ...prev]);
             setNewComment("");
@@ -197,7 +202,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                 nickName:
                     isLoggedIn && adminInfo
                         ? adminInfo.adminName
-                        : userInfo?.nickName || "익명",
+                        : userInfo?.nickName,
             };
 
             setComments((prev) => [replyWithNickname, ...prev]);
@@ -223,7 +228,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                     <div key={reply.id} className="comment-reply-item">
                         <div className="comment-reply-header">
                             <span className="comment-reply-author">
-                                {reply.nickName || "익명"}
+                                {reply.nickName || `사용자${reply.userId}`}
                             </span>
                             <span className="comment-reply-date">
                                 {reply.createdAt && formatDate(reply.createdAt)}
@@ -269,12 +274,12 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                         onChange={(e) => setNewComment(e.target.value)}
                         placeholder="댓글을 작성하세요..."
                         className="comment-input"
-                        rows={3}
-                        maxLength={300}
+                        rows={COMMENT_ROWS}
+                        maxLength={COMMENT_MAX_LENGTH}
                     />
                     <div className="comment-form-footer">
                         <span className="char-counter">
-                            {newComment.length}/300
+                            {newComment.length}/{COMMENT_MAX_LENGTH}
                         </span>
                         <button
                             type="submit"
@@ -298,7 +303,8 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                             <div key={comment.id} className="comment-item">
                                 <div className="comment-header">
                                     <span className="comment-author">
-                                        {comment.nickName || "익명"}
+                                        {comment.nickName ||
+                                            `사용자${comment.userId}`}
                                     </span>
                                     <span className="comment-date">
                                         {comment.createdAt &&
@@ -314,12 +320,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                                                 setEditContent(e.target.value)
                                             }
                                             className="comment-edit-input"
-                                            rows={3}
-                                            maxLength={300}
+                                            rows={COMMENT_ROWS}
+                                            maxLength={COMMENT_MAX_LENGTH}
                                         />
                                         <div className="comment-edit-actions">
                                             <span className="char-counter">
-                                                {editContent.length}/300
+                                                {editContent.length}/
+                                                {COMMENT_MAX_LENGTH}
                                             </span>
                                             <button
                                                 onClick={() =>
@@ -391,12 +398,13 @@ const CommentSection: React.FC<CommentSectionProps> = ({ postId }) => {
                                             }
                                             placeholder="대댓글을 작성하세요..."
                                             className="comment-reply-input"
-                                            rows={2}
-                                            maxLength={300}
+                                            rows={REPLY_ROWS}
+                                            maxLength={COMMENT_MAX_LENGTH}
                                         />
                                         <div className="comment-reply-actions">
                                             <span className="char-counter">
-                                                {replyContent.length}/300
+                                                {replyContent.length}/
+                                                {COMMENT_MAX_LENGTH}
                                             </span>
                                             <button
                                                 onClick={() =>
