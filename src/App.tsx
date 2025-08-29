@@ -1,17 +1,14 @@
-import { useEffect } from "react";
-import Header from "./components/common/Header";
-import Footer from "./components/common/Footer";
-import AppRoutes from "./routes/routes";
-import NavBar from "./components/common/NavBar";
 import { ThemeProvider } from "./components/ThemeContext";
 import { AdminProvider } from "./contexts/AdminContext";
 import { UserProvider } from "./contexts/UserContext";
 
-export default function App() {
-    useEffect(() => {
-        console.log("App 컴포넌트 마운트됨");
-    }, []);
+import AppRoutes from "./routes/routes";
 
+import Header from "./components/common/Header";
+import NavBar from "./components/common/NavBar";
+import Footer from "./components/common/Footer";
+
+export default function App() {
     return (
         <ThemeProvider>
             <AdminProvider>
