@@ -32,12 +32,12 @@ export default function AdminDashboard() {
     // 검색과 페이지네이션 상태
     const [searchTerm, setSearchTerm] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
-    const [postsPerPage] = useState(20);
+    const [postsPerPage] = useState(10);
 
     // 사용자 검색과 페이지네이션 상태
     const [userSearchTerm, setUserSearchTerm] = useState("");
     const [userCurrentPage, setUserCurrentPage] = useState(1);
-    const [usersPerPage] = useState(20);
+    const [usersPerPage] = useState(10);
 
     // 로그인 상태 확인
     useEffect(() => {
